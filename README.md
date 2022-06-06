@@ -18,6 +18,8 @@ This is necessary if a new file is created and we want to add a new page for it.
 The website is built automatically on the `gh-pages` branch when a new push is sent to the repository. 
 See below for how to build and preview the site locally.
 
+`.Rproj` and `.code-workspace` files are provided, if you want to open the folder in RStudio or VS Code, respectively. 
+
 
 ### Text Boxes
 
