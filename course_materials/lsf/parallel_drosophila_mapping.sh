@@ -1,14 +1,16 @@
 #!/bin/bash
-#SBATCH -p training  # name of the partition to run job on
-#SBATCH -D /scratch/FIXME/hpc_workshop
-#SBATCH -o logs/drosophila_mapping_%a.log
-#SBATCH -c 2         # number of CPUs. Default: 1
-#SBATCH --mem=1G     # RAM memory. Default: 1G
-#SBATCH -t 00:30:00  # time for the job HH:MM:SS. Default: 1 min
-#SBATCH -a 2-FIXME   # we start at 2 because of the header
+#BSUB -q normal  # name of the partition to run job on
+#BSUB -cwd /FIXME/FIXME/hpc_workshop
+#BSUB -o logs/drosophila_mapping_%I.out
+#BSUB -e logs/drosophila_mapping_%I.err
+#BSUB -n2         # number of CPUs. Default: 1
+#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUB -M1000  # RAM memory part 2. Default: 100MB
+#BSUB -W30  # time for the job
+#BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
 
-# load conda environment
-source activate bioinformatics
+# load bowtie2
+module load bowtie2
 
 # get the relevant line of the CSV sample information file
 # see http://bigdatums.net/2016/02/22/3-ways-to-get-the-nth-line-of-a-file-in-linux/
@@ -24,10 +26,10 @@ mkdir -p "results/drosophila/mapping"
 
 # output some informative messages
 echo "The input read files are: $READ1 and $READ2"
-echo "Number of CPUs used: $SLURM_CPUS_PER_TASK"
+echo "Number of CPUs used: $LSB_MAX_NUM_PROCESSORS"
 
 # Align the reads to the genome
-bowtie2 --very-fast -p "$SLURM_CPUS_PER_TASK" \
+bowtie2 --very-fast -p "$LSB_MAX_NUM_PROCESSORS" \
   -x "results/drosophila/genome/index" \
   -1 "$READ1" \
   -2 "$READ2" > "results/drosophila/mapping/$SAMPLE.sam"

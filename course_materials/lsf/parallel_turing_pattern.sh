@@ -1,13 +1,15 @@
 #!/bin/bash
-#SBATCH -p training  # name of the partition to run job on
-#SBATCH -D /scratch/FIXME/hpc_workshop
-#SBATCH -o logs/turing_pattern_%a.log
-#SBATCH -c 1         # number of CPUs. Default: 1
-#SBATCH --mem=1G     # RAM memory. Default: 1G
-#SBATCH -t 00:30:00  # time for the job HH:MM:SS. Default: 1 min
-#SBATCH -a 2-FIXME   # we start at 2 because of the header
+#BSUB -q normal  # name of the partition to run job on
+#BSUB -cwd /scratch/FIXME/hpc_workshop
+#BSUB -o logs/turing_pattern_%I.out
+#BSUB -e logs/turing_pattern_%I.err
+#BSUBv -n1         # number of CPUs. Default: 1
+#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUB -M1000  # RAM memory part 2. Default: 100MB
+#BSUB -W30  # time for the job 
+#BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
 
-echo "Starting array: $SLURM_ARRAY_TASK_ID"
+echo "Starting array: $LSB_JOBINDEX"
 
 # activate software environment
 source activate scipy
@@ -26,4 +28,4 @@ KILL=$(echo ${PARAMS} | cut -d "," -f 2)
 # Launch script using our defined variables
 python scripts/turing_pattern.py --feed ${FEED} --kill ${KILL} --outdir results/turing
 
-echo "Finished array: $SLURM_ARRAY_TASK_ID"
+echo "Finished array: $LSB_JOBINDEX"

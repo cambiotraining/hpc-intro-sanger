@@ -1,67 +1,72 @@
 ---
-pagetitle: "HPC Course: Intro"
+pagetitle: "Sanger Farm Course: Intro"
 ---
 
-# Working on a HPC Cluster
+# Working on the farm
 
 :::highlight
 #### Questions
 
-- How do I access a HPC?
-- How do I edit files on the HPC?
-- How do I move files in/out of the HPC?
+- How do I access the Sanger farm?
+- How do I edit files on the farm?
+- How do I move files in/out of the farm?
 
 #### Learning Objectives
 
 - Use different software tools to work on a remote server: terminal, _Visual Studio Code_ and _Filezilla_.
-- Login to the HPC and navigate its filesystem.
-- Use the "Remote-SSH" extension in _Visual Studio Code_ to edit scripts directly on the HPC.
-- Use _Filezilla_ to connect to the HPC and move files in and out of its storage. 
+- Login to the farm and navigate its filesystems.
+- Use the "Remote-SSH" extension in _Visual Studio Code_ to edit scripts directly on the farm.
+- Use _Filezilla_ to connect to the farm and move files in and out of its storage.
 :::
 
-![Useful tools for working on a remote HPC server. The terminal is used to login to the HPc and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
+![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPC and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
 
 ## Connecting to the HPC
 
-All interactions with the HPC happen via the terminal (or command line). 
-To connect to the HPC we use the program `ssh`. 
-The syntax is: 
+All interactions with the farm happen via the terminal (or command line).
+To connect to the HPC we use the program `ssh`.
+The syntax is:
 
 ```console
 ssh your-hpc-username@hpc-address
 ```
 
-After running this command you will be asked for your password and after typing it you will be logged in to the HPC. 
+To log onto the Sanger farm, you'll need to add "-login" to the name of the HPC, using this command:
 
-![Login to HPC using the terminal. 1) Use the ssh program to login to the HPC. 2) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 3) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.svg)
+```console
+ssh sanger-username@farm5-login
+```
+
+The Sanger service desk has set up your laptop to assume your Sanger ID, so you can use the simplified command to access the farm:
+```console
+ssh farm5-login
+```
+
+The first time you connect to an HPC, you may receive a message about the ECDSA key fingerprint.  By typing `yes` you'll add the 'fingerprint' of this HPC to your local computer's saved list of approved hosts.
+
+After running this `ssh` command and approving any ECDSA key questions, you will be asked for your Sanger password and after typing it you will be logged in to the farm.
+
+
+We will be using a test server called **gen3** in this course.  It is a small HPC, similar in structure to the larger farm5, run by the Sanger for scientists to learn about the farm and test LSF scripts.  Everyone with a Sanger ID has access to gen3, but farm5, the main HPC, is only accessible once you complete the Farm Induction course.
+
+![Login to HPC using the terminal. 1) Use the ssh program to login to gen3.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.svg)
 
 
 :::exercise
 
-**Note:** only do this exercise if you are following the materials by yourself as a self-learner. For those attending our live workshop we will instead use VS Code throughout the workshop (see next section).
+> You are automatically allocated 10GB in `/nfs/users/nfs_c/` and 100GB in `/lustre/scratchXXX/`.
 
-After registering for a HPC account, you were sent the following information by the computing support:
+**Q1.** Connect to gen3 using `ssh`
 
-> An account has been created for you on our HPC. 
-> 
-> - Username: emailed separately
-> - Password: emailed separately
-> - Host: `train.bio`
-> - Port (for file transfer protocols): 22 
-> 
-> You were automatically allocated 40GB in `/home/USERNAME/` and 1TB in `/scratch/USERNAME/`. 
-
-**Q1.** Connect to the training HPC using `ssh`
-
-**Q2.** 
-Take some time to explore your home directory to identify what files and folders are in there. 
-Can you identify and navigate to your scratch directory?
+**Q2.**
+Take some time to explore your home directory to identify what files and folders are in there.
+Can you identify and navigate through the scratch and NFS directories?
 
 **Q3.**
-Create a directory called `hpc_workshop` in your "scratch" directory.
+Create a directory called `hpc_workshop` in our course's "scratch" directory.
 
 **Q4.**
-Use the commands `free -h` (available RAM memory) and `nproc --all` (number of CPU cores available) to check the capabilities of the login node of our HPC. 
+Use the commands `free -h` (available RAM memory) and `nproc --all` (number of CPU cores available) to check the capabilities of the login node of our HPC.
 Check how many people are logged in to the HPC login node using the command `who`.
 
 <details><summary>Answer</summary>
@@ -71,10 +76,10 @@ Check how many people are logged in to the HPC login node using the command `who
 To login to the HPC we run the following from the terminal:
 
 ```bash
-ssh USERNAME@train.bio
+ssh USERNAME@gen3
 ```
 
-(replace "USERNAME" by your HPC username)
+(replace "USERNAME" by your Sanger username)
 
 **A2.**
 
@@ -84,17 +89,16 @@ We can get a detailed list of the files on our home directory:
 ls -l
 ```
 
-This will reveal that there is a shell script (`.sh` extension) named `slurm_submit_template.sh` and also a shortcut to our scratch directory. 
-We can see that this is a shortcut because of the way the output is printed as `scratch -> /scratch/username/`. 
-
-Therefore, to navigate to our scratch directory we can either use the shortcut from our home or use the full path:
-
+Further, we can explore the NFS directory using:
 ```console
-cd ~/scratch       # using the shortcut from the home directory
-cd /scratch/user/  # using the full path
+ls /nfs
 ```
 
-Remember that `~` indicates your home directory.
+And check out the scratch folders available in lustre:
+```console
+ls -l /lustre
+```
+
 
 **A3.**
 
@@ -106,9 +110,9 @@ mkdir hpc_workshop
 
 **A4.**
 
-The main thing to consider in this question is where you run the commands from. 
+The main thing to consider in this question is where you run the commands from.
 To get the number of CPUs and memory on your computer make sure you open a new terminal and that you see something like `[your-local-username@laptop: ~]$` (where "user" is the username on your personal computer and "laptop" is the name of your personal laptop).
-Note that this does not work on the MacOS shell (see [this post](https://www.macworld.co.uk/how-to/how-check-mac-specs-processor-ram-3594298/) for instructions to find the specs of your Mac). 
+Note that this does not work on the MacOS shell (see [this post](https://www.macworld.co.uk/how-to/how-check-mac-specs-processor-ram-3594298/) for instructions to find the specs of your Mac).
 
 Conversely, to obtain the same information for the HPC, make sure you are logged in to the HPC when you run the commands. You should see something like `[your-hpc-username@login ~]$`
 
@@ -121,7 +125,7 @@ who | wc -l
 ```
 
 You should notice that several people are using the same login node as you.
-This is why we should **never run resource-intensive applications on the login node** of a HPC. 
+This is why we should **never run resource-intensive applications on the login node** of a HPC.
 
 </details>
 :::
@@ -130,89 +134,12 @@ This is why we should **never run resource-intensive applications on the login n
 **Passwordless Login**
 
 To make your life easier, you can configure `ssh` to login to a server without having to type your password or username.
-This can be done using SSH key based authentication. 
-See [this page](https://code.visualstudio.com/docs/remote/troubleshooting#_quick-start-using-ssh-keys) with detailed instructions of how to create a key and add it to the remote host. 
+This can be done using SSH key based authentication.
+See [this page](https://code.visualstudio.com/docs/remote/troubleshooting#_quick-start-using-ssh-keys) with detailed instructions of how to create a key and add it to the remote host.
 :::
 
 
-## Editing Scripts Remotely
 
-Most of the work you will be doing on a HPC is editing script files.
-These may be scripts that you are developing to do a particular analysis or simulation, for example (in Python, R, Julia, etc.).
-But also - and more relevant for this course - you will be writing _shell scripts_ containing the commands that you want to be executed on the compute nodes.
-
-There are several possibilities to edit text files on a remote server.
-A simple one is to use the program `nano` directly from the terminal. 
-This is a simple text editor available on most linux distributions.
-However, this gives you very little functionality and is not as user friendly as a full-featured text editor.
-
-In this course we will use _Visual Studio Code_ (_VS Code_ for short), which is an open-source software with a wide range of functionality and several extensions.
-Conveniently, one of those extensions allows us to connect to a remote computer (via _ssh_) and edit files as if they were on our own computer (see the [Setup](99-setup.html) page for how to install it).
-
-To connect VS Code to the HPC (see Figure 3):
-
-1. Click the "Open Remote Window" green button on the bottom left corner.
-1. Click "Connect to Host..." in the popup menu that opens.
-1. Click "+ Add New SSH Host...".
-1. Type your username and HPC hostname in the same way you do with `ssh`.
-1. Select SSH configuration file to save this information for the future. Select the first file listed in the popup menu (a file in your user's home under `.ssh/config`).
-1. A menu pops open on the bottom right informing the host was added to the configuration file. Click "Connect".
-1. You may be asked what kind of platform you are connecting to. HPC environments always run on Linux. 
-1. The first time you connect to a host you will also be asked if you trust this computer. You can answer "Continue". 
-1. Finally, you will be asked for your password. Once you are connected the green button on the bottom-left corner should change to indicate you are ssh'd into the HPC
-1. To open a folder on the HPC, use the left-hand "Explorer" and click "Open Folder"
-1. Type the _path_ to the folder on the HPC from where you want to work from and press OK
-    * You may be asked for your password again. The first time you connect to a folder you will also be asked "Do you trust the authors of the files in this folder?", to which you can answer "Yes, I trust the authors".
-
-![Connect to a remote server with _VS Code_.](images/vscode_ssh.svg)
-
-Once you are connected to the HPC in this way, you can edit files and even create new files and folders on the HPC filesystem.
-You can also **open a terminal within VS Code** by going to the menu "Terminal > New Terminal".
-
-:::exercise
-
-If you haven't already done so, connect your VS Code to the HPC following the instructions below.
-
-<details><summary>Connecting VS Code to remote host</summary>![](images/vscode_ssh.svg)</details>
-
-1. Open the `hpc_workshop` folder on VS Code (this is the folder you created in the previous exercise).
-1. Create a new file (File > New File) and save it as `test.sh`. Copy the code shown below into this script and save it.
-1. From the terminal, run this script with `bash test.sh`
-
-```bash
-#!/bin/bash
-echo "This job is running on:"
-hostname
-```
-
-<details><summary>Answer</summary>
-**A1.**
-
-To open the folder we follow the instructions in Figure 3 and use the following path:
-`/scratch/user/hpc_workshop`
-(replacing "user" with your username)
-
-**A2.**
-
-To create a new script in VS Code we can go to "File > New File" or use the <kbd>Ctrl + N</kbd> shortcut.
-
-**A3.**
-
-We can run the script from the terminal.
-First make sure you are on the correct folder:
-
-```console
-cd /scratch/user/hpc_workshop
-```
-
-Then run the script:
-
-```console
-bash scripts/test.sh
-```
-
-</details>
-:::
 
 
 ## Moving Files
@@ -220,7 +147,7 @@ bash scripts/test.sh
 There are several options to move data between your local computer and a remote server.
 We will cover three possibilities in this section, which vary in their ease of use.
 
-A quick summary of these tools is given in the table below. 
+A quick summary of these tools is given in the table below.
 
 | | Filezilla | SCP | Rsync |
 | :-: | :-: | :-: | :-: |
@@ -232,10 +159,10 @@ A quick summary of these tools is given in the table below.
 
 This program has a graphical interface, for those that prefer it and its use is relatively intuitive.
 
-To connect to the remote server (see Figure 3): 
+To connect to the remote server (see Figure 3):
 
 1. Fill in the following information on the top panel:
-  - Host: train.bio
+  - Host: gen3
   - Username: your HPC username
   - Password: your HPC password
   - Port: 22
@@ -255,10 +182,10 @@ The syntax is as follows:
 
 ```bash
 # copy files from the local computer to the HPC
-scp -r path/to/source_folder <user>@train.bio:path/to/target_folder
+scp -r path/to/source_folder <user>@gen3:path/to/target_folder
 
 # copy files from the HPC to a local directory
-scp -r <user>@train.bio:path/to/source_folder path/to/target_folder
+scp -r <user>@gen3:path/to/source_folder path/to/target_folder
 ```
 
 The option `-r` ensures that all sub-directories are copied (instead of just files, which is the default).
@@ -266,17 +193,17 @@ The option `-r` ensures that all sub-directories are copied (instead of just fil
 
 ### `rsync` (command line)
 
-This program is more advanced than `scp` and has options to synchronise files between two directories in multiple ways. 
-The cost of its flexibility is that it can be a little harder to use. 
+This program is more advanced than `scp` and has options to synchronise files between two directories in multiple ways.
+The cost of its flexibility is that it can be a little harder to use.
 
 The most common usage is:
 
 ```bash
 # copy files from the local computer to the HPC
-rsync -auvh --progress path/to/source_folder <user>@train.bio:path/to/target_folder
+rsync -auvh --progress path/to/source_folder <user>@gen3:path/to/target_folder
 
 # copy files from the HPC to a local directory
-rsync -auvh --progress <user>@train.bio:path/to/source_folder path/to/target_folder
+rsync -auvh --progress <user>@gen3:path/to/source_folder path/to/target_folder
 ```
 
 - the options `-au` ensure that only files that have changed _and_ are newer on the source folder are transferred
@@ -292,7 +219,7 @@ When you specify the *source* directory as `path/to/source_folder/` (with `/` at
 :::
 
 :::note
-**TIP** 
+**TIP**
 
 To check what files `rsync` would transfer but not actually transfer them, add the `--dry-run` option. This is useful to check that you've specified the right source and target directories and options.
 :::
@@ -300,29 +227,28 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 
 :::exercise
 
-**Note:** only do this exercise if you are following the materials by yourself as a self-learner. For those attending our live workshop we already put the materials on the training HPC.
 
 - <a href="https://drive.google.com/u/0/uc?id=14kmKqdvTxhAvwXD91yR_IzNv6Z0tY-Gh&export=download" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
-- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/scratch/user/hpc_workshop/`. 
+- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/scratch/user/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
-- Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder? 
+- Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder?
 
 <details><summary>Answer</summary>
 
-Once we download the data to our computer, we can transfer it using either of the suggested programs. 
+Once we download the data to our computer, we can transfer it using either of the suggested programs.
 We show the solution using command-line tools.
 
 Notice that these commands are **run from your local terminal**:
 
 ```bash
 # with scp
-scp -r ~/Desktop/hpc_workshop_files.zip username@train.bio:scratch/hpc_workshop/
+scp -r ~/Desktop/hpc_workshop_files.zip username@gen3:scratch/hpc_workshop/
 
 # with rsync
-rsync -avhu ~/Desktop/hpc_workshop_files.zip username@train.bio:scratch/hpc_workshop/
+rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen3:scratch/hpc_workshop/
 ```
 
-Once we finish transfering the files we can go ahead and decompress the data folder. 
+Once we finish transfering the files we can go ahead and decompress the data folder.
 Note, this is now run **from the HPC terminal**:
 
 ```bash
@@ -344,15 +270,70 @@ Finally, we can check how many shell scripts there are using the `find` program 
 
 
 
+
+
+
+
+
+
+
+:::exercise
+
+If you haven't already done so, connect your local machine to the HPC following the instructions below.
+
+<details><summary>Connecting VS Code to remote host</summary>![](images/vscode_ssh.svg)</details>
+
+1. Move into the `hpc_workshop` folder of your scratch space (this is the folder you created in the previous exercise).
+2. Create a new file and save it as `test.sh`. Copy the code shown below into this script and save it.
+3. From the terminal, run this script with `bash test.sh`
+
+```bash
+#!/bin/bash
+echo "This job is running on:"
+hostname
+```
+
+<details><summary>Answer</summary>
+**A1.**
+
+To open the folder we follow the instructions in Figure 3 and use the following path:
+`/lustre/user/hpc_workshop`
+(replacing "user" with your username)
+
+**A2.**
+
+To create a new script in VS Code we can go to "File > New File" or use the <kbd>Ctrl + N</kbd> shortcut.
+
+**A3.**
+
+We can run the script from the terminal.
+First make sure you are on the correct folder:
+
+#########need to edit - get scratch folder
+```console
+cd /scratch/user/hpc_workshop
+```
+
+Then run the script:
+
+```console
+bash scripts/test.sh
+```
+
+</details>
+:::
+
+
+
+
 ## Summary
 
 :::highlight
 #### Key Points
 
-- The terminal is used to connect and interact with the HPC. 
+- The terminal is used to connect and interact with the HPC.
   - To connect to the HPC use `ssh user@remote-hostname`.
-- _Visual Studio Code_ is a text editor that can be used to edit files directly on the HPC using the "Remote-SSH" extension. 
+- _Visual Studio Code_ is a text editor that can be used to edit files directly on the HPC using the "Remote-SSH" extension.
 - To transfer files to/from the HPC we can use _Filezilla_, which offers a user-friendly interface to synchronise files between your local computer and a remote server.
-  - Transfering files can also be done from the command line, using tools such as `scp` and `rsync` (this is the most flexible tool but also more advanced). 
+  - Transfering files can also be done from the command line, using tools such as `scp` and `rsync` (this is the most flexible tool but also more advanced).
 :::
-
