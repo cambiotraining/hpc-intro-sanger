@@ -17,6 +17,7 @@ pagetitle: "Sanger Farm Course: Intro"
 - Login to the farm and navigate its filesystems.
 - Use the "Remote-SSH" extension in _Visual Studio Code_ to edit scripts directly on the farm.
 - Use _Filezilla_ to connect to the farm and move files in and out of its storage.
+
 :::
 
 ![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPC and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
@@ -49,12 +50,10 @@ After running this `ssh` command and approving any ECDSA key questions, you will
 
 We will be using a test server called **gen3** in this course.  It is a small HPC, similar in structure to the larger farm5, run by the Sanger for scientists to learn about the farm and test LSF scripts.  Everyone with a Sanger ID has access to gen3, but farm5, the main HPC, is only accessible once you complete the Farm Induction course.
 
-![Login to HPC using the terminal. 1) Use the ssh program to login to gen3.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.svg)
+![Login to HPC using the terminal. 1) Use the ssh program to login to gen3.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.png)
 
 
 :::exercise
-
-> You are automatically allocated 10GB in `/nfs/users/nfs_c/` and 100GB in `/lustre/scratchXXX/`.
 
 **Q1.** Connect to gen3 using `ssh`
 
@@ -63,9 +62,12 @@ Take some time to explore your home directory to identify what files and folders
 Can you identify and navigate through the scratch and NFS directories?
 
 **Q3.**
-Create a directory called `hpc_workshop` in our course's "scratch" directory.
+Print the path to your home directory.
 
 **Q4.**
+Create a directory called `hpc_workshop` in your own home directory.
+
+**Q5.**
 Use the commands `free -h` (available RAM memory) and `nproc --all` (number of CPU cores available) to check the capabilities of the login node of our HPC.
 Check how many people are logged in to the HPC login node using the command `who`.
 
@@ -79,7 +81,7 @@ To login to the HPC we run the following from the terminal:
 ssh USERNAME@gen3
 ```
 
-(replace "USERNAME" by your Sanger username)
+(replace "USERNAME" with your Sanger username)
 
 **A2.**
 
@@ -102,13 +104,24 @@ ls -l /lustre
 
 **A3.**
 
-Once we are in the scratch directory, we can use `mkdir` to create our workshop sub-directory:
+To find the path of your home directory, move to it and then use the `pwd` command to print the entire path:
+```console
+cd
+pwd
+```
+
+It should be `/nfs/users/nfs_[first_initial_of_username]/[username]`
+
+
+**A4.**
+Once we are in the home directory, we can use `mkdir` to create our workshop sub-directory:
 
 ```console
+cd
 mkdir hpc_workshop
 ```
 
-**A4.**
+**A5.**
 
 The main thing to consider in this question is where you run the commands from.
 To get the number of CPUs and memory on your computer make sure you open a new terminal and that you see something like `[your-local-username@laptop: ~]$` (where "user" is the username on your personal computer and "laptop" is the name of your personal laptop).
@@ -128,14 +141,6 @@ You should notice that several people are using the same login node as you.
 This is why we should **never run resource-intensive applications on the login node** of a HPC.
 
 </details>
-:::
-
-:::note
-**Passwordless Login**
-
-To make your life easier, you can configure `ssh` to login to a server without having to type your password or username.
-This can be done using SSH key based authentication.
-See [this page](https://code.visualstudio.com/docs/remote/troubleshooting#_quick-start-using-ssh-keys) with detailed instructions of how to create a key and add it to the remote host.
 :::
 
 
@@ -229,7 +234,7 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 
 
 - <a href="https://drive.google.com/u/0/uc?id=14kmKqdvTxhAvwXD91yR_IzNv6Z0tY-Gh&export=download" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
-- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/scratch/user/hpc_workshop/`.
+- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/path/to/home/dir/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
 - Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder?
 
@@ -242,10 +247,10 @@ Notice that these commands are **run from your local terminal**:
 
 ```bash
 # with scp
-scp -r ~/Desktop/hpc_workshop_files.zip username@gen3:scratch/hpc_workshop/
+scp -r ~/Desktop/hpc_workshop_files.zip username@gen3:/path/to/home/dir/hpc_workshop/
 
 # with rsync
-rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen3:scratch/hpc_workshop/
+rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen3:/path/to/home/dir/hpc_workshop/
 ```
 
 Once we finish transfering the files we can go ahead and decompress the data folder.
@@ -253,7 +258,7 @@ Note, this is now run **from the HPC terminal**:
 
 ```bash
 # make sure to be in the correct directory
-cd ~/scratch/hpc_workshop/
+cd ~/hpc_workshop/
 
 # decompress the files
 unzip hpc_workshop_files.zip
@@ -281,9 +286,9 @@ Finally, we can check how many shell scripts there are using the `find` program 
 
 If you haven't already done so, connect your local machine to the HPC following the instructions below.
 
-<details><summary>Connecting VS Code to remote host</summary>![](images/vscode_ssh.svg)</details>
+<details><summary>Connecting to remote host</summary>![](images/vscode_ssh.svg)</details>
 
-1. Move into the `hpc_workshop` folder of your scratch space (this is the folder you created in the previous exercise).
+1. Move into the `hpc_workshop` folder of your home directory.
 2. Create a new file and save it as `test.sh`. Copy the code shown below into this script and save it.
 3. From the terminal, run this script with `bash test.sh`
 
@@ -297,21 +302,21 @@ hostname
 **A1.**
 
 To open the folder we follow the instructions in Figure 3 and use the following path:
-`/lustre/user/hpc_workshop`
-(replacing "user" with your username)
+`~/hpc_workshop`
+
+Because the scripts are in our home directory, we can use the `~` sign as a shorthand for home.
 
 **A2.**
 
-To create a new script in VS Code we can go to "File > New File" or use the <kbd>Ctrl + N</kbd> shortcut.
+To create a new file, we can use nano <filename> and then directly edit the file.
 
 **A3.**
 
 We can run the script from the terminal.
-First make sure you are on the correct folder:
+First make sure you are in the correct folder:
 
-#########need to edit - get scratch folder
 ```console
-cd /scratch/user/hpc_workshop
+cd ~/hpc_workshop
 ```
 
 Then run the script:

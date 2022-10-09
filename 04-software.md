@@ -35,11 +35,22 @@ The following table summarises the most common commands for this tool:
 If a package is not available through the `module` command, you can contact the HPC admin and ask them to install it for you.
 Alternatively, you can use a package manager as we show in the next section.
 
+The packages you have available will depend on the group you're in.  Your group affects your `$MODULEPATH` which in turn gives you access to various programme-specific packages.
 
+For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme has the tool we need already loaded, so we need to temporarily add the CASM module directory to our module paths.  To do so, simply copy these two lines of code into your farm account.  The first line adds the CASM module path to your $MODULEPATH variable and the second line reloads your shell environment to update your shell variables.
+
+```console
+echo 'export MODULEPATH=:/software/CGP/modules/latest:/software/CGP/modules/modulefiles' >> ~/.bashrc
+source ~/.bashrc
+```
+
+You can check your module path by entering `echo $MODULEPATH` to see if the Cancer Genome Project directory has been added to your module path.  
+
+At the end of this course, don't forget to remove this from your .bashrc file!
 
 :::exercise
 
-Let's load the Sanger software **dataImportExport** so we can use the stage command to move some raw sequencing files from NFS to lustre for analysis.
+Let's load the software package **bowtie2** so we can index and align a drosophila genome.
 
 1. Check what modules are available on gen3.
 2. Load the bowtie2 software package using the `module` too.
@@ -59,7 +70,7 @@ Use `module avail` to list all software packages available on gen3.
 
 **A3**
 
-Simply typing in `bowtie` or any other command from the bowtie package should print out a help page from the software.  If this doesn't come up or if an error appears, you likely didn't manage to load the module properly.  This is a good sanity check when loading modules.
+Simply typing in `bowtie2` or any other command from the bowtie package should print out a help page from the software.  If this doesn't come up or if an error appears, you likely didn't manage to load the module properly.  This is a good sanity check when loading modules.
 
 **A4**
 
@@ -73,7 +84,7 @@ Entering `which bowtie2` should show a path to `/software/CASM/modules/installs/
 ### Using pre-installed software to align a genome
 Once your sequencing data have been processed by SequenceSpace and/or your programme's IT team, you can then begin to analyze them in lustre.  First, you need to transfer them from the "read-only" NFS or iRODS sections of the Farm to your lustre workspace.
 
-We won't be doing this today (this is often a programme-specific process that requires unique permissions), but it's important to keep this larger structure of data flows in mind.  When discussing what you need to get started in your group, be sure to ask about how to get added to the group's permissions list and how they usually access sequencing data (iRODS, Canapps, NFS, etc.)
+We won't be doing this today (this is often a programme-specific process that requires unique permissions and some extra training), but it's important to keep this larger structure of data workflows in mind.  When discussing what you need to get started in your group, be sure to ask about how to get added to the group's permissions list and how they usually access sequencing data (iRODS, Canapps, NFS, etc.)
 
 For our genome alignment exercise, we'll pretend that you have already staged the raw data files from long term storage (iRODS or NFS) into your lustre storage location in a folder called `data` within `hpc_workshop`.
 
@@ -96,9 +107,8 @@ We have a file with the _Drosophila_ genome in `data/genome/drosophila_genome.fa
 
 **A1.**
 
-```console
 To load the bowtie module, we use `module load bowtie2`.
-```
+
 
 **A2.**
 
@@ -111,10 +121,10 @@ Then, if we run `bowtie2 --help`, we should get the software help printed on the
 We need to fix the script to specify the correct working directory with our username (only showing the relevant line of the script):
 
 ```
-#BSUB -cwd /path/to/username/hpc_workshop
+#BSUB -cwd /path/to/home/dir/hpc_workshop
 ```
 
-Replacing "USERNAME" with your username.
+Replacing '/path/to/home/dir' with your own specific username path.
 
 We also need to make sure we load the module in the compute node, by adding:
 

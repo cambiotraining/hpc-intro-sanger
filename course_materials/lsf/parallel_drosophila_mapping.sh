@@ -1,5 +1,7 @@
 #!/bin/bash
 #BSUB -q normal  # name of the partition to run job on
+#BSUB -G FIXME # groupname for billing
+#BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/drosophila_mapping_%I.out
 #BSUB -e logs/drosophila_mapping_%I.err
@@ -7,7 +9,7 @@
 #BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 #BSUB -W30  # time for the job
-#BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
+
 
 # load bowtie2
 module load bowtie2

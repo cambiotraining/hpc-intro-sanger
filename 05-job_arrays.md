@@ -52,16 +52,20 @@ Any resources you request (e.g. `-n`, `-R`, `-M` `-W`) apply to each individual 
 This means that you only need to submit one "master" job, making it easier to manage and automate your analysis using a single script.
 
 Job arrays are created with the *-J* option `-J arrayName[start-finish]` where *arrayName* becomes the Job Name and *start* and *finish* are integers defining the range of array numbers created by LSF.  For example, etting -J as testJob[1-3] would result in three jobs sent: testJob[1], testJob[2], and testJob[3].
-LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
+
+For some unclear reason (which could be a bug! the -J option specified within the script header with #BSUB needs to be one of the first arguments listed.  We recommend placing it as the third, below -G and -q options.
+
+With this array list option within -J, LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
 Later in this section we will see how we can use some tricks with this variable to automate our analysis.
 
 For now let's go through this simple example, which shows what a job array looks like (you can find this script in the course folder `lsf/parallel_arrays.sh`):
 
 ```bash
 # ... some lines omitted ...
+#BSUB -J parallel[1-3]
 #BSUB -o logs/parallel_arrays_%I.out
 #BSUB -e logs/parallel_arrays_%I.err
-#BSUB -J parallel[1-3]
+
 
 echo "This is task number $LSB_JOBINDEX"
 echo "Using $LSB_MAX_NUM_PROCESSORS CPUs"
@@ -69,14 +73,14 @@ echo "Running on:"
 hostname
 ```
 
-Submitting this script with `bsub lsf/parallel_arrays.sh` will launch 3 jobs.
-The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.log`, `parallel_arrays_2.log` and `parallel_arrays_3.log`.  You could also include the "_%J_" keyword to add the Job ID number.
+Submitting this script with `bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/parallel_arrays.sh` will launch 3 jobs.  
+The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You can then investigate the results using `head logs/parallel_arrays*out`.  You could also include the "_%J_" keyword to add the Job ID number.  
 Looking at the output in those files should make it clearer that `$LSB_JOBINDEX` stores the array number of each job, and that each of them uses 2 CPUS (`-n2` option).
 The compute node that they run on may be variable (depending on which node was available to run each job).
 
 
 :::note
-You can define job array numbers in multiple ways, not just sequencially.
+You can define job array numbers in multiple ways, not just sequentially.
 
 <details><summary>More</summary>
 Here are some examples:
@@ -109,13 +113,14 @@ Also, remember to edit LSF's working directory with your username, at the top of
 **A2.**
 
 We can launch our adjusted script with `bsub lsf/parallel_estimate_pi.sh`.
+Note that because we are simply using default memory, we can omit the -R and -M options.
 When we check our jobs with `bjobs`, we will notice several jobs with JOBID in the format "ID_1", "ID_2", etc.
 These indicate the number of the array that is currently running as part of that job submission.
 
 In this case, we will get 10 output log files, each with the job array number at the end of the filename (we used the `%I` keyword in the `#BSUB -o` option to achieve this).
 
-The 10 separate estimates of Pi were written to separate text files named `results/pi_estimate_1.txt`, `results/pi_estimate_2.txt`, etc.
-If we examine this file (e.g. with `less results/pi_estimate.txt`) we can see it has the results of all the runs of our simulation.
+The 10 separate estimates of Pi were written to separate text files named `results/pi/replicate_1.txt`, `results/pi/replicate_2.txt`, etc.
+If we examine this file (e.g. with `less results/pi_estimate_1.txt`) we can see it has the results of all the runs of our simulation.
 
 **A3.**
 
@@ -148,7 +153,7 @@ Looking at our data directory (`ls hpc_workshop/data/reads`), we can see several
 These files come in pairs (with suffix "_1" and "_2"), and we have 8 different samples.
 Ideally we want to process these samples in parallel in an automated way.
 
-We have created a CSV file with three columns.
+We have also created a CSV file with three columns in the `data` directory.
 One column contains the sample's name (which we will use for our output files) and the other two columns contain the path to the first and second pairs of the input files.
 With the information on this table, we should be able to automate our data processing using a LSF job array.
 
@@ -164,15 +169,17 @@ Our array numbers should be: `#BSUB -J drosophila[2-9]`.
 We start at 2, because the parameter values start at the second line of the parameter file.
 We finish at 9, because that's the number of lines in the CSV file.
 
+We also need to adjust the `head -n` command a few lines down to pull the correct line according to the $LSB_JOBINDEX variable assigned to each job.
+
 **A2.**
 
-We can submit the script with `bsub lsf/parallel_drosophila_mapping.sh`.
+We can submit the script with `bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/parallel_drosophila_mapping.sh `.
 While the job is running we can monitor its status with `bjobs`.
 We should see several jobs listed with IDs as `JOBID_ARRAYID` format.
 
 Because we used the `%I` keyword in our `#BSUB -o` option, we will have an output log file for each job of the array.
-We can list these log files with `ls logs/parallel_drosophila_mapping_*.log` (using the "*" wildcard to match any character).
-If we examine the content of one of these files (e.g. `cat logs/parallel_drosophila_mapping_1.log`), we should only see the messages we printed with the `echo` commands.
+We can list these log files with `ls logs/drosophila_mapping_*.out` (using the "*" wildcard to match any character).
+If we examine the content of one of these files (e.g. `cat logs/drosophila_mapping_2.out`), at the top we should only see the messages we printed with the `echo` commands.
 The actual output of the `bowtie2` program is a file in [SAM](https://en.wikipedia.org/wiki/SAM_(file_format) format, which is saved into the `results/drosophila/mapping` folder.
 
 **A3.**

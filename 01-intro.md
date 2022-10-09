@@ -132,11 +132,12 @@ Although the filesystem organisation may differ depending on the institution, ty
 **Sanger Filesystem**
 
 At the Sanger Institute, the farm is organised into 3 storage partitions:
-- An **NFS** directory with long-term, backed-up storage for data, located at `/nfs`.  In addition to housing your **home directory** (at `/nfs/users/nfs_c/[sanger_username]`), this contains **iRODS** directories where sequencing data from pipelines are kept, programme-specific file storage systems like `cancer_ref` for CASM, and team-specific storage.  NFS files are intended to be 'read only' as computation should not be done directly from this folder; you're advised to move files over to scratch for heavy input/output work.  This moving step is called "staging" at the Sanger, and there is an internal module to help with this process.
+
+- An **NFS** directory with long-term, backed-up storage for data, located at `/nfs`.  In addition to housing your **home directory** (at `/nfs/users/nfs_[first_initial_of_username]/[sanger_username]`), this contains **iRODS** directories where sequencing data from pipelines are kept, programme-specific file storage systems like `cancer_ref` for CASM, and team-specific storage.  NFS files are intended to be 'read only' as computation should not be done directly from this folder; you're advised to move files over to scratch for heavy input/output work.  This moving step is called "staging" at the Sanger, and there is an internal module to help with this process.
 - A system of **scratch directories** stored in a system called **lustre** housed in `/lustre`.  Lustre has a lot of storage but is not backed up.  There are a series of scratch folders within lustre, each with nested subfolders for Sanger programmes (i.e. casm), groups (i.e. team154pc), and users (i.e. cp19).  Permissions to each folder are managed by the Service Desk — to join your group's scratch folder you must first identify which directories you need access to (ask a labmate) and email the Service Desk (service@sanger.ac.uk). For example, /lustre/scratchxxx/team154pc/cp19.
 - **Warehouse** is another long-term storage system predominantly used by the Service Desk to arrange group permissions.  You most likely won't need this at all in your day-to-day work (which should mainly be in lustre).
 
-(images/Warehouse-farm.png)
+![Farm overview.](images/Warehouse-farm.png)
 
 :::
 
@@ -186,7 +187,7 @@ Option A:
 Option B:
 
 ```
-/nfs/users/nfs_c/ab12/software/                # python packages
+/nfs/users/nfs_a/ab12/software/                # python packages
 /lustre/scratch123/ab12/project_name/data/    # sequencing data
 /lustre/scratch123/ab12/project_name/scripts/ # analysis script
 ```
@@ -243,7 +244,7 @@ If in doubt, the student could have gained "interactive" access to one of the co
 
 **A3.**
 
-Leaving raw data in scratch is probably a bad choice.
+Leaving raw data in scratch permanently is probably a bad choice.
 Since typically "scratch" storage is not backed-up it should not be relied on to store important data.
 If the student doesn't have access to enough backed-up space for all the data, they should at least back up the raw data and the scripts used to process it.
 This way, if there is a problem with "scratch" and some processed files are lost, they can recreate them by re-running the scripts on the raw data.
@@ -287,7 +288,7 @@ The Sanger has pipelined both wet lab sequencing steps and initial data analysis
 - Submit a request for sequencing.
   - Through this process, your submission will be assigned a project ID number and a sample ID (PD*****).
 - Request additional analysis. (optional)
-  - In addition to standard alignment, some programmes (CASM, CellGen, etc.) offer in-house analysis like variant calling for DNA or HTSeq for RNA.  This is requested by either emailing your programme's service desk or through programme-specific webpages (i.e. [Canapps](https://www.sanger.ac.uk/person/pacyna-chloe/)).
+  - In addition to standard alignment, some programmes (CASM, CellGen, etc.) offer in-house analysis like variant calling for DNA or HTSeq for RNA.  This is requested by either emailing your programme's service desk or through programme-specific webpages (i.e. [Canapps](https://canapps.sanger.ac.uk/)).
 - Locate raw data or processed data.
   - All Sanger data are stored on iRODS, an efficient storage system separate from the Farm.  Instructions for accessing these raw or aligned data are here(xxxx).
   - Some programmes may symlink iRODS data to designated NFS directories for easy access of both BAM files and pipelined analysis (variant calling, structural variant calling, etc.).

@@ -1,5 +1,6 @@
 #!/bin/bash
 #BSUB -q normal  # name of the partition to run job on
+#BSUB -G FIXME # groupname for billing
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/drosophila_genome_indexing.out
 #BSUB -e logs/drosophila_genome_indexing.err
