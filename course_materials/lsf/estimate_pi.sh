@@ -4,7 +4,7 @@
 #BSUB -cwd FIXME  # working directory
 #BSUB -o logs/estimate_pi.out  # standard output file
 #BSUB -e logs/estimate_pi.err  # standard error file
-#BSUB -n1        # number of CPUs. Default: 1
+#BSUB -n 1        # number of CPUs. Default: 1
 
 
 /software/R-4.1.3/bin/Rscript FIXME

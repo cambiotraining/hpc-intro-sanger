@@ -4,8 +4,8 @@
 #BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
 #BSUB -o logs/turing_pattern_%I.out
 #BSUB -e logs/turing_pattern_%I.err
-#BSUBv -n1         # number of CPUs. Default: 1
-#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUBv -n 1         # number of CPUs. Default: 1
+#BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 #BSUB -W30  # time for the job
 

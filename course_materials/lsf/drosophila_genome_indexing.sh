@@ -4,8 +4,8 @@
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/drosophila_genome_indexing.out
 #BSUB -e logs/drosophila_genome_indexing.err
-#BSUB -n1        # number of CPUs. Default: 1
-#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUB -n 1        # number of CPUs. Default: 1
+#BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 #BSUB -W10 # time for the job HH:MM:SS. Default: 1 min
 

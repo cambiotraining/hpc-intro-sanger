@@ -5,8 +5,8 @@
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/drosophila_mapping_%I.out
 #BSUB -e logs/drosophila_mapping_%I.err
-#BSUB -n2         # number of CPUs. Default: 1
-#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUB -n 2         # number of CPUs. Default: 1
+#BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 #BSUB -W30  # time for the job
 

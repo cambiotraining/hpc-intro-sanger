@@ -5,8 +5,8 @@
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/parallel_arrays_%I.out
 #BSUB -e logs/parallel_arrays_%I.err
-#BSUB -n2        # numeber of CPUs. Default: 1
-#BSUB -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1.
+#BSUB -n 2        # numeber of CPUs. Default: 1
+#BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1.
 #BSUB -M1000  # RAM memory part 2.
 #BSUB -W30 # time for the job HH:MM:SS.
 

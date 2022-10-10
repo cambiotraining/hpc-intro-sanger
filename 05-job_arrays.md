@@ -73,7 +73,7 @@ echo "Running on:"
 hostname
 ```
 
-Submitting this script with `bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/parallel_arrays.sh` will launch 3 jobs.  
+Submitting this script with `bsub lsf/parallel_arrays.sh` will launch 3 jobs.  
 The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You can then investigate the results using `head logs/parallel_arrays*out`.  You could also include the "_%J_" keyword to add the Job ID number.  
 Looking at the output in those files should make it clearer that `$LSB_JOBINDEX` stores the array number of each job, and that each of them uses 2 CPUS (`-n2` option).
 The compute node that they run on may be variable (depending on which node was available to run each job).
@@ -113,7 +113,6 @@ Also, remember to edit LSF's working directory with your username, at the top of
 **A2.**
 
 We can launch our adjusted script with `bsub lsf/parallel_estimate_pi.sh`.
-Note that because we are simply using default memory, we can omit the -R and -M options.
 When we check our jobs with `bjobs`, we will notice several jobs with JOBID in the format "ID_1", "ID_2", etc.
 These indicate the number of the array that is currently running as part of that job submission.
 
@@ -173,7 +172,7 @@ We also need to adjust the `head -n` command a few lines down to pull the correc
 
 **A2.**
 
-We can submit the script with `bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/parallel_drosophila_mapping.sh `.
+We can submit the script with `bsub lsf/parallel_drosophila_mapping.sh `.
 While the job is running we can monitor its status with `bjobs`.
 We should see several jobs listed with IDs as `JOBID_ARRAYID` format.
 

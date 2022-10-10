@@ -5,7 +5,7 @@
 #BSUB -cwd /FIXME/FIXME/hpc_workshop
 #BSUB -o logs/parallel_estimate_pi_%I.out
 #BSUB -e logs/parallel_estimate_pi_%I.err
-#BSUB -n1        # number of CPUs. Default: 1
+#BSUB -n 1        # number of CPUs. Default: 1
 #BSUB -W10 # time for the job.
 
 

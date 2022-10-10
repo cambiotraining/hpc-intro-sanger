@@ -146,8 +146,8 @@ Here are some of the most common ones (anything in `<>` is user input):
 | `-e <path/filename>` | file where the error log is saved in. This is defined _relative_ to the working directory set above.  If you don't specify an error file, the error log will write to the -o output file. |
 | `-G <name>` | group name. This is required on the farm as it logs compute resources used for billing to your group.  Ask your labmates for the name. |
 | `-q <name>` | *partition* name. See details in the following section. |
-| `- n<ncores>` | number of CPUs to be requested. |
-| `-R"select[mem><megabytes_required>] rusage[mem=<megabytes_required>]"` | First part of two options to request custom RAM memory for the job. |
+| `- n <ncores>` | number of CPUs to be requested. |
+| `-R "select[mem><megabytes_required>] rusage[mem=<megabytes_required>]"` | First part of two options to request custom RAM memory for the job. |
 | `-M<megabytes_required>` | Second part of two options to request custom RAM memory for the job. |
 | `-W<time in the form of [hour:]minute>` | the time you need for your job to run. This is not always easy to estimate in advance, so if you're unsure you may want to request a good chunk of time. However, the more time you request for your job, the lower its priority in the queue. |
 | `-J <name>` | a name for the job. |
@@ -161,8 +161,8 @@ For example, on farm5, the defaults you will get are:
 
 - 10 minutes of running time (equivalent to `-W10`)
 - _normal_ partition (equivalent to `-q normal`)
-- 1 CPU (equivalent to `-n1`)
-- 100MB RAM (equivalent to `-M100 -R"select[mem>100] rusage[mem=100]"`)
+- 1 CPU (equivalent to `-n 1`)
+- 100MB RAM (equivalent to `-M100 -R "select[mem>100] rusage[mem=100]"`)
 :::
 
 
@@ -349,9 +349,7 @@ To exit the R console, simply enter control+D.  You'll be asked if you want to s
 
 Now we're ready to run the estimate_pi.sh script.
 
-There is one bug to note in advance of this exercise — gen3 does not take the memory arguments -R and -M through the #BSUB script header.  The IT team is working on solving this, but in the meantime there's an easy workaround.  Instead of how the two memory arguments are listed in the script header, simply move those to the bsub command, like `bsub -R"<requirements>" -M<requirements> script.sh`.  To keep track of this command, we recommend opening a notes page with your commands.
-
-1. Edit the shell script in `lsf/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Don't forget to transfer the -R and -M arguments to your command line! Submit the job to LSF and check its status in the queue.
+1. Edit the shell script in `lsf/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Submit the job to LSF and check its status in the queue.
 2. How long did the job take to run? <details><summary>Hint</summary>Use `bjobs -l JOBID` or `bacct JOBID`.</details>
 3. The number of samples used to estimate Pi can be modified using the `--nsamples` option of our script, defined in millions. The more samples we use, the more precise our estimate should be.
     - Adjust your SLURM submission script to use 200 million samples (`/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R --nsamples 200`), and save the job output in `logs/estimate_pi_200M.log`.
@@ -373,17 +371,16 @@ For example:
 #BJOBS -o logs/estimate_pi.out  # standard output file
 #BJOBS -e logs/estimate_pi.err  # standard error file
 #BJOBS -n1        # number of CPUs. Default: 1
-#BJOBS -R"select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BJOBS -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BJOBS -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
 /software/R-4.1.3/bin/Rscript scripts/pi_estimator.R
 ```
 
-Then remember to put the -R and -M arguments into your bsub command.  You don't have to remove them from the script if you don't want to.
 
 ```console
-bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/estimate_pi.sh
+bsub lsf/estimate_pi.sh
 ```
 
 **A2.**
@@ -415,17 +412,17 @@ The modified script should look similar to this:
 #BSUB -o logs/estimate_pi_200M.out  # standard output file
 #BSUB -e logs/estimate_pi_200M.err  # standard error file
 #BSUB -n1        # number of CPUs. Default: 1
-#BSUB -R"select[mem>1000] rusage[mem=1000] span[hosts=1]" # RAM memory part 1. Default: 100MB
+#BSUB -R "select[mem>1000] rusage[mem=1000] span[hosts=1]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
 Rscript scripts/pi_estimator.R --nsamples 200
 ```
 
-And then send the job to the job scheduler, again including -R and -M in the bsub command:
+And then send the job to the job scheduler:
 
 ```console
-bsub -R"select[mem>1000] rusage[mem=1000]" -M1000 lsf/estimate_pi.sh
+bsub lsf/estimate_pi.sh
 ```
 
 However, when we run this job, examining the output file (`cat logs/estimate_pi_200M.out`) will reveal and error indicating that our job was killed.  There are few clues for this, most obviously this note:
@@ -439,7 +436,7 @@ Furthermore, if we use `bjobs` to get information about the job, it will show `E
 
 We can also check this by seeing what `bacct -l` reports as "Memory Utilized" and see that it used 100% of the memory we gave the job.
 
-To correct this problem, we would need to increase the memory requested to SLURM, adding to our script, for example, `#BJOBS -R "select[mem>30000] rusage [mem=30000] span[hosts=1]"` and `#BJOBS -M 30000` to request 30Gb of RAM memory for the job.
+To correct this problem, we would need to increase the memory requested to LSF, adding to our script, for example, `#BJOBS -R "select[mem>30000] rusage [mem=30000] span[hosts=1]"` and `#BJOBS -M 30000` to request 30Gb of RAM memory for the job.
 
 </details>
 
@@ -520,7 +517,7 @@ We can modify our submission script in the following manner, for example for usi
 #BSUB -D /FIXME/FIXME/hpc_workshop/  # working directory
 #BSUB -o logs/estimate_pi_200M_2cpu.out      # output file
 #BSUB -e logs/estimate_pi_200M_2cpu.err      # error file
-#BSUB -R"select[mem>10000] rusage[mem=10000]" # RAM memory part 1. Default: 100MB
+#BSUB -R "select[mem>10000] rusage[mem=10000]" # RAM memory part 1. Default: 100MB
 #BSUB -M10000  # RAM memory part 2. Default: 100MB
 #BSUB -n2                          # number of CPUs
 
@@ -534,7 +531,7 @@ echo $LSB_MAX_NUM_PROCESSORS
 
 You can then run the script using this command:
 ```console
-bsub -R"select[mem>10000] rusage[mem=10000]" -M10000 lsf/estimate_pi.sh
+bsub lsf/estimate_pi.sh
 
 ```
 
@@ -573,7 +570,7 @@ This command takes options similar to the normal `bsub` program, so you can requ
 For example, to access to 8 CPUs and 10GB of RAM for 10 minutes on one of the compute nodes we would do:
 
 ```console
-bsub -Is -n8 -R"select[mem>1000] rusage[mem=1000]" -M1000 -q normal -W10 bash
+bsub -Is -n8 -R "select[mem>1000] rusage[mem=1000]" -M1000 -q normal -W10 bash
 ```
 
 You may get a message saying that LSF is waiting to allocate your request (you go in the queue, just like any other job!).
