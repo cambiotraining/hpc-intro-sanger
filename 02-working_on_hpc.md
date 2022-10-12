@@ -2,7 +2,7 @@
 pagetitle: "Sanger Farm Course: Intro"
 ---
 
-# Working on the farm
+# Working on the Farm
 
 :::highlight
 #### Questions
@@ -13,14 +13,15 @@ pagetitle: "Sanger Farm Course: Intro"
 
 #### Learning Objectives
 
-- Use different software tools to work on a remote server: terminal, _Visual Studio Code_ and _Filezilla_.
+- Use different software tools to work on a remote server: terminal, text edutor and file transfer software.
 - Login to the farm and navigate its filesystems.
-- Use the "Remote-SSH" extension in _Visual Studio Code_ to edit scripts directly on the farm.
-- Use _Filezilla_ to connect to the farm and move files in and out of its storage.
+- Edit scripts on the HPC using _Nano_.
+- Move files in and out of the farm using _Filezilla_ or `rsync`/`scp`. 
 
 :::
 
-![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPC and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
+![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPc and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
+
 
 ## Connecting to the HPC
 
@@ -144,7 +145,84 @@ This is why we should **never run resource-intensive applications on the login n
 :::
 
 
+## Editing Scripts Remotely
 
+Most of the work you will be doing on a HPC is editing script files.
+These may be scripts that you are developing to do a particular analysis or simulation, for example (in _Python_, _R_, _Julia_, etc.).
+But also - and more relevant for this course - you will be writing **shell scripts** containing the commands that you want to be executed on the compute nodes.
+
+There are several possibilities to edit text files on a remote server.
+A simple one is to use the program _Nano_ directly from the terminal. 
+This is a simple text editor available on most linux distributions, and what we will use in this course.
+
+Although _Nano_ is readily available and easy to use, it offers limited functionality and is not as user friendly as a full-featured text editor.
+You can use other more full-featured text editors from the command line such as `vim`, but it does come with a steeper learning curve. 
+Alternatively, we recommend [_Visual Studio Code_](https://code.visualstudio.com/), which is an open-source software with a wide range of functionality and several extensions, including an extension for [working on remote servers](https://code.visualstudio.com/docs/remote/ssh).
+
+
+### Nano
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/97/GNU-Nano-Logo.png" alt="Nano text editor logo" style="float:right;width:20%">
+
+To create a file with _Nano_ you can run the command:
+
+```console
+nano test.sh
+```
+
+This opens a text editor, where you can type the code that you want to save in the file. 
+Once we're happy with our code, we can press <kbd>Ctrl</kbd>+<kbd>O</kbd> to write our data to disk. 
+We'll be asked what file we want to save this to: press <kbd>Enter</kbd> to confirm the filename.
+Once our file is saved, we can use <kbd>Ctrl</kbd>+<kbd>X</kbd> to quit the editor and return to the shell.
+
+We can check with `ls` that our new file is there. 
+
+![Screenshot of the command line text editor _Nano_. In this example, we also included `!#/bin/bash` in the first line of the script. This is called a [_shebang_](https://en.wikipedia.org/wiki/Shebang_(Unix)) and is a way to inform that this script uses the program `bash` to run the script.](images/nano.png)
+
+Note that because we saved our file with `.sh` extension (the conventional extension used for shell scripts), _Nano_ does some colouring of our commands (this is called _syntax highlighting_) to make it easier to read the code. 
+
+
+:::exercise
+
+1. Create a new script file called `check_hostname.sh`. Copy the code shown below into this script and save it.
+1. From the terminal, run the script using `bash`.
+
+```bash
+#!/bin/bash
+echo "This job is running on:"
+hostname
+```
+
+<details><summary>Answer</summary>
+**A1.**
+
+To create a new script in _Nano_ we use the command:
+
+```console
+nano check_hostname.sh
+```
+
+This opens the editor, where we can copy/paste our code. 
+When we are finished we can click <kbd>Ctrl</kbd>+<kbd>X</kbd> to exit the program, and it will ask if we would like to save the file. 
+We can type "Y" (Yes) followed by <kbd>Enter</kbd> to confirm the file name. 
+
+**A2.**
+
+We can run the script from the terminal using:
+
+```console
+bash test.sh
+```
+
+Which should print the result (your hostname might vary slightly from this answer):
+
+```
+This job is running on:
+train.bio
+```
+
+</details>
+:::
 
 
 ## Moving Files
@@ -233,7 +311,7 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 :::exercise
 
 
-- <a href="https://drive.google.com/u/0/uc?id=14kmKqdvTxhAvwXD91yR_IzNv6Z0tY-Gh&export=download" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
+- <a href="" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
 - Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/path/to/home/dir/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
 - Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder?

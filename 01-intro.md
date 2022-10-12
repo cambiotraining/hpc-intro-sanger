@@ -6,7 +6,7 @@ pagetitle: "HPC Course: Intro"
 
 :::note
 These materials have accompanying slides:
-[Introduction to HPC slides](https://docs.google.com/presentation/d/1KmnSznETddQdRYa6UAXtT-eMOsW7tEwbsOh0fK62c84/edit?usp=sharing)
+[Introduction to HPC slides](https://docs.google.com/presentation/d/14B7jHJUJ010xqhMwyTL1eh_DT9ih7Nf2sKmdL0dLnOM/edit?usp=sharing)
 :::
 
 :::highlight
@@ -139,17 +139,6 @@ At the Sanger Institute, the farm is organised into 3 storage partitions:
 
 ![Farm overview.](images/Warehouse-farm.png)
 
-:::
-
-
-:::note
-**HPC Filesystem**
-
-The separation into "home" and "scratch" storage space may not always apply to the HPC available at other institutions.
-Also, the location of the "scratch space" will most likely differ from the example used in this course.
-Ask your local HPC admin to learn more about your specific setup.
-
-For example, we have a specific page demonstrating the setup of [HPC servers at Cambridge University](99-cambridge_hpc.md).
 :::
 
 
