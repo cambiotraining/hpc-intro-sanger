@@ -32,13 +32,13 @@ This document gives instructions on how to install or access these on different 
   - Go to the [Filezilla Download page](https://filezilla-project.org/download.php?show_all=1) and download the file _FileZilla_3.57.1_win64-setup.exe_ (the latest version might be slightly different). Double-click the downloaded file to install the software, accepting all the default options. 
   - After completing the installation, go to your Windows Menu, search for "Filezilla" and launch the application, to test that it was installed successfully. 
 
+<!--
 - Text editor:
   - Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for Windows. Double-click the downloaded file to install the software, accepting all the default options. 
   - After completing the installation, go to your Windows Menu, search for "Visual Studio Code" and launch the application. 
   - Go to "_File > Preferences > Settings_", then select "_Text Editor > Files_" on the drop-down menu on the left. Scroll down to the section named "_EOL_" and choose "_\\n_" (this will ensure that the files you edit on Windows are compatible with the Linux operating system on the HPC).
   - Follow the instructions in "[Configuring Visual Studio Code](#configuring-visual-studio-code)" at the bottom of this page.
 
-<!--
 - (Optional) filesystem client:
   - Download and install [SFTP Drive Personal Edition](https://www.nsoftware.com/sftp/drive/download.aspx). It will ask for your email for download and installation. You can use a [10 minute disposable email](https://10minutemail.com/10MinuteMail/index.html) to avoid potential spam.
 -->
@@ -54,13 +54,14 @@ Press <kbd><kbd>&#8984;</kbd> + <kbd>space</kbd></kbd> to open _spotlight search
   - Go to the Downloads folder and double-click the file you just downloaded to extract the application. Drag-and-drop the "Filezilla" file into your "Applications" folder. 
   - You can now open the installed application to check that it was installed successfully (the first time you launch the application you will get a warning that this is an application downloaded from the internet - you can go ahead and click "Open").
 
+<!--
 - Text editor:
   - Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for Mac.
   - Go to the Downloads folder and double-click the file you just downloaded to extract the application. Drag-and-drop the "Visual Studio Code" file to your "Applications" folder. 
   - You can now open the installed application to check that it was installed successfully (the first time you launch the application you will get a warning that this is an application downloaded from the internet - you can go ahead and click "Open").
   - Follow the instructions in "[Configuring Visual Studio Code](#configuring-visual-studio-code)" at the bottom of this page.
 
-<!--
+
 - (Optional) filesystem client:
   - download and install both FUSE and SSHFS from [this website](https://osxfuse.github.io/).
   (first install FUSE, then SSHFS)
@@ -77,15 +78,16 @@ Press <kbd><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd></kbd> to open it.
     - Ubuntu: `sudo apt-get update && sudo apt-get install filezilla`
     - CentOS: `sudo yum -y install epel-release && sudo yum -y install filezilla`
 
+<!--
 - Text editor:
   - Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for your Linux distribution. Install the package using your system's installer.
   - Follow the instructions in "[Configuring Visual Studio Code](#configuring-visual-studio-code)" at the bottom of this page.
 
-<!--
 - (Optional) filesystem client:
   - install SSHFS from the command line using: `sudo apt-get install sshfs`.
 -->
 
+<!-- 
 # {.unlisted .unnumbered}
 
 ## Configuring Visual Studio Code
@@ -97,4 +99,5 @@ To install the extension (see Figure):
 1. In the search box type "remote ssh" and choose the "Remote - SSH" extension
 1. Click the "Install" button in the window that opens
 
-![Installing Remote-SSH extension in VS Code](images/vscode_extension_install.svg)
+![Installing Remote-SSH extension in VS Code](images/vscode_extension_install.svg) 
+-->
