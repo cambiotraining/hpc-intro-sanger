@@ -37,16 +37,16 @@ Alternatively, you can use a package manager as we show in the next section.
 
 The packages you have available will depend on the group you're in.  Your group affects your `$MODULEPATH` which in turn gives you access to various programme-specific packages.
 
-For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme has the tool we need already loaded, so we need to temporarily add the CASM module directory to our module paths.  To do so, simply copy these two lines of code into your farm account.  The first line adds the CASM module path to your $MODULEPATH variable and the second line reloads your shell environment to update your shell variables.
+For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme has the tool we need already loaded, so we need to temporarily add the CASM module directory to our module paths.  To do so, simply copy this line of code into your farm account.  This is just a temporary workaround; once you are added to your programme's group, you'll automatically have access to relevant modules which you can check with `module avail`.
 
 ```console
-echo 'export MODULEPATH=:/software/CGP/modules/latest:/software/CGP/modules/modulefiles' >> ~/.bashrc
-source ~/.bashrc
+export MODULEPATH=/software/CGP/modules/latest:/software/CGP/modules/modulefiles:$MODULEPATH
 ```
 
-You can check your module path by entering `echo $MODULEPATH` to see if the Cancer Genome Project directory has been added to your module path.  
+You can check your module path by entering `echo $MODULEPATH` to see if the Cancer Genome Project directory has been added to your module path.  Or, you can run `module avail` to see which module groups you now have access to.
 
-At the end of this course, don't forget to remove this from your .bashrc file!
+If you log off the farm during this course, you'll need to rerun this `export` one-liner again!
+
 
 :::exercise
 
