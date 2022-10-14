@@ -37,10 +37,10 @@ Alternatively, you can use a package manager as we show in the next section.
 
 The packages you have available will depend on the group you're in.  Your group affects your `$MODULEPATH` which in turn gives you access to various programme-specific packages.
 
-For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme has the tool we need already loaded, so we need to temporarily add the CASM module directory to our module paths.  To do so, simply copy this line of code into your farm account.  This is just a temporary workaround; once you are added to your programme's group, you'll automatically have access to relevant modules which you can check with `module avail`.
+For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme (CASM) has the tool we need already loaded, so we need to temporarily add their module directory to our module paths.  To do so, simply run the following command from your `hpc_workshop` folder.  Note **this is just a temporary workaround**, once you are added to your programme's group, you'll automatically have access to relevant modules which you can check with `module avail`.
 
 ```console
-export MODULEPATH=/software/CGP/modules/latest:/software/CGP/modules/modulefiles:$MODULEPATH
+source configure_modules
 ```
 
 You can check your module path by entering `echo $MODULEPATH` to see if the Cancer Genome Project directory has been added to your module path.  Or, you can run `module avail` to see which module groups you now have access to.
@@ -81,7 +81,8 @@ Entering `which bowtie2` should show a path to `/software/CASM/modules/installs/
 :::
 
 
-### Using pre-installed software to align a genome
+### Example: Sequence Read Alignment
+
 Once your sequencing data have been processed by SequenceSpace and/or your programme's IT team, you can then begin to analyze them in lustre.  First, you need to transfer them from the "read-only" NFS or iRODS sections of the Farm to your lustre workspace.
 
 We won't be doing this today (this is often a programme-specific process that requires unique permissions and some extra training), but it's important to keep this larger structure of data workflows in mind.  When discussing what you need to get started in your group, be sure to ask about how to get added to the group's permissions list and how they usually access sequencing data (iRODS, Canapps, NFS, etc.)
@@ -99,32 +100,15 @@ Our objective will be to align our sequences to the reference genome, using a so
 But first, we need to prepare our genome for this alignment procedure (this is referred to as indexing the genome).
 We have a file with the _Drosophila_ genome in `data/genome/drosophila_genome.fa`.
 
-1. Load the bowtie2 module. <details><summary>Hint</summary>Remember to use `module load`</details>
-2. Check that the software installed correctly by running `which bowtie2` and `bowtie2 --help`.
-3. Open the script in `lsf/drosophila_genome_indexing.sh` and edit the `#BSUB` options with the word "FIXME". Submit the script to LSF using `bsub`, check it's progress, and whether it ran successfully. Troubleshoot any issues that may arise.
+Open the script in `lsf/drosophila_genome_indexing.sh` and edit the `#BSUB` options with the word "FIXME". Submit the script to LSF using `bsub`, check it's progress, and whether it ran successfully. Troubleshoot any issues that may arise.
 
 <details><summary>Answer</summary>
-
-**A1.**
-
-To load the bowtie module, we use `module load bowtie2`.
-
-
-**A2.**
-
-First let's check which bowtie2 is currently running using `which bowtie2`.
-
-Then, if we run `bowtie2 --help`, we should get the software help printed on the console.
-
-**A3.**
 
 We need to fix the script to specify the correct working directory with our username (only showing the relevant line of the script):
 
 ```
-#BSUB -cwd /path/to/home/dir/hpc_workshop
+#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/
 ```
-
-Replacing '/path/to/home/dir' with your own specific username path.
 
 We also need to make sure we load the module in the compute node, by adding:
 
@@ -165,11 +149,6 @@ index.rev.2.bt2
 :::
 
 
-
-
-
-
-
 ## The `conda` Package Manager
 
 Often you may want to use software packages that are not be installed by default on the HPC.
@@ -178,8 +157,8 @@ There are several ways you could manage your own software installation, but in t
 There are two main software distributions that you can download and install, called _Anaconda_ and _Miniconda_.  
 _Miniconda_ is a lighter version, which includes only base Python, while _Anaconda_ is a much larger bundle of software that includes many other packages (see the [Documentation Page](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html#anaconda-or-miniconda) for more information).
 
-One of the strengths of using _Conda_ to manage your software is that you can have different versions of your software installed alongside each other, organised in **environments**.
-Organising software packages into environments is extremely useful, as it allows to have a _reproducible_ set of software versions that you can use and resuse in your projects.
+One of the strengths of using _Conda_ to manage your software is that you can have different versions of your software installed alongside each other, organised in **environments**. 
+Organising software packages into environments is extremely useful, as it allows to have a _reproducible_ set of software versions that you can use and resuse in your projects. 
 
 ![Illustration of _Conda_ environments.](images/conda_environments.svg)
 
@@ -187,37 +166,37 @@ Organising software packages into environments is extremely useful, as it allows
 :::note
 **Conda versus Module**
 
-Although _Conda_ is a great tool to manage your own software installation, the disadvantage is that the software is not compiled specifically taking into account the hardware of the HPC.
-This is a slightly technical topic, but the main practical consequence is that software installed by HPC admins and made available through the `module` system may sometimes run faster than software installed via `conda`.
+Although _Conda_ is a great tool to manage your own software installation, the disadvantage is that the software is not compiled specifically taking into account the hardware of the HPC. 
+This is a slightly technical topic, but the main practical consequence is that software installed by HPC admins and made available through the `module` system may sometimes run faster than software installed via `conda`. 
 This means you will use fewer resources and your jobs will complete faster.
 :::
 
 
 ### Installing _Conda_
 
-To start with, let's install _Conda_ on the HPC.
+To start with, let's install _Conda_ on the HPC. 
 In this course we will install the _Miniconda_ bundle, as it's lighter and faster to install:
 
 1. Make sure you're logged in to the HPC and in the home directory (`cd ~`).
 1. download the _Miniconda_ installer by running: `wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh`
 1. run the installation script just downloaded: `bash Miniconda3-latest-Linux-x86_64.sh`
 1. follow the installation instructions accepting default options (answering 'yes' to any questions)
-1. run `conda config --add channels conda-forge; conda config --add channels bioconda`.
+1. run `conda config --add channels defaults; conda config --add channels bioconda; conda config --add channels conda-forge; conda config --set channel_priority strict`.
 This adds two *channels* (sources of software) useful for bioinformatics and data science applications.
 
 :::note
-_Anaconda_ and _Miniconda_ are also available for Windows and Mac OS.
-See the [Conda Installation Documents](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation) for instructions.
+_Anaconda_ and _Miniconda_ are also available for Windows and Mac OS. 
+See the [Conda Installation Documents](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation) for instructions. 
 :::
 
 
 ### Installing Software Using `conda`
 
-The command used to install and manage software is called `conda`.
+The command used to install and manage software is called `conda`. 
 Although we will only cover the basics in this course, it has an [excellent documentation](https://docs.conda.io/projects/conda/en/latest/user-guide/) and a useful [cheatsheet](https://docs.conda.io/projects/conda/en/latest/_downloads/1f5ecf5a87b1c1a8aaf5a7ab8a7a0ff7/conda-cheatsheet.pdf).
 
-The first thing to do is to create a software environment for our project.
-Although this is optional (you could instead install everything in the "base" default environment), it is a good practice as it means the software versions remain stable within each project.
+The first thing to do is to create a software environment for our project. 
+Although this is optional (you could instead install everything in the "base" default environment), it is a good practice as it means the software versions remain stable within each project. 
 
 To create an environment we use:
 
@@ -225,18 +204,18 @@ To create an environment we use:
 $ conda create --name ENV
 ```
 
-Where "ENV" is the name we want to give to that environment.
+Where "ENV" is the name we want to give to that environment. 
 Once the environment is created, we can install packages using:
 
 ```console
 $ conda install --name ENV PROGRAM
 ```
 
-Where "PROGRAM" is the name of the software we want to install.
+Where "PROGRAM" is the name of the software we want to install. 
 
 :::note
-One way to organise your software environments is to create an environment for each kind of analysis that you might be doing regularly.
-For example, you could have an environment named `imaging` with software that you use for image processing (e.g. Python's scikit-image or the ImageMagick package) and another called `deeplearn` with software you use for deep learning applications (e.g. Python's Keras).
+One way to organise your software environments is to create an environment for each kind of analysis that you might be doing regularly. 
+For example, you could have an environment named `imaging` with software that you use for image processing (e.g. Python's scikit-image or the ImageMagick package) and another called `deeplearn` with software you use for deep learning applications (e.g. Python's Keras). 
 :::
 
 To search for the software packages that are available through `conda`:
@@ -245,12 +224,13 @@ To search for the software packages that are available through `conda`:
 - in the search box search for a program of your choice. For example: "bowtie2".
 - the results should be listed as `CHANNEL/PROGRAM`, where *CHANNEL* will the the source channel from where the software is available. Usually scientific/bioinformatics software is available through the `conda-forge` and `bioconda` channels.
 
-If you need to install a program from a different channel than the defaults, you can specify it during the install command using the `-c` option.
+If you need to install a program from a different channel than the defaults, you can specify it during the install command using the `-c` option. 
 For example `conda install --chanel CHANNEL --name ENV PROGRAM`.
 
-Let's see this with an example, where we create a new environment called "scipy", where we install the python scientific packages:
+Let's see this with an example, where we create a new environment called "scipy" and install the python scientific packages:
 
 ```console
+$ conda create --name scipy
 $ conda install --name scipy --channel conda-forge numpy matplotlib
 ```
 
@@ -263,8 +243,8 @@ $ conda info --env
 ```
 # conda environments:
 #
-base                  *  /path/to/home/miniconda3
-scipy                    /path/to/home/miniconda3/envs/scipy
+base                  *  /home/participant36/miniconda3
+scipy                    /home/participant36/miniconda3/envs/scipy
 ```
 
 In our case it lists the _base_ (default) environment and the newly created _scipy_ environment.
@@ -273,11 +253,11 @@ The asterisk ("*") tells us which environment we're using at the moment.
 
 ### Loading _Conda_ Environments
 
-Once your packages are installed in an environment, you can load that environment by using `source activate ENV`, where "ENV" is the name of your environment.
+Once your packages are installed in an environment, you can load that environment by using `conda activate ENV`, where "ENV" is the name of your environment. 
 For example, we can activate our previously created environment with:
 
 ```console
-$ source activate scipy
+$ conda activate scipy
 ```
 
 If you chech which `python` executable is being used now, you will notice it's the one from this new environment:
@@ -293,23 +273,33 @@ $ which python
 You can also check that the new environment is in use from:
 
 ```console
-$ conda info --env
+$ conda env list
 ```
 
 ```
 # conda environments:
 #
-base                     /path/to/home/miniconda3
-scipy                 *  /path/to/home/miniconda3/envs/scipy
+base                     /home/participant36/miniconda3
+scipy                 *  /home/participant36/miniconda3/envs/scipy
 ```
 
 And notice that the asterisk "*" is now showing we're using the `scipy` environment.
 
-:::note
-**Tip**
+:::warning
+**Loading Environments in Shell Script**
 
-If you forget which environments you have created, you can use `conda env list` to get a list of environments.
+To load environments in a shell script that is being submitted to SLURM, you need to first source a configuration file from _Conda_.
+For example, to load the `scipy` environment we created, this would be the code:
+
+```
+source $CONDA_PREFIX/etc/profile.d/conda.sh  # Always add this command to your scripts
+conda activate scipy
+```
+
+This is because when we submit jobs to SLURM the jobs will start in a non-interactive shell, and `conda` doesn't get automatically set. 
+Running the `source` command shown will ensure `conda activate` becomes available. 
 :::
+
 
 
 ## Summary
@@ -317,13 +307,15 @@ If you forget which environments you have created, you can use `conda env list` 
 :::highlight
 #### Key Points
 
-- The `module` tool can be used to search for and load pre-installed software packages on a HPC.
-  - This tool may not always be available on your HPC.
+- The `module` tool can be used to search for and load pre-installed software packages on a HPC. This tool may not always be available on your HPC.
+  - `module avail` is used to list the available software.
+  - `module load PACKAGE_NAME` is used to load the package. 
 - To install your own software, you can use the _Conda_ package manager.
   - _Conda_ allows you to have separate "software environments", where multiple package versions can co-exist on your system.
-- Use `conda env create <ENV>` to create a new software environment and `conda install -n <ENV> <PROGRAM>` to install a program on that environment.
-- Use `source activate <ENV>` to "activate" the software environment and make all the programs installed there available.
-  - When submitting jobs to LSF, always remember to include the `source activate` command at the start of the shell script you submit to `bsub`.
+- Use `conda env create <ENV>` to create a new software environment and `conda install -n <ENV> <PROGRAM>` to install a program on that environment. 
+- Use `conda activate <ENV>` to "activate" the software environment and make all the programs installed there available. 
+  - When submitting jobs to `bsub`, always remember to include `source $CONDA_PREFIX/etc/profile.d/conda.sh` at the start of the shell script, followed by the `conda activate` command. 
+- Always remember to include either `module load` or `conda activate` in your submission script.
 
 #### Further resources
 

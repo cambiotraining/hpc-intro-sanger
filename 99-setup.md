@@ -8,11 +8,10 @@ If you have any issues installing the software please get in touch with us befor
 :::
 
 :::highlight
-There are three recommended pieces of software needed to work with the HPC:
+There are two recommended pieces of software needed to work with the HPC:
 
 - a terminal
 - a file transfer software
-- a text editor with the ability to edit files on a remote server
 
 This document gives instructions on how to install or access these on different operating systems.
 :::

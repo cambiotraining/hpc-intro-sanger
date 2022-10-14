@@ -1,5 +1,5 @@
 ---
-pagetitle: "Sanger Farm Course: Intro"
+pagetitle: "Sanger HPC"
 ---
 
 # Working on the Farm
@@ -13,14 +13,14 @@ pagetitle: "Sanger Farm Course: Intro"
 
 #### Learning Objectives
 
-- Use different software tools to work on a remote server: terminal, text edutor and file transfer software.
+- Use different software tools to work on a remote server: terminal, text editor and file transfer software.
 - Login to the farm and navigate its filesystems.
 - Edit scripts on the HPC using _Nano_.
 - Move files in and out of the farm using _Filezilla_ or `rsync`/`scp`. 
 
 :::
 
-![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPc and interact with it (e.g. submit jobs, navigate the filesystem). _Visual Studio Code_ is a text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
+![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPc and interact with it (e.g. submit jobs, navigate the filesystem). _Nano_ is a text editor that can be used from the terminal. _Visual Studio Code_ is an alternative text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
 
 
 ## Connecting to the HPC
@@ -60,7 +60,7 @@ We will be using a test server called **gen3** in this course.  It is a small HP
 
 **Q2.**
 Take some time to explore your home directory to identify what files and folders are in there.
-Can you identify and navigate through the scratch and NFS directories?
+Can you identify and navigate through the scratch (Lustre) and NFS directories?
 
 **Q3.**
 Print the path to your home directory.
@@ -124,11 +124,8 @@ mkdir hpc_workshop
 
 **A5.**
 
-The main thing to consider in this question is where you run the commands from.
-To get the number of CPUs and memory on your computer make sure you open a new terminal and that you see something like `[your-local-username@laptop: ~]$` (where "user" is the username on your personal computer and "laptop" is the name of your personal laptop).
-Note that this does not work on the MacOS shell (see [this post](https://www.macworld.co.uk/how-to/how-check-mac-specs-processor-ram-3594298/) for instructions to find the specs of your Mac).
-
-Conversely, to obtain the same information for the HPC, make sure you are logged in to the HPC when you run the commands. You should see something like `[your-hpc-username@login ~]$`
+We run these commands to investigate how much memory and CPUs the _login node_ that we connected to at the moment has. 
+Usually, the login node is not very powerful, and we should be careful not to run any analysis on it. 
 
 To see how many people are currently on the login node we can combine the `who` and `wc` commands:
 
@@ -218,8 +215,10 @@ Which should print the result (your hostname might vary slightly from this answe
 
 ```
 This job is running on:
-train.bio
+gen3-head1
 ```
+
+(the output might be slightly different if you were assigned to a different login node of the HPC)
 
 </details>
 :::
@@ -311,8 +310,8 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 :::exercise
 
 
-- <a href="" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
-- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `/path/to/home/dir/hpc_workshop/`.
+- <a href="https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
+- Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `~/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
 - Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder?
 
@@ -325,10 +324,10 @@ Notice that these commands are **run from your local terminal**:
 
 ```bash
 # with scp
-scp -r ~/Desktop/hpc_workshop_files.zip username@gen3:/path/to/home/dir/hpc_workshop/
+scp -r ~/Desktop/hpc_workshop_files.zip username@gen3:hpc_workshop/
 
 # with rsync
-rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen3:/path/to/home/dir/hpc_workshop/
+rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen3:hpc_workshop/
 ```
 
 Once we finish transfering the files we can go ahead and decompress the data folder.
@@ -350,63 +349,6 @@ Finally, we can check how many shell scripts there are using the `find` program 
 
 </details>
 :::
-
-
-
-
-
-
-
-
-
-
-:::exercise
-
-If you haven't already done so, connect your local machine to the HPC following the instructions below.
-
-<details><summary>Connecting to remote host</summary>![](images/vscode_ssh.svg)</details>
-
-1. Move into the `hpc_workshop` folder of your home directory.
-2. Create a new file and save it as `test.sh`. Copy the code shown below into this script and save it.
-3. From the terminal, run this script with `bash test.sh`
-
-```bash
-#!/bin/bash
-echo "This job is running on:"
-hostname
-```
-
-<details><summary>Answer</summary>
-**A1.**
-
-To open the folder we follow the instructions in Figure 3 and use the following path:
-`~/hpc_workshop`
-
-Because the scripts are in our home directory, we can use the `~` sign as a shorthand for home.
-
-**A2.**
-
-To create a new file, we can use nano <filename> and then directly edit the file.
-
-**A3.**
-
-We can run the script from the terminal.
-First make sure you are in the correct folder:
-
-```console
-cd ~/hpc_workshop
-```
-
-Then run the script:
-
-```console
-bash scripts/test.sh
-```
-
-</details>
-:::
-
-
 
 
 ## Summary

@@ -1,41 +1,27 @@
 ---
 pagetitle: "HPC Course"
+output:
+  html_document:
+    toc: false
 ---
 
-# Practical Introduction to High-Performance Computing
+# Introduction to High-Performance Computing (Sanger)
 
-**Authors & Contributors:** Hugo Tavares, Lajos Kalmar, Qi Wang
+**Authors:** Hugo Tavares, Chloe Pacyna, Lajos Kalmar
+
+# {.unlisted .unnumbered .tabset}
+
+## Overview
 
 :::highlight
 
-Knowing how to work on a **High Performance Computing (HPC)** system is an essential skill for applications such as bioinformatics, big-data analysis, image processing, machine learning, parallelising tasks, and other high-throughput applications. 
+Knowing how to work on a High Performance Computing (HPC) system is an essential skill for applications such as bioinformatics, big-data analysis, image processing, machine learning, parallelising tasks, and other high-throughput applications. In this module we will cover the basics of High Performance Computing, what it is and how you can use it in practice. This is a hands-on workshop, which should be accessible to researchers from a range of backgrounds and offering several opportunities to practice the skills we learn along the way.  
+The content is specifically tailored for the Sanger HPC server (aka the "FARM"), and by the end of the course you should be well equipped to start running your analysis on your local computing infrastructure.
 
-In this course we will cover the basics of High Performance Computing, what it is and how you can use it in practice. This is a hands-on workshop, which should be accessible to researchers from a range of backgrounds and offering several opportunities to practice the skills we learn along the way.
-
-> By the end of this course you will be able to independently work on a typical HPC server.
-
-We will cover:
-
-- What is a HPC and how does it differ from a regular computer?
-- What can a HPC be used for?
-- How do I access and work on a HPC?
-- How do I run jobs on a HPC? 
-- How can I run many similar jobs in parallel?
-- How can I access, install and manage software on a HPC?
 :::
 
-## Materials
 
-1. [Introduction to High Performance Computing](01-intro.html): what is a HPC cluster and how is it organised? ([slides](https://docs.google.com/presentation/d/1KmnSznETddQdRYa6UAXtT-eMOsW7tEwbsOh0fK62c84/edit?usp=sharing))
-1. [Working on a HPC Cluster](02-working_on_hpc.html): how do I access and work from a HPC?
-1. [Using the SLURM Job Scheduler](03-slurm.html): how do I use a job scheduler to run jobs on the HPC?
-1. [Managing Software](04-software.html): how do I access pre-installed software or install it myself?
-1. [Parallelising Jobs](05-job_arrays.html): how can I run many similar jobs in parallel?
-
-You can also <a href="https://drive.google.com/u/0/uc?id=14kmKqdvTxhAvwXD91yR_IzNv6Z0tY-Gh&export=download" target="_blank" rel="noopener noreferrer">download the data</a> for the workshop and save it on your desktop (**do not unzip the file**).
-
-
-## Target Audience
+### Target Audience
 
 This course is aimed at students and researchers of any background. We assume no prior knowledge of what a HPC is or how to use it.
 
@@ -43,7 +29,7 @@ It may be particularly useful for those who have attended other of our [Bioinfor
 It will also benefit those who find themselves using their personal computers to run computationally demanding analysis/simulations and would like to learn how to adapt these to run on a HPC.
 
 
-## Prerequisites
+### Prerequisites
 
 We assume a basic knowledge of the Unix command line. 
 If you don't feel comfortable with the command line, please attend our accompanying [Introduction to the Unix Command Line](https://training.csx.cam.ac.uk/bioinformatics/course/bioinfo-unix2) course, which is scheduled to run just before this one.
@@ -59,15 +45,34 @@ Namely, we expect you to be familiar with the following:
 - Execute shell scripts with `bash some_script.sh`
 
 
-## Setup
+### Setup & Data
 
 Before attending the workshop, please install the necessary software following our **[setup instructions](99-setup.html)**.
 If you have any issues installing the software, please [get in touch](mailto:bioinfo@hermes.cam.ac.uk) with us beforehand.
 
+Please also **[download the workshop data](https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1)** (zip file) and save it to your desktop (do not unzip the file). 
+
+
+## Authors
+
+About the authors: 
+
+- **Chloe Pacyna** 
+  <a href="https://twitter.com/ChloePacyna" target="_blank"><i class="fa-brands fa-twitter" style="color:#4078c0"></i></a> 
+  <a href="https://orcid.org/0000-0002-4404-8183" target="_blank"><i class="fa-brands fa-orcid" style="color:#a6ce39"></i></a> 
+  <a href="https://github.com/cpacyna" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a>  
+  _Affiliation_: Wellcome Sanger Institute  
+  _Roles_: writing - review & editing; writing - original content; coding
+- **Hugo Tavares** 
+  <a href="https://orcid.org/0000-0001-9373-2726" target="_blank"><i class="fa-brands fa-orcid" style="color:#a6ce39"></i></a> 
+  <a href="https://github.com/tavareshugo" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a>  
+  _Affiliation_: Bioinformatics Training Facility, University of Cambridge  
+  _Roles_: writing - review & editing; writing - original content; conceptualisation; coding
+- **Lajos Kalmar**  
+  _Affiliation_: MRC Toxicology, University of Cambridge  
+  _Roles_: writing - original content; conceptualisation; coding
+
 
 ## Acknowledgements 
 
-This course has been developed by the University of Cambridge [Bioinformatics Training Facility](https://bioinfotraining.bio.cam.ac.uk/) with contributions from Lajos Kalmar from MRC Toxicology's [Core Bioinformatics Unit](https://www.mrc-tox.cam.ac.uk/facilities/bioinformatics). 
-
-<img src="https://www.mrc-tox.cam.ac.uk/sites/www.mrc-tox.cam.ac.uk/files/MRC_TU_Cambridge_identifier_horizontal_RGB2_a.png" alt="MRC Toxicology Bioinformatics" style="width:30%">
-
+We thank Qi Wang (Department of Plant Sciences, University of Cambridge) for constructive feedback and ideas in the early iterations of this course. 

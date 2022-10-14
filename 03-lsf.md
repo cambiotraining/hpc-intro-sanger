@@ -39,9 +39,7 @@ For example, a job requesting many resources may start with a low priority, but 
 ## Submitting a Job with LSF
 
 To submit a job to LSF, you need to include your code in a _shell script_.
-Let's start with a minimal example, found in our workshop data folder "lsf".
-
-Our script is called `simple_job.sh` and contains the following code:
+Let's start with a minimal example in `lsf/simple_job.sh`, which contains the following code:
 
 ```bash
 #!/bin/bash
@@ -50,18 +48,16 @@ sleep 60 # hold for 60 seconds
 echo "This job is running on:"
 hostname
 ```
-######## edit path
+
 We can run this script from the login node using the `bash` interpreter (make sure you are in the correct directory first: `cd ~/hpc_workshop/`):
 
 ```console
 bash lsf/simple_job.sh
 ```
 
-Which prints the output:
-
 ```
 This job is running on:
-login-node
+gen3-head1
 ```
 
 To submit the job to the scheduler we instead use the `bsub` command in a very similar way:
@@ -71,6 +67,7 @@ bsub lsf/simple_job.sh
 ```
 
 However, this throws back an error:
+
 ```console
 Returning output by mail is not supported on this cluster.
 Please use the -o option to write output to disk.
@@ -87,7 +84,8 @@ bsub -o simple_job.out lsf/simple_job.sh
 Instead the output is sent to a file, which we called `simple_job.out`.
 This file will be located in the same directory where you launched the job from.
 
-However, when running again,we get an error that says:
+However, when running again, we get another error that says:
+
 ```console
 Sorry no available user group specified for
 this job. Please resubmit your job with
@@ -120,7 +118,7 @@ If you don't, `bsub` will throw an error.
 
 ## Configuring Job Options
 
-The -o argument is just one of over 70 different options for submitting a job with `bsub`.  You can imagine the bsub command would get rather long and difficult to keep track of!  To make submitting a job simpler and more reproducible, you can include each of your bsub arguments as a line starting with `#BSUB` at the beginning of your script within the script, after the shebang.
+The `-o` argument is just one of over 70 different options for submitting a job with `bsub`.  You can imagine the bsub command would get rather long and difficult to keep track of!  To make submitting a job simpler and more reproducible, you can include each of your bsub arguments as a line starting with `#BSUB` at the beginning of your script within the script, after the shebang.
 
 Here is how we could modify our script:
 
@@ -143,7 +141,7 @@ Here are some of the most common ones (anything in `<>` is user input):
 | -: | :---------- |
 | `-cwd <path>` | *working directory* used for the job. This is the directory that LSF will use as a reference when running the job. |
 | `-o <path/filename>` | file where the output that would normally be printed on the console is saved in. This is defined _relative_ to the working directory set above. |
-| `-e <path/filename>` | file where the error log is saved in. This is defined _relative_ to the working directory set above.  If you don't specify an error file, the error log will write to the -o output file. |
+| `-e <path/filename>` | file where the error log is saved in. This is defined _relative_ to the working directory set above.  If you don't specify an error file, the error log will write to the `-o` output file. |
 | `-G <name>` | group name. This is required on the farm as it logs compute resources used for billing to your group.  Ask your labmates for the name. |
 | `-q <name>` | *partition* name. See details in the following section. |
 | `- n <ncores>` | number of CPUs to be requested. |
@@ -166,7 +164,7 @@ For example, on farm5, the defaults you will get are:
 :::
 
 
-### Partitions
+### Partitions/Queues
 
 Often, HPC servers have different types of compute node setups (e.g. partitions for fast jobs, or long jobs, or high-memory jobs, etc.).
 LSF calls these "queues" and you can use the `-q` option to choose which queue your job runs on.
@@ -176,28 +174,16 @@ It's worth keeping in mind that these partitions have separate queues, so you sh
 
 You can check the queues available using the command `bqueues -l`.
 
-#### For example, on farm5 we have to partitions with the following characteristics:
+For example, on farm5 we have to partitions with the following characteristics:
 
-General use partitions:
-
-- `normal` partition (default)
-  - Maximum 12 hours
-- `long` partition
-  - Maximum 48 hours
-- `basement` partition
-  - Maximum 30 days
-  - Default maximum 300 basement jobs per user
-
-A selection of special case partitions:
-
-- `hugemem`/`hugemem-restricted`/`teramem` partitions
-  - For  large memory machines. (512GB/1TB).
-- `yesterday` partition
-  - For very urgent jobs that need to be done "yesterday"
-  - Default maximum 7 yesterday partition jobs
-- `small` partition
-  - For many, very small jobs (batches 10 jobs together to prevent scheduler overload)
-
+- General use partitions:
+  - `normal` partition (default) with a maximum 12 hours
+  - `long` partition with a maximum 48 hours
+  - `basement` partition with a maximum 30 days; only 300 basement jobs are allowed per user simultaneously.
+- Special case partitions:
+  - `hugemem`/`hugemem-restricted`/`teramem` queues for  large memory machines (512GB/1TB).
+  - `yesterday` partition for very urgent jobs that need to be done "yesterday"; only 7 jobs allowed per user simultaneously.
+  - `small` partition for many, very small jobs (batches 10 jobs together to prevent scheduler overload). 
 
 
 ## Getting Job Information
@@ -243,10 +229,12 @@ bacct JOBID
 will give you information about one specific job
 
 You can add other options to the bacct command to glean more or less information with:
+
 - `-l` for extra information about the job
 - `-b` for brief information about the job
 
 You can also select groups of jobs based on certain characteristics, like:
+
 - `-q <partition>` to select all jobs you've run in a certain partition
 - `-d` to select all jobs that have completed successfully
 - `-e` to select all jobs that had end status of EXIT (failed)
@@ -254,14 +242,13 @@ You can also select groups of jobs based on certain characteristics, like:
 
 As a rule, running bacct without the -l option results in aggregate job statistics for the jobs included, while with the -l option results in a long list of separate, per-job statistics.
 
-
 All the options available with `bacct` can be listed using `bacct -h`.
-If you forgot what the job id is, check the stdout file (created with the -o argument of bsub).
+If you forgot what the job id is, check the stdout file (created with the `-o` argument of bsub).
 
-On our farm, `bacct` is reading information from `/usr/local/lsf/work/<cluster_name>/logdir/lsb.acct.*`.
 
 :::note
-The `bacct` command may not be available on every HPC, as it depends on how it was configured by the admins.
+The `bacct` command may not be available on every HPC, as it depends on how it was configured by the admins.  
+On our farm, `bacct` is reading information from `/usr/local/lsf/work/<cluster_name>/logdir/lsb.acct.*`.
 :::
 
 
@@ -293,7 +280,7 @@ For example, let's say that we would like to keep our job output files in a fold
 For the example above, we might set these #BJOBS options:
 
 ```bash
-#BJOBS -cwd /home/username/scratch/hpc_workshop/
+#BJOBS -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/
 #BJOBS -o logs/simple_job.log
 ```
 
@@ -302,14 +289,10 @@ But, unless we create the `logs/` directory _before running the job_, `bjobs` wi
 Another thing to note is that you should not use the `~` home directory shortcut with the `-cwd` option. For example:
 
 ```bash
-#BJOBS -cwd ~/scratch/hpc_workshop/
+#BJOBS -cwd ~/hpc_workshop/
 ```
 
-will not reliably work. Instead you should use the full path, for example:
-
-```bash
-#BJOBS -cwd /home/username/scratch/hpc_workshop/
-```
+will not reliably work. Instead you should use the full path as shown above.
 
 :::
 
@@ -337,22 +320,22 @@ In order to run this script, we need to install the required package, argparse, 
 :::note
 **Loading required R packages**
 
-The pi_estimator.R script requires the R library argparse, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install to run the script successfully.  You should only have to run this once, as when using R on your local machine.
+The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
 
-To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a port for the download.  Typical pacakge installation readout will appear on the screen.
+To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`72` is fine).  Typical package installation readout will appear on the screen.
 
 Once this is complete, check to make sure it installed properly by trying to load the package `library(argparse)`.  If there are no errors, the R library loaded ok.  
 
-To exit the R console, simply enter control+D.  You'll be asked if you want to save the workspace image — typing `no` is fine in this case.
+To exit the R console, simply enter control+D.  You'll be asked if you want to save the workspace image - typing `n` is fine in this case.
 
 :::
 
-Now we're ready to run the estimate_pi.sh script.
+Now we're ready to run the `estimate_pi.sh` script.
 
 1. Edit the shell script in `lsf/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Submit the job to LSF and check its status in the queue.
-2. How long did the job take to run? <details><summary>Hint</summary>Use `bjobs -l JOBID` or `bacct JOBID`.</details>
+2. How long did the job take to run? <details><summary>Hint</summary>Use `bhist -l JOBID` or `bacct -l JOBID`.</details>
 3. The number of samples used to estimate Pi can be modified using the `--nsamples` option of our script, defined in millions. The more samples we use, the more precise our estimate should be.
-    - Adjust your SLURM submission script to use 200 million samples (`/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R --nsamples 200`), and save the job output in `logs/estimate_pi_200M.log`.
+    - Adjust your LSF submission script to use 200 million samples (`/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R --nsamples 200`), and save the job output in `logs/estimate_pi_200M.out` and `logs/estimate_pi_200M.err`.
     - Monitor the job status with `bjobs` and `bhist -l JOBID`. Review the outfiles in your log folder. Do you find any issues?
 
 <details><summary>Answer</summary>
@@ -367,10 +350,10 @@ For example:
 ```bash
 #!/bin/bash
 #BJOBS -q normal  # name of the queue to run job on
-#BJOBS -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/course_materials  # working directory
+#BJOBS -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop  # working directory
 #BJOBS -o logs/estimate_pi.out  # standard output file
 #BJOBS -e logs/estimate_pi.err  # standard error file
-#BJOBS -n1        # number of CPUs. Default: 1
+#BJOBS -n 1        # number of CPUs. Default: 1
 #BJOBS -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BJOBS -M1000  # RAM memory part 2. Default: 100MB
 
@@ -388,17 +371,17 @@ bsub lsf/estimate_pi.sh
 As suggested in the hint, we can use the `bhist` or `bacct` commands for this:
 
 ```console
-bjobs -l JOBID
-bacct JOBID
+bhist -l JOBID
+bacct -l JOBID
 ```
 
 Replacing JOBID with the ID of the job we just ran.
 
 If you cannot remember what the job id was, you can check all your jobs using `bjobs` or view the outfile generated at the beginning of the run.
 
-Sometimes it may happen that the "Memory Utilized" is reported as 0.00MB or a lower value than you would expect.
+Sometimes it may happen that the "Memory Usage" (or MEM) is reported as 0M or a lower value than you would expect.
 That's very odd, since for sure our script must have used _some_ memory to do the computation.
-The reason is that SLURM doesn't always have time to pick memory usage spikes, and so it reports a zero.
+The reason is that LSF doesn't always have time to pick memory usage spikes, and so it reports a zero.
 This is usually not an issue with longer-running jobs.
 
 **A3.**
@@ -407,9 +390,9 @@ The modified script should look similar to this:
 
 ```bash
 #!/bin/bash
-#BSUB -q normal  # name of the queue to run job on
-#BSUB -D /scratch/USERNAME/hpc_workshop/  # working directory
-#BSUB -o logs/estimate_pi_200M.out  # standard output file
+#BSUB -q normal  # name of the partition to run job on
+#BSUB -G farm-course # groupname for billing
+#BSUB -cwd /nfs/users/nfs_USERINITIA/USERID/hpc_workshop  # working directory
 #BSUB -e logs/estimate_pi_200M.err  # standard error file
 #BSUB -n1        # number of CPUs. Default: 1
 #BSUB -R "select[mem>1000] rusage[mem=1000] span[hosts=1]" # RAM memory part 1. Default: 100MB
@@ -434,7 +417,17 @@ Exited with exit code 1.
 
 Furthermore, if we use `bjobs` to get information about the job, it will show `EXIT` as the status instead of `DONE`.  
 
-We can also check this by seeing what `bacct -l` reports as "Memory Utilized" and see that it used 100% of the memory we gave the job.
+We can also check this by seeing what `bacct -l` reports as "Memory Utilized" and see that it used 100% of the memory we gave the job.  There is also this table in the output of this command: 
+
+```
+Share group charged </WTSI/other/farm-course/ht10>
+     CPU_T     WAIT     TURNAROUND   STATUS     HOG_FACTOR    MEM    SWAP
+     10.71        1             13     exit         0.8240   2.1G      0M
+     CPU_PEAK     CPU_EFFICIENCY      MEM_EFFICIENCY
+      0.83                83.33%             220.00%
+```
+
+We can see that our job tried to use _at least_ 2.1G (maybe it would have needed even more), but we only requested 1000M (~1G). So, that explains why it was killed!
 
 To correct this problem, we would need to increase the memory requested to LSF, adding to our script, for example, `#BJOBS -R "select[mem>30000] rusage [mem=30000] span[hosts=1]"` and `#BJOBS -M 30000` to request 30Gb of RAM memory for the job.
 
@@ -474,7 +467,7 @@ Try these examples:
 
 ```shell
 # Make a variable with a path starting from the user's /home
-DATADIR="$HOME/scratch/data/"
+DATADIR="$HOME/hpc_workshop/data/"
 
 # list files in that directory
 ls $DATADIR
@@ -497,13 +490,13 @@ The R script used in the previous exercise supports parallelisation of some of i
 The number of CPUs used by the script can be modified using the `--ncpus` option.
 For example `pi_estimator.R --nsamples 200 --ncpus 2` would use two CPUs.
 
-1. Modify your submission script (`slurm/estimate_pi.sh`) to:
-    1. Should you still use the `normal` partition?
+1. Modify your submission script (`lsf/estimate_pi.sh`) to:
+    <!-- 1. Should you still use the `normal` partition? -->
     1. Use the `$LSB_MAX_NUM_PROCESSORS` variable to set the number of CPUs used by `pi_estimator.R` (and ensure you have set `--nsamples 200` as well).
     1. Request 10G of RAM memory for the job.
-    1. Bonus (optional): use `echo` within the script to print a message indicating the job number (SLURM's job ID is stored in the variable `$LSB_JOBID`).
-2. Submit the job a few times, each one using 1, 2 and then 8 CPUs. Make a note of each job's ID.
-3. Check how much time each job took to run (using `bacct JOBID`). Did increasing the number of CPUs shorten the time it took to run?
+    1. Bonus (optional): use `echo` within the script to print a message indicating the job number (LSF's job ID is stored in the variable `$LSB_JOBID`).
+2. Submit the job three times, each one using 1, 2 and then 8 CPUs. Make a note of each job's ID.
+3. Check how much time each job took to run (using `bhist JOBID` or `bacct JOBID`). Did increasing the number of CPUs shorten the time it took to run?
 
 <details><summary>Answer</summary>
 
@@ -519,26 +512,24 @@ We can modify our submission script in the following manner, for example for usi
 #BSUB -e logs/estimate_pi_200M_2cpu.err      # error file
 #BSUB -R "select[mem>10000] rusage[mem=10000]" # RAM memory part 1. Default: 100MB
 #BSUB -M10000  # RAM memory part 2. Default: 100MB
-#BSUB -n2                          # number of CPUs
+#BSUB -n 2                          # number of CPUs
 
-# launch the Pi estimator script using the number of CPUs that we are requesting from SLURM
+# launch the Pi estimator script using the number of CPUs that we are requesting from LSF
 Rscript exercises/pi_estimator.R --nsamples 200 --ncpus $LSB_MAX_NUM_PROCESSORS
 
 # echo number of CPUS
-echo $LSB_MAX_NUM_PROCESSORS
+echo "Processors used: $LSB_MAX_NUM_PROCESSORS"
 
 ```
 
 You can then run the script using this command:
 ```console
 bsub lsf/estimate_pi.sh
-
 ```
 
 We can run the job multiple times while modifying the `#BJOBS -n` option, saving the file and re-running `bjobs lsf/estimate_pi.sh`.
 
-After running each job we can use `bjobs -l JOBID` (or `bacct JOBID`) command to obtain information about how long it took to run.
-
+After running each job we can use `bhist JOBID` or `bjobs -l JOBID` or `bacct JOBID` commands to obtain information about how long it took to run.  
 
 In this case, it does seem that increasing the number of CPUs shortens the time the job takes to run. However, the increase is not linear at all.
 For example going from 1 to 2 CPUs seems to make the job run faster, however increasing to 8 CPUs makes little difference compared to 2 CPUs (this may depend on how many `--nsamples` you used).
@@ -548,7 +539,7 @@ This is possibly because there are other computational costs to do with this kin
 
 :::
 
-Here is a table summarising some of the most useful environment variables that SLURM creates:
+Here is a table summarising some of the most useful environment variables that LSF creates:
 
 | Variable | Description |
 | -: | :- |
@@ -570,7 +561,7 @@ This command takes options similar to the normal `bsub` program, so you can requ
 For example, to access to 8 CPUs and 10GB of RAM for 10 minutes on one of the compute nodes we would do:
 
 ```console
-bsub -Is -n8 -R "select[mem>1000] rusage[mem=1000]" -M1000 -q normal -W10 bash
+bsub -G farm-course -Is -n8 -R "select[mem>1000] rusage[mem=1000]" -M1000 -q normal -W10 bash
 ```
 
 You may get a message saying that LSF is waiting to allocate your request (you go in the queue, just like any other job!).
@@ -593,12 +584,12 @@ Note that, if the time you requested (with the `-W` option) runs out, your sessi
 - Submit jobs to the scheduler using `bsub submission_script.sh`.
 - Customise the jobs by including `#BSUB` options at the top of your script (see table in the materials above for a summary of options).
   - As a good practice, always define an output file with `#BSUB -o`. All the information about the job will be saved in that file, including any errors.
-- Check the status of a submitted job by using `bjobs -u USERNAME` and `bacct -j JOBID`.
+- Check the status of a submitted job by using `bjobs`. You can get detailed information about a job (such as the time it took to run or how many resources it used) using `bjobs -l JOBID` or `bacct -l JOBID` or `bhist JOBID`.
 - To cancel a running job use `bkill JOBID`.
 
 #### Further resources
 
 - [IBM Spectrum LSF Reference Site](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference)
 - [bsub Reference Page](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-bsub)
-- [LSF to PBS/SLURM/SGE/etc. Reference](https://slurm.schedmd.com/rosetta.gif)
+- [LSF to PBS/SLURM/SGE/LoadLeveler schedulers](https://slurm.schedmd.com/rosetta.gif)
 :::

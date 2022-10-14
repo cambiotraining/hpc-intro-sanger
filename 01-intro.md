@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course: Intro"
+pagetitle: "Sanger HPC"
 ---
 
 # Introduction to High Performance Computing
@@ -14,6 +14,7 @@ These materials have accompanying slides:
 
 - What is a HPC and how does it differ from a regular computer?
 - What can a HPC be used for?
+- How is the Sanger HPC (called the "_farm_") organised?
 
 #### Learning Objectives
 
@@ -21,6 +22,7 @@ These materials have accompanying slides:
 - Distinguish the roles of a _login node_ and a _compute node_.
 - Describe the role of a _job scheduler_.
 - Understand the difference between "scratch" and "home" storage.
+- Understand how files and folders are organised on the Sanger _farm_ servers.
 :::
 
 ## What is a HPC and what are its uses?
@@ -91,7 +93,7 @@ A job scheduler is a software used to submit commands to be run on the compute n
 This is needed because there may often be thousands of processes that all the users of the HPC want to run at any one time.
 The job scheduler's role is to manage all these jobs, so you don't have to worry about it.
 
-We will cover the details of how to use a job scheduler in "[Using a Job Scheduler](03-slurm.html)".
+We will cover the details of how to use a job scheduler in "[Using the LSF Job Scheduler](03-lsf.html)".
 For now, it is enough to know that, using the job scheduler, the user can request specific resources to run their job (e.g. number of cores, RAM, how much time we want to reserve the compute node to run our job, etc.).
 The job scheduler software then takes care of considering all the jobs being submitted by all the users and putting them in a queue until there are compute nodes available to run the job with the requested resources.
 
@@ -113,7 +115,7 @@ In this case we would want to submit several jobs, requesting several CPU cores 
 :::note
 **Job Schedulers**
 
-There are many job scheduler programs available. In this course we will cover one called **LSF** because the Sanger Institute uses it, but other common ones include [_LSF_](https://en.wikipedia.org/wiki/Platform_LSF), [_PBS_](https://en.wikipedia.org/wiki/Portable_Batch_System), [_HT Condor_](https://en.wikipedia.org/wiki/HTCondor), among others.
+There are many job scheduler programs available. In this course we will cover one called **LSF** because the Sanger Institute uses it, but other common ones include [_SLURM_](https://en.wikipedia.org/wiki/Slurm_Workload_Manager), [_PBS_](https://en.wikipedia.org/wiki/Portable_Batch_System), [_HT Condor_](https://en.wikipedia.org/wiki/HTCondor), among others.
 :::
 
 
@@ -128,17 +130,34 @@ Although the filesystem organisation may differ depending on the institution, ty
 - A **scratch space** (e.g. `/scratch/user`), which is high-performance, large-scale storage. This type of storage may be private to the user or shared with a group. It is usually not backed up, so the user needs to ensure that important data are stored elsewhere. This is the main partition were data is processed from.
 
 
-:::note
-**Sanger Filesystem**
+#### Sanger Filesystem
 
-At the Sanger Institute, the farm is organised into 3 storage partitions:
+At the Sanger Institute, the HPC is called the "**_farm_**" and is organised into 3 storage partitions:
 
 - An **NFS** directory with long-term, backed-up storage for data, located at `/nfs`.  In addition to housing your **home directory** (at `/nfs/users/nfs_[first_initial_of_username]/[sanger_username]`), this contains **iRODS** directories where sequencing data from pipelines are kept, programme-specific file storage systems like `cancer_ref` for CASM, and team-specific storage.  NFS files are intended to be 'read only' as computation should not be done directly from this folder; you're advised to move files over to scratch for heavy input/output work.  This moving step is called "staging" at the Sanger, and there is an internal module to help with this process.
-- A system of **scratch directories** stored in a system called **lustre** housed in `/lustre`.  Lustre has a lot of storage but is not backed up.  There are a series of scratch folders within lustre, each with nested subfolders for Sanger programmes (i.e. casm), groups (i.e. team154pc), and users (i.e. cp19).  Permissions to each folder are managed by the Service Desk — to join your group's scratch folder you must first identify which directories you need access to (ask a labmate) and email the Service Desk (service@sanger.ac.uk). For example, /lustre/scratchxxx/team154pc/cp19.
+- A system of **scratch directories** stored in a system called **lustre** housed in `/lustre`.  Lustre has a lot of storage but is not backed up.  There are a series of scratch folders within lustre, each with nested subfolders for Sanger programmes (e.g. _casm_), groups (e.g. _team154pc_), and users (e.g. _cp19_).  Permissions to each folder are managed by the Service Desk — to join your group's scratch folder you must first identify which directories you need access to (ask a labmate) and email the Service Desk (service@sanger.ac.uk). For example, `/lustre/scratchxxx/team154pc/cp19`.
 - **Warehouse** is another long-term storage system predominantly used by the Service Desk to arrange group permissions.  You most likely won't need this at all in your day-to-day work (which should mainly be in lustre).
 
 ![Farm overview.](images/Warehouse-farm.png)
 
+
+#### Example workflow for Sanger data analysis
+
+The Sanger has pipelined both wet lab sequencing steps and initial data analysis (i.e. aligning and variant calling).  You have to request these using programme-specific workflows, but the actual computational steps are done by the pipelines teams.  The resultant raw data and initial data analysis outfiles are stored within NFS, which you can access for further analysis and visualisation.  
+
+- Submit a request for sequencing.
+  - Through this process, your submission will be assigned a project ID number and a sample ID (PD*****).
+- Request additional analysis. (optional)
+  - In addition to standard alignment, some programmes (CASM, CellGen, etc.) offer in-house analysis like variant calling for DNA or HTSeq for RNA.  This is requested by either emailing your programme's service desk or through programme-specific webpages (i.e. [Canapps](https://canapps.sanger.ac.uk/)).
+- Locate raw data or processed data.
+  - All Sanger data are stored on iRODS, an efficient storage system separate from the Farm.  Instructions for accessing these raw or aligned data are [here](TODO).
+  - Some programmes may symlink iRODS data to designated NFS directories for easy access of both BAM files and pipelined analysis (variant calling, structural variant calling, etc.).
+- Transfer data from NFS to Lustre.
+  - We can only read files within NFS (iRODS or programme-specific directory), so for downstream analysis the files must be moved to your Lustre scratch folder.  This moving process is called **staging** and there is a Sanger module that makes this process easy and efficient.
+- Analyse data.
+  - Submit a job to the LSF scheduler using **bsub**.
+- Transfer results from Farm to local computer.
+  - Use a FTP tool to move desired results to your local machine.
 :::
 
 
@@ -176,7 +195,7 @@ Option A:
 Option B:
 
 ```
-/nfs/users/nfs_a/ab12/software/                # python packages
+/nfs/users/nfs_a/ab12/software/               # python packages
 /lustre/scratch123/ab12/project_name/data/    # sequencing data
 /lustre/scratch123/ab12/project_name/scripts/ # analysis script
 ```
@@ -184,17 +203,17 @@ Option B:
 Option C:
 
 ```
-/nfs/users/nfs_c/ab12/project_name/software/ # python packages
-/nfs/users/nfs_c/ab12/project_name/data/        # sequencing data
-/nfs/users/nfs_c/ab12/project_name/scripts/     # analysis script
+/nfs/users/nfs_c/ab12/project_name/software/   # python packages
+/nfs/users/nfs_c/ab12/project_name/data/       # sequencing data
+/nfs/users/nfs_c/ab12/project_name/scripts/    # analysis script
 ```
 
 Option D:
 
 ```
-/nfs/users/nfs_c/ab12/project_name/software/ # python packages
-/nfs/cancer_ref01/nst_links/live/sequencing_project_number12345/        # sequencing data
-/lustre/scratch123/ab12/project_name/scripts/     # analysis script
+/nfs/users/nfs_c/ab12/project_name/software/                        # python packages
+/nfs/cancer_ref01/nst_links/live/sequencing_project_number12345/    # sequencing data
+/lustre/scratch123/ab12/project_name/scripts/                       # analysis script
 ```
 
 **Q2.**
@@ -213,18 +232,18 @@ Do you agree with this choice, and why? What factors would you take into conside
 **A1.**
 
 Despite the long paths, we can put them into shorthand:
-- /nfs/users/nfs_c/ab12/ is home (within NFS)
-- /lustre/scratch123/ab12/ is scratch (within lustre)
-- /nfs/cancer_ref01/nst_links/live/ is NFS
 
-Option C is definitely discouraged: as `/home` is typically not high-performance and has limited storage, it should not be used for storing/processing data.
+- `/nfs/users/nfs_c/ab12/` is the user's home (within NFS)
+- `/lustre/scratch123/ab12/` is the user's scratch (within lustre)
+- `/nfs/cancer_ref01/nst_links/live/` is part of NFS
 
-Option A and B only differ in terms of where the software packages are installed.
-Typically software can be installed in the user's `home`, avoiding the need to reinstall it multiple times, in case the same software is used in different projects.
+Option C is definitely discouraged: as `/nfs` is typically not high-performance and has limited storage, it should not be used for storing/processing data.
 
-However, Options A and B do not have the correct path to find sequencing data *from Sanger pipelines* as that will be stored in NFS.  Option D does have the correct path for where the data are stored, but it isn't fully correct either.  Depending on the computation done in the script, the student must move files from NFS (read only) to lustre (read, write, execute for high i/o) for analysis.
+Option D does have the correct path for where the sequencing data are stored _from Sanger pipelines_ (one of the iRODs directories), but it isn't fully correct either.  To do analysis on these data, the student must move files from NFS (read only) to lustre (read, write, execute for high i/o) - this is called "staging".
 
-Therefore, if the student first moves files from NFS to lustre, option A is the best practice in this example.
+Finally, options A and B only differ in terms of where the software packages are installed.
+Typically software can be installed in the user's home directory, avoiding the need to reinstall it multiple times, in case the same software is used in different projects.
+Therefore, if the student first moves files from NFS (iRODs) to lustre (their high-performance scratch space), then **option B** is the best practice in this example.
 
 **A2.**
 
@@ -235,6 +254,7 @@ If in doubt, the student could have gained "interactive" access to one of the co
 
 Leaving raw data in scratch permanently is probably a bad choice.
 Since typically "scratch" storage is not backed-up it should not be relied on to store important data.
+
 If the student doesn't have access to enough backed-up space for all the data, they should at least back up the raw data and the scripts used to process it.
 This way, if there is a problem with "scratch" and some processed files are lost, they can recreate them by re-running the scripts on the raw data.
 Because raw data straight from Sanger pipelines are deposited into NFS for safe keeping, the student doesn't need to keep a second copy on lustre.  Once their analysis is complete, those "staged" copies in lustre should be deleted.
@@ -267,24 +287,7 @@ Other criteria that could be used to decide which data to leave on the HPC, back
   - The user's home is used for things like configuration files and local software instalation.
   - The scratch space is used for the data and analysis scripts.
   - Not all HPC servers have this filesystem organisation - always check with your local HPC admin.
-:::
-
-
-:::highlight
-## Example workflow for Sanger data analysis
-The Sanger has pipelined both wet lab sequencing steps and initial data analysis (i.e. aligning and variant calling).  You have to request these using programme-specific workflows, but the actual computational steps are done by the pipelines teams.  The resultant raw data and initial data analysis outfiles are stored within NFS, which you can access for further analysis and visualisation.  
-
-- Submit a request for sequencing.
-  - Through this process, your submission will be assigned a project ID number and a sample ID (PD*****).
-- Request additional analysis. (optional)
-  - In addition to standard alignment, some programmes (CASM, CellGen, etc.) offer in-house analysis like variant calling for DNA or HTSeq for RNA.  This is requested by either emailing your programme's service desk or through programme-specific webpages (i.e. [Canapps](https://canapps.sanger.ac.uk/)).
-- Locate raw data or processed data.
-  - All Sanger data are stored on iRODS, an efficient storage system separate from the Farm.  Instructions for accessing these raw or aligned data are here(xxxx).
-  - Some programmes may symlink iRODS data to designated NFS directories for easy access of both BAM files and pipelined analysis (variant calling, structural variant calling, etc.).
-- Transfer data from NFS to Lustre.
-  - We can only read files within NFS (iRODS or programme-specific directory), so for downstream analysis the files must be moved to your Lustre scratch folder.  This moving process is called **staging** and there is a Sanger module that makes this process easy and efficient.
-- Analyse data.
-  - Submit a job to the LSF scheduler using **bsub**.
-- Transfer results from Farm to local computer.
-  - Use a FTP tool to move desired results to your local machine.
+- At the Sanger there are two types of storage:
+  - NFS: used for the user's home directories and for iRODs (which contains sequencing data from the Sanger pipelines). 
+  - Lustre: used for high-performance compute operations, and the designated storage that should be used for running analysis on the HPC.
 :::
