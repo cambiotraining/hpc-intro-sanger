@@ -24,6 +24,9 @@ jobs:
       - name: Install rmarkdown
         run: Rscript -e 'install.packages("rmarkdown")'
 
+      - name: Compile exercises
+        run: bash compile_exercises.sh
+
       - name: Build website
         run: |
           Rscript -e 'rmarkdown::render_site()'
