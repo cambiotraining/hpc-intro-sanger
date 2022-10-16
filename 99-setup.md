@@ -1,5 +1,8 @@
 ---
-pagetitle: "HPC Course: Setup"
+pagetitle: "Sanger HPC"
+output:
+  html_document:
+    toc: false
 ---
 
 :::warning

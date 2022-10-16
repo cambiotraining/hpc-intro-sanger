@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course"
+pagetitle: "Sanger HPC"
 output:
   html_document:
     toc: false

@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course: Software"
+pagetitle: "Sanger HPC"
 ---
 
 # Managing Software
@@ -288,7 +288,7 @@ And notice that the asterisk "*" is now showing we're using the `scipy` environm
 :::warning
 **Loading Environments in Shell Script**
 
-To load environments in a shell script that is being submitted to SLURM, you need to first source a configuration file from _Conda_.
+To load environments in a shell script that is being submitted to LSF, you need to first source a configuration file from _Conda_.
 For example, to load the `scipy` environment we created, this would be the code:
 
 ```
@@ -296,7 +296,7 @@ source $CONDA_PREFIX/etc/profile.d/conda.sh  # Always add this command to your s
 conda activate scipy
 ```
 
-This is because when we submit jobs to SLURM the jobs will start in a non-interactive shell, and `conda` doesn't get automatically set. 
+This is because when we submit jobs to LSF the jobs will start in a non-interactive shell, and `conda` doesn't get automatically set. 
 Running the `source` command shown will ensure `conda activate` becomes available. 
 :::
 

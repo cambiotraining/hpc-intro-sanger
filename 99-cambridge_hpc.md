@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course: Cambridge"
+pagetitle: "Sanger HPC"
 ---
 
 # Cambridge University HPC Resources

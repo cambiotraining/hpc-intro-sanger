@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course: Parallelising"
+pagetitle: "Sanger HPC"
 ---
 
 # Parallelising Jobs
@@ -37,7 +37,7 @@ Finally, we may want to do both things: run several jobs in parallel, while each
 **Terminology Alert!**
 
 Some software packages have an option to specify how many CPU cores to use in their computations (i.e. they can parallelise their calculations).
-However, in their documentation this you may be referred to as **cores**, **processors**, **CPUs** or **threads**, which are used more or less interchangeably to essentially mean "how many calculations should I run in parallel?".
+However, in their documentation this may be referred to as **cores**, **processors**, **CPUs** or **threads**, which are used more or less interchangeably to essentially mean "how many calculations should I run in parallel?".
 Although these terms are technically different, when you see this mentioned in the software's documentation, usually you want to set it as the number of CPU cores you request from the cluster.
 :::
 
@@ -51,11 +51,11 @@ _Job arrays_ are a collection of jobs that run in parallel with identical parame
 Any resources you request (e.g. `-n`, `-R`, `-M` `-W`) apply to each individual job of the "array".
 This means that you only need to submit one "master" job, making it easier to manage and automate your analysis using a single script.
 
-Job arrays are created with the *-J* option `-J arrayName[start-finish]` where *arrayName* becomes the Job Name and *start* and *finish* are integers defining the range of array numbers created by LSF.  For example, etting -J as testJob[1-3] would result in three jobs sent: testJob[1], testJob[2], and testJob[3].
+Job arrays are created with the *-J* option `-J arrayName[start-finish]` where *arrayName* becomes the Job Name and *start* and *finish* are integers defining the range of array numbers created by LSF.  For example, setting `-J testJob[1-3]` would result in three jobs sent: `testJob[1]`, `testJob[2]`, and `testJob[3]`.
 
-For some unclear reason (which could be a bug! the -J option specified within the script header with #BSUB needs to be one of the first arguments listed.  We recommend placing it as the third, below -G and -q options.
+For some unclear reason (which could be a bug! the `-J` option specified within the script header with `#BSUB` needs to be one of the first arguments listed.  We recommend placing it as the third, below -G and -q options.
 
-With this array list option within -J, LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
+With this array list option within `-J`, LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
 Later in this section we will see how we can use some tricks with this variable to automate our analysis.
 
 For now let's go through this simple example, which shows what a job array looks like (you can find this script in the course folder `lsf/parallel_arrays.sh`):
@@ -74,7 +74,8 @@ hostname
 ```
 
 Submitting this script with `bsub lsf/parallel_arrays.sh` will launch 3 jobs.  
-The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You can then investigate the results using `head logs/parallel_arrays*out`.  You could also include the "_%J_" keyword to add the Job ID number.  
+The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You could also include the "_%J_" keyword to add the Job ID number to the file name.  
+You can then investigate the results using `head -n 4 logs/parallel_arrays*out`.  
 Looking at the output in those files should make it clearer that `$LSB_JOBINDEX` stores the array number of each job, and that each of them uses 2 CPUS (`-n2` option).
 The compute node that they run on may be variable (depending on which node was available to run each job).
 
@@ -113,13 +114,12 @@ Also, remember to edit LSF's working directory with your username, at the top of
 **A2.**
 
 We can launch our adjusted script with `bsub lsf/parallel_estimate_pi.sh`.
-When we check our jobs with `bjobs`, we will notice several jobs with JOBID in the format "ID_1", "ID_2", etc.
+When we check our jobs with `bjobs`, we will notice several jobs with JOBID in the format "ID[1]", "ID[2]", etc.
 These indicate the number of the array that is currently running as part of that job submission.
 
 In this case, we will get 10 output log files, each with the job array number at the end of the filename (we used the `%I` keyword in the `#BSUB -o` option to achieve this).
 
 The 10 separate estimates of Pi were written to separate text files named `results/pi/replicate_1.txt`, `results/pi/replicate_2.txt`, etc.
-If we examine this file (e.g. with `less results/pi_estimate_1.txt`) we can see it has the results of all the runs of our simulation.
 
 **A3.**
 
@@ -127,7 +127,7 @@ To combine the results of these 10 replicate runs of our Pi estimate, we could u
 
 `cat results/pi/replicate_*.txt > results/pi/combined_estimates.txt`
 
-
+If we examine this file (e.g. with `less results/pi/combined_estimates.txt`) we can see it has the results of all the runs of our simulation.
 
 </details>
 
@@ -139,14 +139,60 @@ To combine the results of these 10 replicate runs of our Pi estimate, we could u
 One way to automate our jobs is to use the job array number (stored in the `$LSB_JOBINDEX` variable) with some command-line tricks.
 The trick we will demonstrate here is to parse a CSV file to read input parameters for our scripts.
 
-Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](04-software.html#Loading_Conda_Environments), we now want to map each of our samples' sequence data to the reference genome.
+For example, in our `data/` folder we have the following file, which includes information about the samples we want to process: 
+
+```console
+$ cat data/drosophila_sample_info.csv
+```
+
+```
+sample,read1,read2
+SRR307023,data/reads/SRR307023_1.fastq.gz,data/reads/SRR307023_2.fastq.gz
+SRR307024,data/reads/SRR307024_1.fastq.gz,data/reads/SRR307024_2.fastq.gz
+SRR307025,data/reads/SRR307025_1.fastq.gz,data/reads/SRR307025_2.fastq.gz
+SRR307026,data/reads/SRR307026_1.fastq.gz,data/reads/SRR307026_2.fastq.gz
+SRR307027,data/reads/SRR307027_1.fastq.gz,data/reads/SRR307027_2.fastq.gz
+SRR307028,data/reads/SRR307028_1.fastq.gz,data/reads/SRR307028_2.fastq.gz
+SRR307029,data/reads/SRR307029_1.fastq.gz,data/reads/SRR307029_2.fastq.gz
+SRR307030,data/reads/SRR307030_1.fastq.gz,data/reads/SRR307030_2.fastq.gz
+```
+
+This is a CSV (comma-separated values) format, with three columns named "sample", "read1" and "read2".
+Let's say we wanted to obtain information for the 2nd sample, which in this case is in the 3rd line of the file (because of the column names header). 
+We can get the top N lines of a file using the `head` command (we pipe the output of the previous `cat` command):
+
+```console
+$ cat data/drosophila_sample_info.csv | head -n 3
+```
+
+This gets us lines 1-3 of the file. 
+To get just the information about that 2nd sample, we can now _pipe_ the output of the `head` command to the command that gets us the bottom lines of a file `tail`:
+
+```console
+$ cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1
+```
+
+Finally, to separate the two values that are separated by a comma, we can use the `cut` command, which accepts a _delimiter_ (`-d` option) and a _field_ we want it to return (`-f` option):
+
+```console
+$ cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1 | cut -d "," -f 1
+```
+
+In this example, we use comma as a delimiter field and obtained the first of the values after "cutting" that line. 
+
+Schematically, this is what we've done:
+
+![](images/head_tail.svg)
+
+So, if we wanted to use job arrays to automatically retrieve the relevant line of this file as its input, we could use `head -n $LSB_JOBINDEX` in our command pipe above. 
+Let's see this in practice in our next exercise. 
 
 
 :::exercise
 
-
-
 ![](images/mapping.png){ width=50% }
+
+Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](04-software.html#Example:_Sequence_Read_Alignment), we now want to map each of our samples' sequence data to the reference genome.
 
 Looking at our data directory (`ls hpc_workshop/data/reads`), we can see several sequence files in standard _fastq_ format.
 These files come in pairs (with suffix "_1" and "_2"), and we have 8 different samples.
@@ -168,18 +214,18 @@ Our array numbers should be: `#BSUB -J drosophila[2-9]`.
 We start at 2, because the parameter values start at the second line of the parameter file.
 We finish at 9, because that's the number of lines in the CSV file.
 
-We also need to adjust the `head -n` command a few lines down to pull the correct line according to the $LSB_JOBINDEX variable assigned to each job.
+We also need to adjust the `head -n` command a few lines down to pull the correct line according to the `$LSB_JOBINDEX` variable assigned to each job.
 
 **A2.**
 
 We can submit the script with `bsub lsf/parallel_drosophila_mapping.sh `.
 While the job is running we can monitor its status with `bjobs`.
-We should see several jobs listed with IDs as `JOBID_ARRAYID` format.
+We should see several jobs listed with IDs as `JOBID[ARRAYID]` format.
 
 Because we used the `%I` keyword in our `#BSUB -o` option, we will have an output log file for each job of the array.
 We can list these log files with `ls logs/drosophila_mapping_*.out` (using the "*" wildcard to match any character).
 If we examine the content of one of these files (e.g. `cat logs/drosophila_mapping_2.out`), at the top we should only see the messages we printed with the `echo` commands.
-The actual output of the `bowtie2` program is a file in [SAM](https://en.wikipedia.org/wiki/SAM_(file_format) format, which is saved into the `results/drosophila/mapping` folder.
+The actual output of the `bowtie2` program is a file in [SAM format](https://en.wikipedia.org/wiki/SAM_file_format), which is saved into the `results/drosophila/mapping` folder.
 
 **A3.**
 

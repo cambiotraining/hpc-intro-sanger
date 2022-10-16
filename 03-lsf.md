@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course: LSF"
+pagetitle: "Sanger HPC"
 ---
 
 # Using the LSF Job Scheduler
@@ -317,8 +317,8 @@ Instead, we use a shell script to submit this to the job scheduler.
 
 In order to run this script, we need to install the required package, argparse, into the Farm's R console.  Pause here to work through the below instructions:
 
-:::note
-**Loading required R packages**
+<details>
+<summary>**Installing required R packages**</summary>
 
 The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
 
@@ -328,7 +328,7 @@ Once this is complete, check to make sure it installed properly by trying to loa
 
 To exit the R console, simply enter control+D.  You'll be asked if you want to save the workspace image - typing `n` is fine in this case.
 
-:::
+</details>
 
 Now we're ready to run the `estimate_pi.sh` script.
 
@@ -507,7 +507,7 @@ We can modify our submission script in the following manner, for example for usi
 ```bash
 #!/bin/bash
 #BSUB -q normal     # partiton name
-#BSUB -D /FIXME/FIXME/hpc_workshop/  # working directory
+#BSUB -D /nfs/users/user_USERINITIAL/USERID/hpc_workshop/  # working directory
 #BSUB -o logs/estimate_pi_200M_2cpu.out      # output file
 #BSUB -e logs/estimate_pi_200M_2cpu.err      # error file
 #BSUB -R "select[mem>10000] rusage[mem=10000]" # RAM memory part 1. Default: 100MB

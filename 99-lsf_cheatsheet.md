@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course"
+pagetitle: "Sanger HPC"
 ---
 
 # LSF Quick Reference Guide
@@ -15,7 +15,7 @@ This is used in the examples that follow:
 - partition name is `skylake`
 
 
-## SLURM Commands
+## LSF Commands
 
 | Command | Description |
 | -: | :- |

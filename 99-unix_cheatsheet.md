@@ -1,5 +1,5 @@
 ---
-pagetitle: "HPC Course"
+pagetitle: "Sanger HPC"
 ---
 
 # Unix Cheat Sheet 
