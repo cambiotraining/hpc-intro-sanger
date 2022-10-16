@@ -1,8 +1,8 @@
 #!/bin/bash
 #BSUB -q normal  # name of the partition to run job on
-#BSUB -G FIXME # groupname for billing
+#BSUB -G farm-course # groupname for billing
 #BSUB -J parallel[1-3]
-#BSUB -cwd /FIXME/FIXME/hpc_workshop
+#BSUB -cwd /nfs/users/nfs_FIXME/FIXME/hpc_workshop
 #BSUB -o logs/parallel_arrays_%I.out
 #BSUB -e logs/parallel_arrays_%I.err
 #BSUB -n 2        # numeber of CPUs. Default: 1

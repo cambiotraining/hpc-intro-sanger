@@ -2,7 +2,7 @@
 #BSUB -q normal  # name of the partition to run job on
 #BSUB -G FIXME # groupname for billing
 #BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
-#BSUB -cwd /FIXME/FIXME/hpc_workshop
+#BSUB -cwd /nfs/users/nfs_FIXME/FIXME/hpc_workshop
 #BSUB -o logs/drosophila_mapping_%I.out
 #BSUB -e logs/drosophila_mapping_%I.err
 #BSUB -n 2         # number of CPUs. Default: 1
