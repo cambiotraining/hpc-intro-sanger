@@ -53,7 +53,7 @@ This means that you only need to submit one "master" job, making it easier to ma
 
 Job arrays are created with the *-J* option `-J arrayName[start-finish]` where *arrayName* becomes the Job Name and *start* and *finish* are integers defining the range of array numbers created by LSF.  For example, setting `-J testJob[1-3]` would result in three jobs sent: `testJob[1]`, `testJob[2]`, and `testJob[3]`.
 
-For some unclear reason (which could be a bug! the `-J` option specified within the script header with `#BSUB` needs to be one of the first arguments listed.  We recommend placing it as the third, below -G and -q options.
+If you'd like to specify the `-J` option within the script header with `#BSUB`, it needs to be one of the first arguments listed.  We recommend placing it as the third, below -G and -q options.
 
 With this array list option within `-J`, LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
 Later in this section we will see how we can use some tricks with this variable to automate our analysis.
