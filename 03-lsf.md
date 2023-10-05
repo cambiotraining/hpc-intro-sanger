@@ -322,7 +322,7 @@ In order to run this script, we need to install the required package, argparse, 
 
 The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
 
-To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`72` is fine).  Typical package installation readout will appear on the screen.
+To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`67` is fine).  Typical package installation readout will appear on the screen.
 
 Once this is complete, check to make sure it installed properly by trying to load the package `library(argparse)`.  If there are no errors, the R library loaded ok.  
 
@@ -344,7 +344,7 @@ Now we're ready to run the `estimate_pi.sh` script.
 
 In the shell script we needed to correct the user-specific details in the `#BJOBS` options.
 Also, we needed to specify the path to the script we wanted to run.
-This can be defined relative to the working directory that we've set with `-D`.
+This can be defined relative to the working directory that we've set with `-cwd`.
 For example:
 
 ```bash
