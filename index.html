@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Sanger HPC</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+
+
+
+
+<link rel="stylesheet" href="assets/styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">UoC BioinfoTraining</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="99-setup.html">
+    <span class="fa fa-gear"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-file-lines"></span>
+     
+    Materials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">Introduction to HPC</a>
+    </li>
+    <li>
+      <a href="02-working_on_hpc.html">Working on a HPC cluster</a>
+    </li>
+    <li>
+      <a href="03-lsf.html">Using the LSF Job Scheduler</a>
+    </li>
+    <li>
+      <a href="04-software.html">Managing Software</a>
+    </li>
+    <li>
+      <a href="05-job_arrays.html">Parallelising Jobs</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="99-exercises.html">
+    <span class="fa fa-pencil"></span>
+     
+    Exercises
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="99-unix_cheatsheet.html">Unix Cheatsheet</a>
+    </li>
+    <li>
+      <a href="99-lsf_cheatsheet.html">LSF Quick Reference</a>
+    </li>
+    <li>
+      <a href="99-cambridge_hpc.html">Cambridge HPC Resources</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/cambiotraining/hpc-intro-sanger">
+    <span class="fa fa-brands fa-github"></span>
+     
+    GitHub
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="introduction-to-high-performance-computing-sanger"
+class="section level1">
+<h1>Introduction to High-Performance Computing (Sanger)</h1>
+<p><strong>Authors:</strong> Hugo Tavares, Chloe Pacyna, Lajos
+Kalmar</p>
+</div>
+<div id="section" class="section level1 unlisted unnumbered tabset">
+<h1 class="unlisted unnumbered tabset"></h1>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<div class="highlight">
+<p>Knowing how to work on a High Performance Computing (HPC) system is
+an essential skill for applications such as bioinformatics, big-data
+analysis, image processing, machine learning, parallelising tasks, and
+other high-throughput applications. In this module we will cover the
+basics of High Performance Computing, what it is and how you can use it
+in practice. This is a hands-on workshop, which should be accessible to
+researchers from a range of backgrounds and offering several
+opportunities to practice the skills we learn along the way.<br />
+The content is specifically tailored for the Sanger HPC server (aka the
+“FARM”), and by the end of the course you should be well equipped to
+start running your analysis on your local computing infrastructure.</p>
+</div>
+<div id="target-audience" class="section level3">
+<h3>Target Audience</h3>
+<p>This course is aimed at students and researchers of any background.
+We assume no prior knowledge of what a HPC is or how to use it.</p>
+<p>It may be particularly useful for those who have attended other of
+our <a
+href="https://www.training.cam.ac.uk/bioinformatics/search">Bioinformatics
+Training Courses</a> and now need to process their data on a Linux
+server. It will also benefit those who find themselves using their
+personal computers to run computationally demanding analysis/simulations
+and would like to learn how to adapt these to run on a HPC.</p>
+</div>
+<div id="prerequisites" class="section level3">
+<h3>Prerequisites</h3>
+<p>We assume a basic knowledge of the Unix command line. If you don’t
+feel comfortable with the command line, please attend our accompanying
+<a
+href="https://training.csx.cam.ac.uk/bioinformatics/course/bioinfo-unix2">Introduction
+to the Unix Command Line</a> course, which is scheduled to run just
+before this one. Alternatively, if all you need is a refresher, please
+consult our <a href="99-unix_cheatsheet.html">Command Line
+Cheatsheet</a>.</p>
+<p>Namely, we expect you to be familiar with the following:</p>
+<ul>
+<li>Navigate the filesystem, for example: <code>pwd</code> (where am
+I?), <code>ls</code> (what’s in here?), <code>cd</code> (how do I get
+there?)</li>
+<li>Investigate file content using utilities such as:
+<code>head</code>/<code>tail</code>, <code>less</code>,
+<code>cat</code>/<code>zcat</code>, <code>grep</code></li>
+<li>Using “flags” to modify a program’s behaviour, for example:
+<code>ls -l</code></li>
+<li>Redirect output with <code>&gt;</code>, for example:
+<code>echo "Hello world" &gt; some_file.txt</code></li>
+<li>Use the pipe <code>|</code> to chain several commands together, for
+example <code>ls | wc -l</code></li>
+<li>Execute shell scripts with <code>bash some_script.sh</code></li>
+</ul>
+</div>
+<div id="setup-data" class="section level3">
+<h3>Setup &amp; Data</h3>
+<p>Before attending the workshop, please install the necessary software
+following our <strong><a href="99-setup.html">setup
+instructions</a></strong>. If you have any issues installing the
+software, please <a href="mailto:bioinfo@hermes.cam.ac.uk">get in
+touch</a> with us beforehand.</p>
+<p>Please also <strong><a
+href="https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1">download
+the workshop data</a></strong> (zip file) and save it to your desktop
+(do not unzip the file).</p>
+</div>
+</div>
+<div id="authors" class="section level2">
+<h2>Authors</h2>
+<p>About the authors:</p>
+<ul>
+<li><strong>Chloe Pacyna</strong>
+<a href="https://twitter.com/ChloePacyna" target="_blank"><i class="fa-brands fa-twitter" style="color:#4078c0"></i></a>
+<a href="https://orcid.org/0000-0002-4404-8183" target="_blank"><i class="fa-brands fa-orcid" style="color:#a6ce39"></i></a>
+<a href="https://github.com/cpacyna" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a><br />
+<em>Affiliation</em>: Wellcome Sanger Institute<br />
+<em>Roles</em>: writing - review &amp; editing; writing - original
+content; coding</li>
+<li><strong>Hugo Tavares</strong>
+<a href="https://orcid.org/0000-0001-9373-2726" target="_blank"><i class="fa-brands fa-orcid" style="color:#a6ce39"></i></a>
+<a href="https://github.com/tavareshugo" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a><br />
+<em>Affiliation</em>: Bioinformatics Training Facility, University of
+Cambridge<br />
+<em>Roles</em>: writing - review &amp; editing; writing - original
+content; conceptualisation; coding</li>
+<li><strong>Lajos Kalmar</strong><br />
+<em>Affiliation</em>: MRC Toxicology, University of Cambridge<br />
+<em>Roles</em>: writing - original content; conceptualisation;
+coding</li>
+</ul>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>We thank Qi Wang (Department of Plant Sciences, University of
+Cambridge) for constructive feedback and ideas in the early iterations
+of this course.</p>
+</div>
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.img-container {
+  float: left;
+  width: 33.33%;
+  padding: 15px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+</head>
+<body>
+
+<hr>
+<div class="clearfix">
+  <div class="img-container">
+  <img src="assets/img/logo_btf.png" alt="UoC Bioinformatics Training Facility" style="width:100%">
+  <p><i class="fa-brands fa-creative-commons"></i> Licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a></p>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

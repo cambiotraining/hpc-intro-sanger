@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Sanger HPC</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="assets/styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">UoC BioinfoTraining</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fa fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="99-setup.html">
+    <span class="fa fa-gear"></span>
+     
+    Setup
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-file-lines"></span>
+     
+    Materials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="01-intro.html">Introduction to HPC</a>
+    </li>
+    <li>
+      <a href="02-working_on_hpc.html">Working on a HPC cluster</a>
+    </li>
+    <li>
+      <a href="03-lsf.html">Using the LSF Job Scheduler</a>
+    </li>
+    <li>
+      <a href="04-software.html">Managing Software</a>
+    </li>
+    <li>
+      <a href="05-job_arrays.html">Parallelising Jobs</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="99-exercises.html">
+    <span class="fa fa-pencil"></span>
+     
+    Exercises
+  </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-book"></span>
+     
+    Extras
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="99-unix_cheatsheet.html">Unix Cheatsheet</a>
+    </li>
+    <li>
+      <a href="99-lsf_cheatsheet.html">LSF Quick Reference</a>
+    </li>
+    <li>
+      <a href="99-cambridge_hpc.html">Cambridge HPC Resources</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/cambiotraining/hpc-intro-sanger">
+    <span class="fa fa-brands fa-github"></span>
+     
+    GitHub
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+
+</div>
+
+
+<div id="using-the-lsf-job-scheduler" class="section level1">
+<h1>Using the LSF Job Scheduler</h1>
+<div class="highlight">
+<div id="questions" class="section level4">
+<h4>Questions</h4>
+<ul>
+<li>How do I submit jobs to the HPC?</li>
+<li>How can I customise my jobs?</li>
+<li>How can I estimate how many resources I need for a job?</li>
+</ul>
+</div>
+<div id="lesson-objectives" class="section level4">
+<h4>Lesson Objectives</h4>
+<ul>
+<li>Submit a simple job using LSF and analyse its output.</li>
+<li>Edit a job submission script to request non-default resources.</li>
+<li>Use LSF environment variables to customise scripts.</li>
+<li>Use the commands <code>bjobs</code> and <code>bacct</code> to obtain
+information about the jobs.</li>
+<li>Troubleshoot errors occurring during job execution.</li>
+</ul>
+</div>
+</div>
+<div id="job-scheduler-overview" class="section level2">
+<h2>Job Scheduler Overview</h2>
+<p>As we briefly discussed in “<a href="01-intro.html">Introduction to
+HPC</a>”, HPC servers usually have a <em>job scheduling</em> software
+that manages all the jobs that the users submit to be run on the
+<em>compute nodes</em>. This allows efficient usage of the compute
+resources (CPUs and RAM), and the user does not have to worry about
+affecting other people’s jobs.</p>
+<p>The job scheduler uses an algorithm to prioritise the jobs, weighing
+aspects such as:</p>
+<ul>
+<li>how much time did you request to run your job?</li>
+<li>how many resources (CPUs and RAM) do you need?</li>
+<li>how many other jobs have you got running at the moment?</li>
+</ul>
+<p>Based on these, the algorithm will rank each of the jobs in the queue
+to decide on a “fair” way to prioritise them. Note that this priority
+dynamically changes all the time, as jobs are submitted or cancelled by
+the users, and depending on how long they have been in the queue. For
+example, a job requesting many resources may start with a low priority,
+but the longer it waits in the queue, the more its priority
+increases.</p>
+</div>
+<div id="submitting-a-job-with-lsf" class="section level2">
+<h2>Submitting a Job with LSF</h2>
+<p>To submit a job to LSF, you need to include your code in a <em>shell
+script</em>. Let’s start with a minimal example in
+<code>lsf/simple_job.sh</code>, which contains the following code:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 60 <span class="co"># hold for 60 seconds</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;This job is running on:&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code></pre></div>
+<p>We can run this script from the login node using the
+<code>bash</code> interpreter (make sure you are in the correct
+directory first: <code>cd ~/hpc_workshop/</code>):</p>
+<pre class="console"><code>bash lsf/simple_job.sh</code></pre>
+<pre><code>This job is running on:
+gen3-head1</code></pre>
+<p>To submit the job to the scheduler we instead use the
+<code>bsub</code> command in a very similar way:</p>
+<pre class="console"><code>bsub lsf/simple_job.sh</code></pre>
+<p>However, this throws back an error:</p>
+<pre class="console"><code>Returning output by mail is not supported on this cluster.
+Please use the -o option to write output to disk.
+Request aborted by esub. Job not submitted.</code></pre>
+<p>Do you have any ideas of what this error could be?</p>
+<p>Our job, like all LSF jobs, has an output (echo printout and the
+hostname) and job statistics about what was done on the HPC. Because the
+Sanger LSF is set up to disallow outputs to be sent to your email by
+default for security reasons, it is impossible for the job to run
+without specifying a “standard output” file. We can fix this error using
+the <code>-o</code> argument:</p>
+<pre class="console"><code>bsub -o simple_job.out lsf/simple_job.sh</code></pre>
+<p>Instead the output is sent to a file, which we called
+<code>simple_job.out</code>. This file will be located in the same
+directory where you launched the job from.</p>
+<p>However, when running again, we get another error that says:</p>
+<pre class="console"><code>Sorry no available user group specified for
+this job. Please resubmit your job with
+-G groupname or set the \$LSB_DEFAULT_USERGROUP environment variable.
+Request aborted by esub. Job not submitted.</code></pre>
+<p>The other absolutely necessary argument for submitting a job to the
+Farm is the -G groupname variable. This specifies to which group at the
+Sanger you’re billing the compute resources. We’ll be using a temporary
+testing group for this course called <code>farm-course</code>, but once
+you settle into a lab you’ll use their own group name.</p>
+<p>Let’s try adding it to the bsub argument list:</p>
+<pre class="console"><code>bsub -o simple_job.out -G farm-course lsf/simple_job.sh</code></pre>
+<p>If it was submitted correctly, we should see this message:</p>
+<pre class="console"><code>Job &lt;xxxxxx&gt; is submitted to default queue &lt;normal&gt;.</code></pre>
+<p>Once the job is finished, we can investigate the output by looking
+inside the file, for example <code>cat simple_job.out</code>.</p>
+<div class="note">
+<p>The first line of the shell scripts <code>#!/bin/bash</code> is
+called a <a
+href="https://en.wikipedia.org/wiki/Shebang_(Unix)"><em>shebang</em></a>
+and indicates which program should interpret this script. In this case,
+<em>bash</em> is the interpreter of <em>shell</em> scripts (there’s
+other shell interpreters, but that’s beyond what we need to worry about
+here).</p>
+<p>Remember to <strong>always have this as the first line of your
+script</strong>. If you don’t, <code>bsub</code> will throw an
+error.</p>
+</div>
+</div>
+<div id="configuring-job-options" class="section level2">
+<h2>Configuring Job Options</h2>
+<p>The <code>-o</code> argument is just one of over 70 different options
+for submitting a job with <code>bsub</code>. You can imagine the bsub
+command would get rather long and difficult to keep track of! To make
+submitting a job simpler and more reproducible, you can include each of
+your bsub arguments as a line starting with <code>#BSUB</code> at the
+beginning of your script within the script, after the shebang.</p>
+<p>Here is how we could modify our script:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o logs/simple_job.out</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -G farm-course</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 8 <span class="co"># hold for 8 seconds</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;This job is running on:&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code></pre></div>
+<p>If we now re-run the script using <code>bsub simple_job.sh</code>,
+the output goes to a file within the log folder named
+<code>simple_job.out</code>.</p>
+<p>There are many other options we can specify when using LSF, and we
+will encounter several more of them as we progress through the
+materials. Here are some of the most common ones (anything in
+<code>&lt;&gt;</code> is user input):</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Command</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right"><code>-cwd &lt;path&gt;</code></td>
+<td align="left"><em>working directory</em> used for the job. This is
+the directory that LSF will use as a reference when running the
+job.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>-o &lt;path/filename&gt;</code></td>
+<td align="left">file where the output that would normally be printed on
+the console is saved in. This is defined <em>relative</em> to the
+working directory set above.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>-e &lt;path/filename&gt;</code></td>
+<td align="left">file where the error log is saved in. This is defined
+<em>relative</em> to the working directory set above. If you don’t
+specify an error file, the error log will write to the <code>-o</code>
+output file.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>-G &lt;name&gt;</code></td>
+<td align="left">group name. This is required on the farm as it logs
+compute resources used for billing to your group. Ask your labmates for
+the name.</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>-q &lt;name&gt;</code></td>
+<td align="left"><em>partition</em> name. See details in the following
+section.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>- n &lt;ncores&gt;</code></td>
+<td align="left">number of CPUs to be requested.</td>
+</tr>
+<tr class="odd">
+<td
+align="right"><code>-R "select[mem&gt;&lt;megabytes_required&gt;] rusage[mem=&lt;megabytes_required&gt;]"</code></td>
+<td align="left">First part of two options to request custom RAM memory
+for the job.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>-M&lt;megabytes_required&gt;</code></td>
+<td align="left">Second part of two options to request custom RAM memory
+for the job.</td>
+</tr>
+<tr class="odd">
+<td
+align="right"><code>-W&lt;time in the form of [hour:]minute&gt;</code></td>
+<td align="left">the time you need for your job to run. This is not
+always easy to estimate in advance, so if you’re unsure you may want to
+request a good chunk of time. However, the more time you request for
+your job, the lower its priority in the queue.</td>
+</tr>
+<tr class="even">
+<td align="right"><code>-J &lt;name&gt;</code></td>
+<td align="left">a name for the job.</td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<p><strong>Default Resources</strong></p>
+<p>If you don’t specify any options when submitting your jobs, you will
+get the default configured by the HPC admins. For example, on farm5, the
+defaults you will get are:</p>
+<ul>
+<li>10 minutes of running time (equivalent to <code>-W10</code>)</li>
+<li><em>normal</em> partition (equivalent to
+<code>-q normal</code>)</li>
+<li>1 CPU (equivalent to <code>-n 1</code>)</li>
+<li>100MB RAM (equivalent to
+<code>-M100 -R "select[mem&gt;100] rusage[mem=100]"</code>)</li>
+</ul>
+</div>
+<div id="partitionsqueues" class="section level3">
+<h3>Partitions/Queues</h3>
+<p>Often, HPC servers have different types of compute node setups
+(e.g. partitions for fast jobs, or long jobs, or high-memory jobs,
+etc.). LSF calls these “queues” and you can use the <code>-q</code>
+option to choose which queue your job runs on. Usually, which queues are
+available on your HPC should be provided by the admins.</p>
+<p>It’s worth keeping in mind that these partitions have separate
+queues, so you should always try to choose the partition that is most
+suited to your job.</p>
+<p>You can check the queues available using the command
+<code>bqueues -l</code>.</p>
+<p>For example, on farm5 we have to partitions with the following
+characteristics:</p>
+<ul>
+<li>General use partitions:
+<ul>
+<li><code>normal</code> partition (default) with a maximum 12 hours</li>
+<li><code>long</code> partition with a maximum 48 hours</li>
+<li><code>basement</code> partition with a maximum 30 days; only 300
+basement jobs are allowed per user simultaneously.</li>
+</ul></li>
+<li>Special case partitions:
+<ul>
+<li><code>hugemem</code>/<code>hugemem-restricted</code>/<code>teramem</code>
+queues for large memory machines (512GB/1TB).</li>
+<li><code>yesterday</code> partition for very urgent jobs that need to
+be done “yesterday”; only 7 jobs allowed per user simultaneously.</li>
+<li><code>small</code> partition for many, very small jobs (batches 10
+jobs together to prevent scheduler overload).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="getting-job-information" class="section level2">
+<h2>Getting Job Information</h2>
+<p>After submitting a job, we may want to know:</p>
+<ul>
+<li>What is going on with my job? Is it running, has it finished?</li>
+<li>If it finished, did it finish successfully, or did it fail?</li>
+<li>How many resources (e.g. RAM) did it use?</li>
+<li>What if I want to cancel a job because I realised there was a
+mistake in my script?</li>
+</ul>
+<p>You can check the status of all your jobs in the queue by using:</p>
+<pre class="console"><code>bjobs -w</code></pre>
+<p>Or get detailed information on one job in particular with:</p>
+<pre class="console"><code>bjobs -l &lt;JOBID&gt;</code></pre>
+<p>This gives you information about the job’s status while it’s running:
+<code>PEND</code> means it’s <em>pending</em> (waiting in the queue) and
+<code>RUN</code> means it’s <em>running</em>.</p>
+<p>Once the job is complete, you can still use
+<code>bjobs -l &lt;JOBID&gt;</code> to get job statistics. However, you
+may find it a bit easier to use <code>bhist</code> (below) as it
+includes time and memory usage in a bit easier-to-read way.</p>
+<pre class="console"><code>bhist -l JOBID</code></pre>
+<p>This shows you the status of the job, whether it completed or not,
+how long it took to run, and how much memory it used. Therefore, this
+command is very useful to determine suitable resources (e.g. RAM, time)
+next time you run a similar job.</p>
+<p>Alternatively, you can use the <code>bacct</code> command once a job
+has completed, which allows displaying this and other information in a
+more condensed way (and for multiple jobs if you want to).</p>
+<p>For example:</p>
+<pre class="console"><code>bacct JOBID</code></pre>
+<p>will give you information about one specific job</p>
+<p>You can add other options to the bacct command to glean more or less
+information with:</p>
+<ul>
+<li><code>-l</code> for extra information about the job</li>
+<li><code>-b</code> for brief information about the job</li>
+</ul>
+<p>You can also select groups of jobs based on certain characteristics,
+like:</p>
+<ul>
+<li><code>-q &lt;partition&gt;</code> to select all jobs you’ve run in a
+certain partition</li>
+<li><code>-d</code> to select all jobs that have completed
+successfully</li>
+<li><code>-e</code> to select all jobs that had end status of EXIT
+(failed)</li>
+<li><code>-x</code> to select jobs that raised an exception while
+running</li>
+</ul>
+<p>As a rule, running bacct without the -l option results in aggregate
+job statistics for the jobs included, while with the -l option results
+in a long list of separate, per-job statistics.</p>
+<p>All the options available with <code>bacct</code> can be listed using
+<code>bacct -h</code>. If you forgot what the job id is, check the
+stdout file (created with the <code>-o</code> argument of bsub).</p>
+<div class="note">
+<p>The <code>bacct</code> command may not be available on every HPC, as
+it depends on how it was configured by the admins.<br />
+On our farm, <code>bacct</code> is reading information from
+<code>/usr/local/lsf/work/&lt;cluster_name&gt;/logdir/lsb.acct.*</code>.</p>
+</div>
+<p>Finally, if you want to suspend a job, you can use:</p>
+<pre class="console"><code>bstop &lt;JOBID&gt;</code></pre>
+<p>Suspended jobs can be restarted using:</p>
+<pre class="console"><code>bresume &lt;JOBID&gt;</code></pre>
+<p>To irreversibly end a job, use:</p>
+<pre class="console"><code>bkill &lt;JOBID&gt;</code></pre>
+<p>All three commands <code>bstop</code>, <code>bresume</code>, and
+<code>bkill</code> can be applied to all of your own jobs by replacing
+the job ID with <code>0</code>.</p>
+<p>It’s impossible to edit other users’ jobs, so don’t worry about
+accidentally deleting everyone’s Farm jobs!</p>
+<div class="warning">
+<p><strong>WATCH OUT</strong></p>
+<p>When specifying the <code>-o</code> option including a directory
+name, if the output directory does not exist, <code>bjobs</code> will
+fail and throw the same ‘mail’ command as we saw earlier.</p>
+<p>For example, let’s say that we would like to keep our job output
+files in a folder called “logs”. For the example above, we might set
+these #BSUB options:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o logs/simple_job.log</span></span></code></pre></div>
+<p>But, unless we create the <code>logs/</code> directory <em>before
+running the job</em>, <code>bjobs</code> will fail.</p>
+<p>Another thing to note is that you should not use the <code>~</code>
+home directory shortcut with the <code>-cwd</code> option. For
+example:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd ~/hpc_workshop/</span></span></code></pre></div>
+<p>will not reliably work. Instead you should use the full path as shown
+above.</p>
+</div>
+<div class="exercise">
+<p>In the “scripts” directory, you will find an R script called
+<code>pi_estimator.R</code>. This script tries to get an approximate
+estimate for the number Pi using a stochastic algorithm.</p>
+<details>
+<summary>
+How does the algorithm work?
+</summary>
+<p>If you are interested in the details, here is a short description of
+what the script does:</p>
+<blockquote>
+<p>The program generates a large number of random points on a 1×1 square
+centered on (½,½), and checks how many of these points fall inside the
+unit circle. On average, π/4 of the randomly-selected points should fall
+in the circle, so π can be estimated from 4f, where f is the observed
+fraction of points that fall in the circle. Because each sample is
+independent, this algorithm is easily implemented in parallel.</p>
+</blockquote>
+<div class="figure">
+<img src="https://carpentries-incubator.github.io/hpc-intro/fig/pi.png"
+style="width:50.0%" alt="" />
+<p class="caption">Estimating Pi by randomly placing points on a quarter
+circle. (Source: <a
+href="https://carpentries-incubator.github.io/hpc-intro/16-parallel/index.html">HPC
+Carpentry</a>)</p>
+</div>
+</details>
+<p>If you were running this script interactively (i.e. directly from the
+console), you would directly run the script via command line
+interpreter:
+<code>/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R</code>.
+Instead, we use a shell script to submit this to the job scheduler.</p>
+<p>In order to run this script, we need to install the required package,
+argparse, into the Farm’s R console. Pause here to work through the
+below instructions:</p>
+<div class="note">
+<p><strong>Installing required R packages</strong></p>
+<p>The pi_estimator.R script requires the R library
+<code>argparse</code>, which must first be installed into your R
+workspace. Because you’re using R on this HPC for the first time, you’ll
+need to install the package to run the script successfully. You should
+only have to run this once, as when using R on your local machine.</p>
+<p>To do so, we will first open an R window by typing <code>R</code>. To
+install the package, we’ll type
+<code>install.packages('argparse')</code>. This will prompt a few
+questions. Type <code>yes</code> when asked to create a personal
+library, <code>yes</code> when asked to approve the default library
+location, and select a server for the download (<code>67</code> is
+fine). Typical package installation readout will appear on the
+screen.</p>
+<p>Once this is complete, check to make sure it installed properly by
+trying to load the package <code>library(argparse)</code>. If there are
+no errors, the R library loaded ok.</p>
+<p>To exit the R console, simply enter control+D. You’ll be asked if you
+want to save the workspace image - typing <code>n</code> is fine in this
+case.</p>
+</div>
+<p>Now we’re ready to run the <code>estimate_pi.sh</code> script.</p>
+<ol style="list-style-type: decimal">
+<li>Edit the shell script in <code>lsf/estimate_pi.sh</code> by
+correcting the code where the word “FIXME” appears. Submit the job to
+LSF and check its status in the queue.</li>
+<li>How long did the job take to run?
+<details>
+<summary>
+Hint
+</summary>
+Use <code>bhist -l JOBID</code> or <code>bacct -l JOBID</code>.
+</details></li>
+<li>The number of samples used to estimate Pi can be modified using the
+<code>--nsamples</code> option of our script, defined in millions. The
+more samples we use, the more precise our estimate should be.
+<ul>
+<li>Adjust your LSF submission script to use 200 million samples
+(<code>/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R --nsamples 200</code>),
+and save the job output in <code>logs/estimate_pi_200M.out</code> and
+<code>logs/estimate_pi_200M.err</code>.</li>
+<li>Monitor the job status with <code>bjobs</code> and
+<code>bhist -l JOBID</code>. Review the outfiles in your log folder. Do
+you find any issues?</li>
+</ul></li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p><strong>A1.</strong></p>
+<p>In the shell script we needed to correct the user-specific details in
+the <code>#BSUB</code> options. Also, we needed to specify the path to
+the script we wanted to run. This can be defined relative to the working
+directory that we’ve set with <code>-cwd</code>. For example:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal  # name of the queue to run job on</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop  # working directory</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o logs/estimate_pi.out  # standard output file</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e logs/estimate_pi.err  # standard error file</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n 1        # number of CPUs. Default: 1</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R &quot;select[mem&gt;1000] rusage[mem=1000]&quot; # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M1000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># run the script</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/software/R-4.1.3/bin/Rscript</span> scripts/pi_estimator.R</span></code></pre></div>
+<pre class="console"><code>bsub lsf/estimate_pi.sh</code></pre>
+<p><strong>A2.</strong></p>
+<p>As suggested in the hint, we can use the <code>bhist</code> or
+<code>bacct</code> commands for this:</p>
+<pre class="console"><code>bhist -l JOBID
+bacct -l JOBID</code></pre>
+<p>Replacing JOBID with the ID of the job we just ran.</p>
+<p>If you cannot remember what the job id was, you can check all your
+jobs using <code>bjobs</code> or view the outfile generated at the
+beginning of the run.</p>
+<p>Sometimes it may happen that the “Memory Usage” (or MEM) is reported
+as 0M or a lower value than you would expect. That’s very odd, since for
+sure our script must have used <em>some</em> memory to do the
+computation. The reason is that LSF doesn’t always have time to pick
+memory usage spikes, and so it reports a zero. This is usually not an
+issue with longer-running jobs.</p>
+<p><strong>A3.</strong></p>
+<p>The modified script should look similar to this:</p>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal  # name of the partition to run job on</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -G farm-course # groupname for billing</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIA/USERID/hpc_workshop  # working directory</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e logs/estimate_pi_200M.err  # standard error file</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n1        # number of CPUs. Default: 1</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R &quot;select[mem&gt;1000] rusage[mem=1000] span[hosts=1]&quot; # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M1000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># run the script</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/software/R-4.1.3/bin/Rscript</span> scripts/pi_estimator.R <span class="at">--nsamples</span> 200</span></code></pre></div>
+<p>And then send the job to the job scheduler:</p>
+<pre class="console"><code>bsub lsf/estimate_pi.sh</code></pre>
+<p>However, when we run this job, examining the output file
+(<code>cat logs/estimate_pi_200M.out</code>) will reveal and error
+indicating that our job was killed. There are few clues for this, most
+obviously this note:</p>
+<pre class="console"><code>TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 1.</code></pre>
+<p>Furthermore, if we use <code>bjobs</code> to get information about
+the job, it will show <code>EXIT</code> as the status instead of
+<code>DONE</code>.</p>
+<p>We can also check this by seeing what <code>bacct -l</code> reports
+as “Memory Utilized” and see that it used 100% of the memory we gave the
+job. There is also this table in the output of this command:</p>
+<pre><code>Share group charged &lt;/WTSI/other/farm-course/ht10&gt;
+     CPU_T     WAIT     TURNAROUND   STATUS     HOG_FACTOR    MEM    SWAP
+     10.71        1             13     exit         0.8240   2.1G      0M
+     CPU_PEAK     CPU_EFFICIENCY      MEM_EFFICIENCY
+      0.83                83.33%             220.00%</code></pre>
+<p>We can see that our job tried to use <em>at least</em> 2.1G (maybe it
+would have needed even more), but we only requested 1000M (~1G). So,
+that explains why it was killed!</p>
+<p>To correct this problem, we would need to increase the memory
+requested to LSF, adding to our script, for example,
+<code>#BSUB -R "select[mem&gt;30000] rusage [mem=30000] span[hosts=1]"</code>
+and <code>#BSUB -M 30000</code> to request 30Gb of RAM memory for the
+job.</p>
+</details>
+</div>
+</div>
+<div id="lsf-environment-variables" class="section level2">
+<h2>LSF Environment Variables</h2>
+<p>One useful feature of LSF jobs is the automatic creation of
+environment variables. Generally speaking, variables are a character
+that store a value within them, and can either be created by us, or
+sometimes they are automatically created by programs or available by
+default in our shell.</p>
+<div class="note">
+<details>
+<summary>
+More about shell variables
+</summary>
+<p>An example of a common shell environment variable is
+<code>$HOME</code>, which stores the path to the user’s
+<code>/home</code> directory. We can print the value of a variable with
+<code>echo $HOME</code>.</p>
+<p>The syntax to create a variable ourselves is:</p>
+<pre class="shell"><code>VARIABLE=&quot;value&quot;</code></pre>
+<p>Notice that there should be <strong>no space between the variable
+name and its value</strong>.</p>
+<p>If you want to create a variable with the result of evaluating a
+command, then the syntax is:</p>
+<pre class="shell"><code>VARIABLE=$(command)</code></pre>
+<p>Try these examples:</p>
+<pre class="shell"><code># Make a variable with a path starting from the user&#39;s /home
+DATADIR=&quot;$HOME/hpc_workshop/data/&quot;
+
+# list files in that directory
+ls $DATADIR
+
+# create a variable with the output of that command
+DATAFILES=$(ls $DATADIR)</code></pre>
+</details>
+</div>
+<p>When you submit a job with LSF, it creates several variables, all
+starting with the prefix <code>$LSB_</code>. One useful variable is
+<code>$LSB_MAX_NUM_PROCESSORS</code>, which stores how many CPUs we
+requested for our job. This means that we can use the variable to
+automatically set the number of CPUs for software that support
+multi-processing. We will see an example in the following exercise.</p>
+<div class="exercise">
+<p>The R script used in the previous exercise supports parallelisation
+of some of its internal computations. The number of CPUs used by the
+script can be modified using the <code>--ncpus</code> option. For
+example <code>pi_estimator.R --nsamples 200 --ncpus 2</code> would use
+two CPUs.</p>
+<ol style="list-style-type: decimal">
+<li>Modify your submission script (<code>lsf/estimate_pi.sh</code>) to:
+<!-- 1. Should you still use the `normal` partition? -->
+<ol style="list-style-type: decimal">
+<li>Use the <code>$LSB_MAX_NUM_PROCESSORS</code> variable to set the
+number of CPUs used by <code>pi_estimator.R</code> (and ensure you have
+set <code>--nsamples 200</code> as well).</li>
+<li>Request 10G of RAM memory for the job.</li>
+<li>Bonus (optional): use <code>echo</code> within the script to print a
+message indicating the job number (LSF’s job ID is stored in the
+variable <code>$LSB_JOBID</code>).</li>
+</ol></li>
+<li>Submit the job three times, each one using 1, 2 and then 8 CPUs.
+Make a note of each job’s ID.</li>
+<li>Check how much time each job took to run (using
+<code>bhist JOBID</code> or <code>bacct JOBID</code>). Did increasing
+the number of CPUs shorten the time it took to run?</li>
+</ol>
+<details>
+<summary>
+Answer
+</summary>
+<p><strong>A1.</strong></p>
+<p>We can modify our submission script in the following manner, for
+example for using 2 CPUs:</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal     # partiton name</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -D /nfs/users/user_USERINITIAL/USERID/hpc_workshop/  # working directory</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o logs/estimate_pi_200M_2cpu.out      # output file</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e logs/estimate_pi_200M_2cpu.err      # error file</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R &quot;select[mem&gt;10000] rusage[mem=10000]&quot; # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M10000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n 2                          # number of CPUs</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># launch the Pi estimator script using the number of CPUs that we are requesting from LSF</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/software/R-4.1.3/bin/Rscript</span> exercises/pi_estimator.R <span class="at">--nsamples</span> 200 <span class="at">--ncpus</span> <span class="va">$LSB_MAX_NUM_PROCESSORS</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># echo number of CPUS</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Processors used: </span><span class="va">$LSB_MAX_NUM_PROCESSORS</span><span class="st">&quot;</span></span></code></pre></div>
+<p>You can then run the script using this command:</p>
+<pre class="console"><code>bsub lsf/estimate_pi.sh</code></pre>
+<p>We can run the job multiple times while modifying the
+<code>#BSUB -n</code> option, saving the file and re-running
+<code>bsub lsf/estimate_pi.sh</code>.</p>
+<p>After running each job we can use <code>bhist JOBID</code> or
+<code>bjobs -l JOBID</code> or <code>bacct JOBID</code> commands to
+obtain information about how long it took to run.</p>
+<p>In this case, it does seem that increasing the number of CPUs
+shortens the time the job takes to run. However, the increase is not
+linear at all. For example going from 1 to 2 CPUs seems to make the job
+run faster, however increasing to 8 CPUs makes little difference
+compared to 2 CPUs (this may depend on how many <code>--nsamples</code>
+you used). This is possibly because there are other computational costs
+to do with this kind of parallelisation (e.g. keeping track of what each
+parallel thread is doing).</p>
+</details>
+</div>
+<p>Here is a table summarising some of the most useful environment
+variables that LSF creates:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Variable</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right"><code>$LSB_MAX_NUM_PROCESSORS</code></td>
+<td align="left">Number of CPUs requested with <code>-n</code></td>
+</tr>
+<tr class="even">
+<td align="right"><code>$LSB_JOBID</code></td>
+<td align="left">The job ID</td>
+</tr>
+<tr class="odd">
+<td align="right"><code>$LSB_JOBNAME</code></td>
+<td align="left">The name of the job defined with <code>-J</code></td>
+</tr>
+<tr class="even">
+<td align="right"><code>$LSB_EXECCWD</code></td>
+<td align="left">The working directory defied with
+<code>-cwd</code></td>
+</tr>
+<tr class="odd">
+<td align="right"><code>$LSB_JOBINDEX</code></td>
+<td align="left">The number of the sub-job when running parallel arrays
+(covered in the <a href="05-job_arrays.html">Job Arrays</a>
+section)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="interactive-login" class="section level2">
+<h2>Interactive Login</h2>
+<p>Sometimes it may be useful to directly get a terminal on one of the
+compute nodes. This may be useful, for example, if you want to test some
+scripts or run some code that you think might be too demanding for the
+login node (e.g. to compress some files).</p>
+<p>It is possible to get interactive access to a terminal on one of the
+compute nodes using the <code>-Is</code> argument in <code>bsub</code>.
+This command takes options similar to the normal <code>bsub</code>
+program, so you can request resources in the same way you would when
+submitting scripts.</p>
+<p>For example, to access to 8 CPUs and 10GB of RAM for 10 minutes on
+one of the compute nodes we would do:</p>
+<pre class="console"><code>bsub -G farm-course -Is -n8 -R &quot;select[mem&gt;1000] rusage[mem=1000]&quot; -M1000 -q normal -W10 bash</code></pre>
+<p>You may get a message saying that LSF is waiting to allocate your
+request (you go in the queue, just like any other job!). Eventually,
+when you get in, you will notice that your terminal will indicate you
+are on a different node (different from the login node). You can check
+by running <code>hostname</code>.</p>
+<p>After you’re in, you can run any commands you wish, without worrying
+about affecting other users’ work. Once you are finished, you can use
+the command <code>exit</code> to terminate the session, and you will go
+back to the login node.</p>
+<p>Note that, if the time you requested (with the <code>-W</code>
+option) runs out, your session will be immediately killed.</p>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<div class="highlight">
+<div id="key-points" class="section level4">
+<h4>Key Points</h4>
+<ul>
+<li>Include the commands you want to run on the HPC in a shell script.
+<ul>
+<li>Always remember to include <code>#!/bin/bash</code> as the first
+line of your script.</li>
+</ul></li>
+<li>Submit jobs to the scheduler using
+<code>bsub submission_script.sh</code>.</li>
+<li>Customise the jobs by including <code>#BSUB</code> options at the
+top of your script (see table in the materials above for a summary of
+options).
+<ul>
+<li>As a good practice, always define an output file with
+<code>#BSUB -o</code>. All the information about the job will be saved
+in that file, including any errors.</li>
+</ul></li>
+<li>Check the status of a submitted job by using <code>bjobs</code>. You
+can get detailed information about a job (such as the time it took to
+run or how many resources it used) using <code>bjobs -l JOBID</code> or
+<code>bacct -l JOBID</code> or <code>bhist JOBID</code>.</li>
+<li>To cancel a running job use <code>bkill JOBID</code>.</li>
+</ul>
+</div>
+<div id="further-resources" class="section level4">
+<h4>Further resources</h4>
+<ul>
+<li><a
+href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference">IBM
+Spectrum LSF Reference Site</a></li>
+<li><a
+href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-bsub">bsub
+Reference Page</a></li>
+<li><a href="https://slurm.schedmd.com/rosetta.gif">LSF to
+PBS/SLURM/SGE/LoadLeveler schedulers</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.img-container {
+  float: left;
+  width: 33.33%;
+  padding: 15px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+</head>
+<body>
+
+<hr>
+<div class="clearfix">
+  <div class="img-container">
+  <img src="assets/img/logo_btf.png" alt="UoC Bioinformatics Training Facility" style="width:100%">
+  <p><i class="fa-brands fa-creative-commons"></i> Licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a></p>
+  </div>
+</div>
+
+</body>
+</html>
+
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
