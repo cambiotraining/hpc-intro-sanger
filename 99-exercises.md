@@ -308,7 +308,7 @@ In order to run this script, we need to install the required package, argparse, 
 
 The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
 
-To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`72` is fine).  Typical package installation readout will appear on the screen.
+To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`67` is fine).  Typical package installation readout will appear on the screen.
 
 Once this is complete, check to make sure it installed properly by trying to load the package `library(argparse)`.  If there are no errors, the R library loaded ok.  
 
@@ -328,20 +328,20 @@ Now we're ready to run the `estimate_pi.sh` script.
 
 **A1.**
 
-In the shell script we needed to correct the user-specific details in the `#BJOBS` options.
+In the shell script we needed to correct the user-specific details in the `#BSUB` options.
 Also, we needed to specify the path to the script we wanted to run.
-This can be defined relative to the working directory that we've set with `-D`.
+This can be defined relative to the working directory that we've set with `-cwd`.
 For example:
 
 ```bash
 #!/bin/bash
-#BJOBS -q normal  # name of the queue to run job on
-#BJOBS -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop  # working directory
-#BJOBS -o logs/estimate_pi.out  # standard output file
-#BJOBS -e logs/estimate_pi.err  # standard error file
-#BJOBS -n 1        # number of CPUs. Default: 1
-#BJOBS -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
-#BJOBS -M1000  # RAM memory part 2. Default: 100MB
+#BSUB -q normal  # name of the queue to run job on
+#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop  # working directory
+#BSUB -o logs/estimate_pi.out  # standard output file
+#BSUB -e logs/estimate_pi.err  # standard error file
+#BSUB -n 1        # number of CPUs. Default: 1
+#BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
+#BSUB -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
 /software/R-4.1.3/bin/Rscript scripts/pi_estimator.R
@@ -415,7 +415,7 @@ Share group charged </WTSI/other/farm-course/ht10>
 
 We can see that our job tried to use _at least_ 2.1G (maybe it would have needed even more), but we only requested 1000M (~1G). So, that explains why it was killed!
 
-To correct this problem, we would need to increase the memory requested to LSF, adding to our script, for example, `#BJOBS -R "select[mem>30000] rusage [mem=30000] span[hosts=1]"` and `#BJOBS -M 30000` to request 30Gb of RAM memory for the job.
+To correct this problem, we would need to increase the memory requested to LSF, adding to our script, for example, `#BSUB -R "select[mem>30000] rusage [mem=30000] span[hosts=1]"` and `#BSUB -M 30000` to request 30Gb of RAM memory for the job.
 
 </details>
 
@@ -466,7 +466,7 @@ You can then run the script using this command:
 bsub lsf/estimate_pi.sh
 ```
 
-We can run the job multiple times while modifying the `#BJOBS -n` option, saving the file and re-running `bjobs lsf/estimate_pi.sh`.
+We can run the job multiple times while modifying the `#BSUB -n` option, saving the file and re-running `bsub lsf/estimate_pi.sh`.
 
 After running each job we can use `bhist JOBID` or `bjobs -l JOBID` or `bacct JOBID` commands to obtain information about how long it took to run.  
 
