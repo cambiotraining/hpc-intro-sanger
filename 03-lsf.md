@@ -399,7 +399,7 @@ The modified script should look similar to this:
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
-Rscript scripts/pi_estimator.R --nsamples 200
+/software/R-4.1.3/bin/Rscript scripts/pi_estimator.R --nsamples 200
 ```
 
 And then send the job to the job scheduler:
@@ -515,7 +515,7 @@ We can modify our submission script in the following manner, for example for usi
 #BSUB -n 2                          # number of CPUs
 
 # launch the Pi estimator script using the number of CPUs that we are requesting from LSF
-Rscript exercises/pi_estimator.R --nsamples 200 --ncpus $LSB_MAX_NUM_PROCESSORS
+/software/R-4.1.3/bin/Rscript exercises/pi_estimator.R --nsamples 200 --ncpus $LSB_MAX_NUM_PROCESSORS
 
 # echo number of CPUS
 echo "Processors used: $LSB_MAX_NUM_PROCESSORS"
