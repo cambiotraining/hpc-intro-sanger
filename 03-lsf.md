@@ -274,7 +274,7 @@ It's impossible to edit other users' jobs, so don't worry about accidentally del
 :::warning
 **WATCH OUT**
 
-When specifying the `-o` option including a directory name, if the output directory does not exist, `bjobs` will fail and throw the same 'mail' command as we saw earlier.
+When specifying the `-o` option including a directory name, if the output directory does not exist, `bjobs` will still run, but produce no output file.
 
 For example, let's say that we would like to keep our job output files in a folder called "logs".
 For the example above, we might set these #BSUB options:
@@ -284,7 +284,7 @@ For the example above, we might set these #BSUB options:
 #BSUB -o logs/simple_job.log
 ```
 
-But, unless we create the `logs/` directory _before running the job_, `bjobs` will fail.
+But, unless we create the `logs/` directory _before running the job_, `bjobs` will not produce a file of standard output.
 
 Another thing to note is that you should not use the `~` home directory shortcut with the `-cwd` option. For example:
 
@@ -322,7 +322,7 @@ In order to run this script, we need to install the required package, argparse, 
 
 The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
 
-To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`67` is fine).  Typical package installation readout will appear on the screen.
+To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`65` is fine).  Typical package installation readout will appear on the screen.
 
 Once this is complete, check to make sure it installed properly by trying to load the package `library(argparse)`.  If there are no errors, the R library loaded ok.  
 
