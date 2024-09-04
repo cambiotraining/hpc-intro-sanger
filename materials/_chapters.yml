@@ -1,0 +1,11 @@
+book:
+  chapters:
+    - part: "Working on a HPC"
+      chapters:
+        - materials/01-intro.md
+        - materials/02-ssh_files.md
+        - materials/03-lsf.md
+        - materials/04-software.md
+        - materials/05-arrays.md
+  appendices:
+    - materials/appendices/lsf_cheatsheet.md
