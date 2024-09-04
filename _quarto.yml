@@ -46,6 +46,9 @@ book:
   navbar:
     pinned: true
     logo: "_extensions/cambiotraining/courseformat/img/university_crest_reversed.png"
+    left: 
+      - text: Slides
+        href: https://docs.google.com/presentation/d/14B7jHJUJ010xqhMwyTL1eh_DT9ih7Nf2sKmdL0dLnOM/edit?usp=sharing
     right:
       - icon: github
         href: https://github.com/cambiotraining/hpc-intro-sanger
