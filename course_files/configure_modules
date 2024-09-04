@@ -1,0 +1,1 @@
+export MODULEPATH=/software/CGP/modules/latest:/software/CGP/modules/modulefiles:$MODULEPATH
