@@ -265,8 +265,8 @@ All three commands `bstop`, `bresume`, and `bkill` can be applied to all of your
 
 It's impossible to edit other users' jobs, so don't worry about accidentally deleting everyone's Farm jobs!
 
-:::warning
-**WATCH OUT**
+:::{callout-warning}
+#### WATCH OUT
 
 When specifying the `-o` option including a directory name, if the output directory does not exist, `bjobs` will still run, but produce no output file.
 
@@ -486,7 +486,7 @@ Here is a table summarising some of the most useful environment variables that L
 | `$LSB_JOBID` | The job ID |
 | `$LSB_JOBNAME` | The name of the job defined with `-J` |
 | `$LSB_EXECCWD` | The working directory defied with `-cwd` |
-| `$LSB_JOBINDEX` | The number of the sub-job when running parallel arrays (covered in the [Job Arrays](05-arrays.md) section) |
+| `$LSB_JOBINDEX` | The number of the sub-job when running parallel arrays (covered in the [Job Arrays](06-arrays.md) section) |
 
 
 ### Exercise

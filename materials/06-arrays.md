@@ -192,7 +192,7 @@ Let's see this in practice in @ex-jobindex.
 
 ![](images/mapping.png){ width=50% }
 
-Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](05-software.md#example-sequence-read-alignment), we now want to map each of our samples' sequence data to the reference genome.
+Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](04-software.md#example-sequence-read-alignment), we now want to map each of our samples' sequence data to the reference genome.
 
 Looking at our data directory (`ls hpc_workshop/data/reads`), we can see several sequence files in standard _fastq_ format.
 These files come in pairs (with suffix "_1" and "_2"), and we have 8 different samples.

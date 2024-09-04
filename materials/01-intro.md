@@ -87,7 +87,7 @@ A job scheduler is a software used to submit commands to be run on the compute n
 This is needed because there may often be thousands of processes that all the users of the HPC want to run at any one time.
 The job scheduler's role is to manage all these jobs, so you don't have to worry about it.
 
-We will cover the details of how to use a job scheduler in "[Using the LSF Job Scheduler](03-lsf.md)".
+We will cover the details of how to use a job scheduler in "[Using the LSF Job Scheduler](04-lsf.md)".
 For now, it is enough to know that, using the job scheduler, the user can request specific resources to run their job (e.g. number of cores, RAM, how much time we want to reserve the compute node to run our job, etc.).
 The job scheduler software then takes care of considering all the jobs being submitted by all the users and putting them in a queue until there are compute nodes available to run the job with the requested resources.
 
