@@ -2,7 +2,16 @@
 pagetitle: "Sanger HPC"
 ---
 
-# Moving Files
+# File Transfer
+
+:::{.callout-tip}
+#### Learning Objectives
+
+- Move files in and out of the HPC storage using _Filezilla_ or `rsync`/`scp`. 
+:::
+
+
+## Moving Files
 
 There are several options to move data between your local computer and a remote server.
 We will cover three possibilities in this section, which vary in their ease of use.
