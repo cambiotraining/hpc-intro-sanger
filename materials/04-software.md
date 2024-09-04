@@ -22,10 +22,11 @@ Because there can be a large number of packages (and often different versions of
 The following table summarises the most common commands for this tool:
 
 | Command | Description |
-| -: | :--------- |
+| -: | :- |
 | `module avail ` | List all available packages. |
-| `module avail 2>&1 | grep -i <pattern>` | Search the available package list that matches "pattern". |
+| `module avail -a -i "pattern"` <br> or <br> `module avail 2>&1 | grep -i "pattern"` | Search the available package list that matches "pattern". Note the second option is given as some versions of `module` do not support case-insensitive search (`-i` option). |
 | `module load <program>` | Load the program and make it available for use. |
+| `module unload <program>` | Unload the program (removes it from your PATH). |
 
 If a package is not available through the `module` command, you can contact the HPC admin and ask them to install it for you.
 Alternatively, you can use a package manager as we show in the next section.
@@ -46,6 +47,7 @@ If you log off the farm during this course, you'll need to rerun this `export` o
 ### Exercise
 
 ::: {.callout-exercise}
+#### Software modules
 
 Let's load the software package **bowtie2** so we can index and align a drosophila genome.
 
@@ -63,11 +65,37 @@ Use `module avail` to list all software packages available on gen3.
 
 **A2.**
 
-`module load bowtie2`
+We can first search to see which (if any) modules are available for this software: 
+
+```bash
+module avail 2>&1 | grep -i "bowtie"
+```
+
+We seem to have a couple of versions available:
+
+```
+bowtie/1.2.2(default)
+bowtie2/2.3.5.1(default)
+```
+
+As we are interested in version 2, we can load the module with:
+
+```bash
+module load bowtie2
+```
+
+If there were even more versions available and you wanted a non-default one, you could load it more explicitly with the full name shown above: 
+
+```bash
+module load bowtie2/2.3.5.1
+```
+
 
 **A3**
 
-Simply typing in `bowtie2` or any other command from the bowtie package should print out a help page from the software.  If this doesn't come up or if an error appears, you likely didn't manage to load the module properly.  This is a good sanity check when loading modules.
+Simply typing in `bowtie2` or any other command from the bowtie package should print out a help page from the software.
+If this doesn't come up or if an error appears, you likely didn't manage to load the module properly.
+This is a good sanity check when loading modules.
 
 **A4**
 
@@ -91,7 +119,7 @@ For our genome alignment @ex-alignment, we'll pretend that you have already stag
 ### Exercise
 
 ::: {.callout-exercise #ex-alignment}
-#### Sequence read alignment
+#### Using modules with LSF
 
 In the `hpc_workshop/data` folder, you will find some files resulting from whole-genome sequencing individuals from the model organism _Drosophila melanogaster_ (fruit fly).
 Our objective will be to align our sequences to the reference genome, using a software called _bowtie2_.
@@ -107,13 +135,13 @@ Open the script in `lsf/drosophila_genome_indexing.sh` and edit the `#BSUB` opti
 
 We need to fix the script to specify the correct working directory with our username (only showing the relevant line of the script):
 
-```
+```bash
 #BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/
 ```
 
 We also need to make sure we load the module in the compute node, by adding:
 
-```
+```bash
 module load bowtie2
 ```
 
@@ -152,9 +180,25 @@ index.rev.2.bt2
 ## Package managers
 
 Often you may want to use software packages that are not be installed by default on the HPC.
-There are several ways you could manage your own software installation, one of the most popular ones being the use of the package manager **Mamba** (the successor of Conda).
+There are several ways you could manage your own software installation, one of the most popular ones being the use of the package manager **Conda** or its newer implementation **Mamba**.
 
-Covering Mamba is out of the scope of these materials, but check out our course "[Reproducible and scalable bioinformatics: managing software and pipelines](https://training.cam.ac.uk/bioinformatics/course/bioinfo-Biopipelines)".
+Covering Conda/Mamba is out of the scope of these materials, but check out our course [**Reproducible and scalable bioinformatics: managing software and pipelines**](https://training.cam.ac.uk/bioinformatics/course/bioinfo-Biopipelines) to learn more about this topic.
+
+If you are familiar with Conda/Mamba, you may know that to activate a software environment you use the command `mamba activate`.
+However, to load environments in a shell script that is being submitted to LSF you need to first source a configuration file from Conda/Mamba.
+For example, let's say we had an environment called `datasci`; to activate it in our LSF script, we would need the following syntax:
+
+```bash
+# Always add these two commands to your scripts
+eval "$(conda shell.bash hook)"
+source $CONDA_PREFIX/etc/profile.d/mamba.sh
+
+# then you can activate the environment
+mamba activate datasci
+```
+
+This is because when we submit jobs to LSF the jobs will start in a non-interactive shell, and `mamba` doesn't get automatically set. 
+Running the `source` command shown will ensure `mamba activate` becomes available. 
 
 ::: {.callout-note}
 #### Mamba versus Module
@@ -179,10 +223,4 @@ This means you will use fewer resources and your jobs will complete faster.
 - Use `conda activate <ENV>` to "activate" the software environment and make all the programs installed there available. 
   - When submitting jobs to `bsub`, always remember to include `source $CONDA_PREFIX/etc/profile.d/conda.sh` at the start of the shell script, followed by the `conda activate` command. 
 - Always remember to include either `module load` or `conda activate` in your submission script.
-
-**Further resources:**
-
-- Search for _Conda_ packages at [anaconda.org](https://anaconda.org)
-- Learn more about _Conda_ from the [Conda User Guide](https://docs.conda.io/projects/conda/en/latest/user-guide/)
-- [Conda Cheatsheet](https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html) (PDF)
 :::

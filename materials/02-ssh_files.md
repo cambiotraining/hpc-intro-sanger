@@ -308,7 +308,7 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 :::
 
 
-## Exercise
+### Exercise
 
 ::: {.callout-exercise}
 #### Copying files to the cluster
