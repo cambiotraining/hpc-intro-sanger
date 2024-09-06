@@ -15,12 +15,13 @@ Below, we give details to help you prepare each section of the materials.
 
 This is a general introduction to HPC, followed by specifics about the FARM.
 
-- Starts with a presentation which should last ~35 min ([slides](https://docs.google.com/presentation/d/1KmnSznETddQdRYa6UAXtT-eMOsW7tEwbsOh0fK62c84/edit?usp=sharing))
+- Starts with a presentation which should last ~35 min ([slides](https://docs.google.com/presentation/d/14B7jHJUJ010xqhMwyTL1eh_DT9ih7Nf2sKmdL0dLnOM/edit?usp=sharing))
   - The slides have speaker notes, which contain some tips along the way. 
 - Make sure participants can clarify questions about the HPC.
 - Ideally the session should take no more than ~1h.
 - The slides are equivalent to [chapter 3](https://cambiotraining.github.io/hpc-intro-sanger/materials/01-intro.html) of the materials. But these materials are only there as reference material for the participants, you don't need to use them during the course.
 - We usually skip the exercise for this session to save time.
+- **Part II (the FARM):** gives an overview of the FARM specifically and in particular the different filesystems and a typical flow that data might take from sequencing to processing.
 
 
 ## Working on the FARM
