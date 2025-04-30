@@ -63,6 +63,7 @@ If you think you should be added as an author, please get in touch with us.
 
 ## Acknowledgements
 
+- Thanks to the [Informatics Support Group (High Performance Computing)](https://www.sanger.ac.uk/group/informatics-support-group/) at the Sanger, for providing guest accounts to our trainers, providing technical support during the workshops and for valuable feedback on the course content. 
 - Thanks to Qi Wang (Department of Plant Sciences, University of Cambridge) for constructive feedback and ideas in the early iterations of this course.
 - Thanks to [@Alylaxy](https://github.com/Alylaxy) for his pull requests to the repo ([#34](https://github.com/cambiotraining/hpc-intro/pull/34)).
 - Thanks to the [HPC Carpentry](https://www.hpc-carpentry.org/index.html) community for developing similar content.
