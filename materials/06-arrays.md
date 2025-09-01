@@ -192,7 +192,7 @@ Let's see this in practice in @ex-jobindex.
 
 ![](images/mapping.png){ width=50% }
 
-Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](04-software.md#example-sequence-read-alignment), we now want to map each of our samples' sequence data to the reference genome.
+Continuing from our previous exercise where we [prepared our _Drosophila_ genome for bowtie2](05-software.md#example-sequence-read-alignment), we now want to map each of our samples' sequence data to the reference genome.
 
 Looking at our data directory (`ls hpc_workshop/data/reads`), we can see several sequence files in standard _fastq_ format.
 These files come in pairs (with suffix "_1" and "_2"), and we have 8 different samples.
@@ -244,7 +244,7 @@ In a typical bioinformatics workflow these files would be used for further analy
 
 - Some tools internally parallelise some of their computations, which is usually referred to as _multi-threading_ or _multi-core processing_.
 - When computational tasks are independent of each other, we can use job parallelisation to make them more efficient.
-- We can automatically generate parallel jobs using LSF job arrays with the `bjobs` option `-J`.
+- We can automatically generate parallel jobs using LSF job arrays with the `bsub` option `-J`.
 - LSF creates a variable called `$LSB_JOBINDEX`, which can be used to customise each individual job of the array.
   - For example we can obtain the input/output information from a simple configuration text file using some command line tools:
   `cat config.csv | head -n $LSB_JOBINDEX | tail -n 1`
