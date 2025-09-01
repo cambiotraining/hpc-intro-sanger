@@ -51,7 +51,7 @@ If you log off the farm during this course, you'll need to rerun this `export` o
 
 Let's load the software package **bowtie2** so we can index and align a drosophila genome.
 
-1. Check what modules are available on gen3.
+1. Check what modules are available on gen22.
 2. Load the bowtie2 software package using the `module` too.
 3. Test the `bowtie` command to make sure the module has loaded properly.
 4. Figure out where the bowtie2 software package is stored with the `which` command.
@@ -61,7 +61,7 @@ Let's load the software package **bowtie2** so we can index and align a drosophi
 
 **A1.**
 
-Use `module avail` to list all software packages available on gen3.
+Use `module avail` to list all software packages available on gen22.
 
 **A2.**
 

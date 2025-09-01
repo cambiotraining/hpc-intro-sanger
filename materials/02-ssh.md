@@ -30,12 +30,12 @@ ssh your-hpc-username@hpc-address
 To log onto the Sanger farm, you'll need to add "-login" to the name of the HPC, using this command:
 
 ```bash
-ssh sanger-username@farm5-login
+ssh sanger-username@farm22-login
 ```
 
 The Sanger service desk has set up your laptop to assume your Sanger ID, so you can use the simplified command to access the farm:
 ```bash
-ssh farm5-login
+ssh farm22-login
 ```
 
 The first time you connect to an HPC, you may receive a message about the ECDSA key fingerprint.  By typing `yes` you'll add the 'fingerprint' of this HPC to your local computer's saved list of approved hosts.
@@ -43,9 +43,9 @@ The first time you connect to an HPC, you may receive a message about the ECDSA 
 After running this `ssh` command and approving any ECDSA key questions, you will be asked for your Sanger password and after typing it you will be logged in to the farm.
 
 
-We will be using a test server called **gen3** in this course.  It is a small HPC, similar in structure to the larger farm5, run by the Sanger for scientists to learn about the farm and test LSF scripts.  Everyone with a Sanger ID has access to gen3, but farm5, the main HPC, is only accessible once you complete the Farm Induction course.
+We will be using a test server called **gen22** in this course.  It is a small HPC, similar in structure to the larger farm22, run by the Sanger for scientists to learn about the farm and test LSF scripts.  Everyone with a Sanger ID has access to gen22, but farm22, the main HPC, is only accessible once you complete the Farm Induction course.
 
-![Login to HPC using the terminal. 1) Use the ssh program to login to gen3.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.png)
+![Login to HPC using the terminal. 1) Use the ssh program to login to gen22.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.png)
 
 
 ### Exercise
@@ -53,7 +53,7 @@ We will be using a test server called **gen3** in this course.  It is a small HP
 ::: {.callout-exercise}
 #### Connecting to the HPC
 
-**Q1.** Connect to gen3 using `ssh`
+**Q1.** Connect to gen22 using `ssh`
 
 **Q2.**
 Take some time to explore your home directory to identify what files and folders are in there.
@@ -76,7 +76,7 @@ Check how many people are logged in to the HPC login node using the command `who
 To login to the HPC we run the following from the terminal:
 
 ```bash
-ssh USERNAME@gen3
+ssh USERNAME@gen22
 ```
 
 (replace "USERNAME" with your Sanger username)
@@ -218,7 +218,7 @@ Which should print the result (your hostname might vary slightly from this answe
 
 ```
 This job is running on:
-gen3-head1
+gen22-head1
 ```
 
 (the output might be slightly different if you were assigned to a different login node of the HPC)

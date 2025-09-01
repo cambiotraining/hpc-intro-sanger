@@ -51,7 +51,7 @@ bash lsf/simple_job.sh
 
 ```
 This job is running on:
-gen3-head1
+gen22-head1
 ```
 
 To submit the job to the scheduler we instead use the `bsub` command in a very similar way:
@@ -149,7 +149,7 @@ Here are some of the most common ones (anything in `<>` is user input):
 #### Default Resources
 
 If you don't specify any options when submitting your jobs, you will get the default configured by the HPC admins.
-For example, on farm5, the defaults you will get are:
+For example, on farm22, the defaults you will get are:
 
 - 10 minutes of running time (equivalent to `-W10`)
 - _normal_ partition (equivalent to `-q normal`)
@@ -168,7 +168,7 @@ It's worth keeping in mind that these partitions have separate queues, so you sh
 
 You can check the queues available using the command `bqueues -l`.
 
-For example, on farm5 we have to partitions with the following characteristics:
+For example, on farm22 we have to partitions with the following characteristics:
 
 - General use partitions:
   - `normal` partition (default) with a maximum 12 hours
