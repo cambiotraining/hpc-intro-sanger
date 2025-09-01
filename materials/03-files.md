@@ -79,7 +79,7 @@ rsync -auvh --progress <user>@gen22:path/to/source_folder path/to/target_folder
 - the options `-vh` give detailed information about the transfer and human-readable file sizes
 - the option `--progress` shows the progress of each file being transferred
 
-:::warning
+:::{.callout-warning}
 
 When you specify the *source* directory as `path/to/source_folder/` (with `/` at the end) or `path/to/source_folder` (without `/` at the end), `rsync` will do different things:
 
@@ -100,7 +100,12 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 - <a href="https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
 - Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `~/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
-- Bonus: how many shell scripts (files with `.sh` extension) are there in your project folder?
+  - Note: macOS often unzips downloaded files by default. If that is the case you can skip this step.
+- Confirm that all the files are present in your folder, the command `ls ~/hpc_workshop` should return:
+
+    ```
+    analysis_scripts  data  job_logs  job_scripts
+    ```
 
 ::: {.callout-answer}
 
@@ -128,12 +133,6 @@ cd ~/hpc_workshop/
 unzip hpc_workshop_files.zip
 ```
 
-Finally, we can check how many shell scripts there are using the `find` program and piping it to the `wc` (word/line count) program:
-
-`find -type f -name "*.sh" | wc -l`
-
-`find` is a very useful tool to find files, check this [Find cheatsheet](https://devhints.io/find) to learn more about it.
-
 :::
 :::
 
@@ -144,7 +143,7 @@ Finally, we can check how many shell scripts there are using the `find` program 
 #### Key Points
 
 - To transfer files to/from the HPC we can use _Filezilla_, which offers a user-friendly interface to synchronise files between your local computer and a remote server.
-  - Transfering files can also be done from the command line, using tools such as `scp` and `rsync` (this is the most flexible tool but also more advanced). 
+- Transfering files can also be done from the command line, using tools such as `scp` and `rsync` (this is the most flexible tool but also more advanced). 
 :::
 
 
