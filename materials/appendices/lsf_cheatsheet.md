@@ -35,7 +35,7 @@ Use this as a general template for your scripts:
 #!/bin/bash
 #BSUB -J my_simulation                        # a job name for convenience
 #BSUB -cwd /home/xyz123/scratch/simulations   # your working directory
-#BSUB -o logs/simulation.out    # standard output (and standard error if omitting -e) will be saved in this file
+#BSUB -o job_logs/simulation.out    # standard output (and standard error if omitting -e) will be saved in this file
 #BSUB -q normal                 # partition
 #BSUB -n2                       # number of CPUs
 #BSUB -R"select[mem>1000] rusage[mem=1000]"   # RAM memory part 1

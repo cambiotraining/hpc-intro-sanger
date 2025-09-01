@@ -3,8 +3,8 @@
 #BSUB -G FIXME # groupname for billing
 #BSUB -J FIXME[2-FIXME]   # we start at 2 because of the header
 #BSUB -cwd /nfs/users/nfs_FIXME/FIXME/hpc_workshop
-#BSUB -o logs/drosophila_mapping_%I.out
-#BSUB -e logs/drosophila_mapping_%I.err
+#BSUB -o job_logs/drosophila_mapping_%I.out
+#BSUB -e job_logs/drosophila_mapping_%I.err
 #BSUB -n 2         # number of CPUs. Default: 1
 #BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB

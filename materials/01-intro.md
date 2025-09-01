@@ -184,7 +184,7 @@ Option A:
 ```
 /lustre/scratch123/ab12/project_name/software/ # python packages
 /lustre/scratch123/ab12/project_name/data/     # sequencing data
-/lustre/scratch123/ab12/project_name/scripts/  # analysis script
+/lustre/scratch123/ab12/project_name/analysis_scripts/  # analysis script
 ```
 
 Option B:
@@ -192,7 +192,7 @@ Option B:
 ```
 /nfs/users/nfs_a/ab12/software/               # python packages
 /lustre/scratch123/ab12/project_name/data/    # sequencing data
-/lustre/scratch123/ab12/project_name/scripts/ # analysis script
+/lustre/scratch123/ab12/project_name/analysis_scripts/ # analysis script
 ```
 
 Option C:
@@ -200,7 +200,7 @@ Option C:
 ```
 /nfs/users/nfs_c/ab12/project_name/software/   # python packages
 /nfs/users/nfs_c/ab12/project_name/data/       # sequencing data
-/nfs/users/nfs_c/ab12/project_name/scripts/    # analysis script
+/nfs/users/nfs_c/ab12/project_name/analysis_scripts/    # analysis script
 ```
 
 Option D:
@@ -208,7 +208,7 @@ Option D:
 ```
 /nfs/users/nfs_c/ab12/project_name/software/                        # python packages
 /nfs/cancer_ref01/nst_links/live/sequencing_project_number12345/    # sequencing data
-/lustre/scratch123/ab12/project_name/scripts/                       # analysis script
+/lustre/scratch123/ab12/project_name/analysis_scripts/                       # analysis script
 ```
 
 **Q2.**

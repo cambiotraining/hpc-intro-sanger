@@ -2,8 +2,8 @@
 #BSUB -q normal  # name of the partition to run job on
 #BSUB -G FIXME # groupname for billing
 #BSUB -cwd /nfs/users/nfs_FIXME/FIXME/hpc_workshop
-#BSUB -o logs/drosophila_genome_indexing.out
-#BSUB -e logs/drosophila_genome_indexing.err
+#BSUB -o job_logs/drosophila_genome_indexing.out
+#BSUB -e job_logs/drosophila_genome_indexing.err
 #BSUB -n 1        # number of CPUs. Default: 1
 #BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
