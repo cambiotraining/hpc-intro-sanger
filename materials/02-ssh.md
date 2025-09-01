@@ -14,7 +14,7 @@ pagetitle: "Sanger HPC"
 
 :::
 
-![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPc and interact with it (e.g. submit jobs, navigate the filesystem). _Nano_ is a text editor that can be used from the terminal. _Visual Studio Code_ is an alternative text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
+![Useful tools for working on the farm or any remote HPC server. The terminal is used to login to the HPC and interact with it (e.g. submit jobs, navigate the filesystem). _Nano_ is a text editor that can be used from the terminal. _Visual Studio Code_ is an alternative text editor that has the ability to connect to a remote server so that we can edit scripts stored on the HPC. _Filezilla_ is an FTP application, which can be used to transfer files between the HPC and your local computer.](images/tool_overview.svg)
 
 
 ## Connecting to the HPC
@@ -24,28 +24,32 @@ To connect to the HPC we use the program `ssh`.
 The syntax is:
 
 ```bash
-ssh your-hpc-username@hpc-address
+ssh your-hpc-username@hpc-server-address
 ```
 
-To log onto the Sanger farm, you'll need to add "-login" to the name of the HPC, using this command:
+On the Sanger Farm there are two servers:
+
+- `farm22` is the main HPC, which you can only access after attending the required Farm and Data Management courses.
+- `gen22` is a test environment, providing a smaller smaller HPC similar in structure to the larger `farm22`. This is useful to learn about the Farm and is what we will use in these materials. Everyone with a Sanger ID has access to `gen22`.
+
+To log onto the Sanger Farm you can use the SSH command:
 
 ```bash
-ssh sanger-username@farm22-login
+ssh sanger-username@gen22-login
 ```
 
-The Sanger service desk has set up your laptop to assume your Sanger ID, so you can use the simplified command to access the farm:
+The Sanger service desk has set up your laptop to assume your Sanger ID, so you can use the simplified command to access the Farm:
+
 ```bash
-ssh farm22-login
+ssh gen22
 ```
 
-The first time you connect to an HPC, you may receive a message about the ECDSA key fingerprint.  By typing `yes` you'll add the 'fingerprint' of this HPC to your local computer's saved list of approved hosts.
+The first time you connect to an HPC, you may receive a message about the ECDSA key fingerprint.
+By typing `yes` you'll add the 'fingerprint' of this HPC to your local computer's saved list of approved hosts.
 
-After running this `ssh` command and approving any ECDSA key questions, you will be asked for your Sanger password and after typing it you will be logged in to the farm.
+After running this `ssh` command and approving any ECDSA key questions, you will be asked for your Sanger password and after typing it you will be logged in to the Farm.
 
-
-We will be using a test server called **gen22** in this course.  It is a small HPC, similar in structure to the larger farm22, run by the Sanger for scientists to learn about the farm and test LSF scripts.  Everyone with a Sanger ID has access to gen22, but farm22, the main HPC, is only accessible once you complete the Farm Induction course.
-
-![Login to HPC using the terminal. 1) Use the ssh program to login to gen22.  2) If prompted, approve ECDSA key fingerprint. 3) When you type the command you will be asked for your password. Note that as you type the password nothing shows on the screen, but that's normal. 4) You will receive a login message and notice that your terminal will now indicate your HPC username and the name of the HPC server.](images/terminal_ssh.png)
+![Login to HPC using the terminal. <br> **1)** Use the `ssh` program to login to gen22/farm22. <br> **2)** If prompted, approve ECDSA key fingerprint by typing "yes". <br> 3) Type your Sanger password. Note that as you type the password, nothing shows on the screen - that's normal, the terminal is recording your password! <br> 4) You will receive a login message and notice that your terminal will now indicate your Sanger username and the name of the server you connected to.](images/terminal_ssh.svg)
 
 
 ### Exercise

@@ -2,22 +2,29 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="166.22995mm"
-   height="63.877964mm"
-   viewBox="0 0 166.22995 63.877964"
+   width="231.63777mm"
+   height="74.400833mm"
+   viewBox="0 0 231.63777 74.400833"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="terminal_ssh.svg">
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="terminal_ssh.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
-     id="defs2" />
+     id="defs2">
+    <rect
+       x="-53.538086"
+       y="309.10669"
+       width="262.63965"
+       height="174.25131"
+       id="rect838" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -25,22 +32,25 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="126.32345"
-     inkscape:cy="168.40242"
+     inkscape:zoom="1.979899"
+     inkscape:cx="350.77547"
+     inkscape:cy="239.40615"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1336"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-width="3840"
+     inkscape:window-height="2054"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
      inkscape:window-maximized="1"
      fit-margin-top="1"
      fit-margin-left="1"
      fit-margin-right="1"
-     fit-margin-bottom="1" />
+     fit-margin-bottom="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -49,7 +59,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,80 +66,126 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-2.9433217,-5.9364938)">
+     transform="translate(-5.636967,-10.821423)">
     <rect
-       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#7e7e7e;stroke-width:0.59744275;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#7e7e7e;stroke-width:0.597443;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect815"
-       width="160.68161"
-       height="53.357265"
+       width="231.04033"
+       height="73.803391"
        x="5.9356885"
-       y="11.120144" />
+       y="11.120145" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:0.6;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
        x="8.5526247"
        y="18.4568"
        id="text819"><tspan
          sodipodi:role="line"
          x="8.5526247"
          y="18.4568"
-         style="font-size:4.93888903px;line-height:0.64999998px;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
-         id="tspan1055"><tspan
-   style="line-height:0.64999998px;fill:#00d700;fill-opacity:1"
-   id="tspan825">local-username@personal-laptop</tspan>:<tspan
-   style="line-height:0.64999998px;fill:#0064ff;fill-opacity:1"
-   id="tspan917">~</tspan>$ ssh participant@train.bio</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         id="tspan839"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#00d700;fill-opacity:1"
+   id="tspan825">local-username@local-laptop</tspan>:<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#0064ff;fill-opacity:1"
+   id="tspan917">~</tspan>$ ssh sanger-username@gen22</tspan><tspan
          sodipodi:role="line"
          x="8.5526247"
-         y="31.685966"
-         style="font-size:4.93888903px;line-height:0.64999998px;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
-         id="tspan839">participant@training.bio's  password: </tspan><tspan
+         y="24.910334"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         id="tspan830" /><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         sodipodi:role="line"
+         id="tspan688"
+         x="8.5526247"
+         y="31.363865">The authenticity of host 'gen22.internal.sanger.ac.uk' can't be established.</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         sodipodi:role="line"
+         id="tspan690"
+         x="8.5526247"
+         y="37.817398">ECDSA key fingerprint is SHA256:1PLbZiH7cj2NiLbJ7MHayDqikk4Gcn72sA3sQp6NcHy.</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         sodipodi:role="line"
+         id="tspan692"
+         x="8.5526247"
+         y="44.270931">Are you sure you want to continue connecting (yes/no/[fingerprint])?</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
          sodipodi:role="line"
          x="8.5526247"
-         y="44.915134"
-         style="font-size:4.93888903px;line-height:0.64999998px;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
-         id="tspan969">Last login: Thu May 20 12:02:22</tspan><tspan
+         y="50.724461"
+         id="tspan832" /><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         sodipodi:role="line"
+         id="tspan694"
+         x="8.5526247"
+         y="57.177994">sanger-username@gen22's  password: </tspan><tspan
          sodipodi:role="line"
          x="8.5526247"
-         y="58.144299"
-         style="font-size:4.93888903px;line-height:0.64999998px;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+         y="63.631527"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         id="tspan969"></tspan><tspan
+         sodipodi:role="line"
+         x="8.5526247"
+         y="70.08506"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
+         id="tspan834">Last login: Thu May 20 12:02:22</tspan><tspan
+         sodipodi:role="line"
+         x="8.5526247"
+         y="76.538589"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.93889px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
          id="tspan973"><tspan
-   style="line-height:0.64999998px;fill:#00d700;fill-opacity:1"
-   id="tspan975">hpc-username@login</tspan>:<tspan
-   style="line-height:0.64999998px;fill:#0064ff;fill-opacity:1"
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#00d700;fill-opacity:1"
+   id="tspan975">sanger-username@gen22-head1</tspan>:<tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';fill:#0064ff;fill-opacity:1"
    id="tspan1031">~</tspan>$ </tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="162.41652"
-       y="14.651785"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="176.11409"
+       y="20.598532"
        id="text1063"><tspan
          sodipodi:role="line"
          id="tspan1061"
-         x="162.41652"
-         y="14.651785"
-         style="fill:#ff0000;fill-opacity:1;stroke-width:0.26458332">1</tspan></text>
+         x="176.11409"
+         y="20.598532"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583">1</tspan></text>
     <text
        id="text1067"
-       y="33.17263"
-       x="108.97049"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       y="48.540627"
+       x="213.07196"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
        xml:space="preserve"><tspan
-         style="fill:#ff0000;fill-opacity:1;stroke-width:0.26458332"
-         y="33.17263"
-         x="108.97049"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583"
+         y="48.540627"
+         x="213.07196"
          id="tspan1065"
          sodipodi:role="line">2</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="3.1371694"
-       y="68.664597"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="110.57951"
+       y="59.577431"
        id="text1071"><tspan
          sodipodi:role="line"
          id="tspan1069"
-         x="3.1371694"
-         y="68.664597"
-         style="fill:#ff0000;fill-opacity:1;stroke-width:0.26458332">3</tspan></text>
+         x="110.57951"
+         y="59.577431"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583">3</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,2.9433217,5.9364938)"
+       id="text836"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:0.9;font-family:sans-serif;-inkscape-font-specification:'Courier New Bold';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;white-space:pre;shape-inside:url(#rect838);display:inline;opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="102.96233"
+       y="79.889915"
+       id="text844"><tspan
+         sodipodi:role="line"
+         id="tspan842"
+         x="102.96233"
+         y="79.889915"
+         style="fill:#ff0000;fill-opacity:1;stroke-width:0.264583">4</tspan></text>
   </g>
 </svg>

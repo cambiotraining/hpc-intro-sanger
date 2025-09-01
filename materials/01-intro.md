@@ -152,7 +152,6 @@ The Sanger has pipelined both wet lab sequencing steps and initial data analysis
   - Submit a job to the LSF scheduler using **bsub**.
 - Transfer results from Farm to local computer.
   - Use a FTP tool to move desired results to your local machine.
-:::
 
 
 ## Getting Help
