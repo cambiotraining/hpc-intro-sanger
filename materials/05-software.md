@@ -129,7 +129,7 @@ Our objective will be to align our sequences to the reference genome, using a so
 But first, we need to prepare our genome for this alignment procedure (this is referred to as indexing the genome).
 We have a file with the _Drosophila_ genome in `data/genome/drosophila_genome.fa`.
 
-Open the script in `job_analysis_scripts/drosophila_genome_indexing.sh` and edit the `#BSUB` options with the word "FIXME". Submit the script to LSF using `bsub`, check it's progress, and whether it ran successfully. Troubleshoot any issues that may arise.
+Open the script in `job_scripts/drosophila_genome_indexing.sh` and edit the `#BSUB` options with the word "FIXME". Submit the script to LSF using `bsub`, check it's progress, and whether it ran successfully. Troubleshoot any issues that may arise.
 
 ::: {.callout-answer}
 
@@ -152,7 +152,7 @@ Remember that even though we may have loaded the environment on the login node, 
 We can then launch it with bsub:
 
 ```bash
-$ bsub job_analysis_scripts/drosophila_genome_indexing.sh
+$ bsub job_scripts/drosophila_genome_indexing.sh
 ```
 
 We can check the job status by using `bjobs`.

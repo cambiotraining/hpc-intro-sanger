@@ -53,7 +53,7 @@ If you'd like to specify the `-J` option within the script header with `#BSUB`, 
 With this array list option within `-J`, LSF then creates a special shell variable `$LSB_JOBINDEX`, which contains the array number for the job being processed.
 Later in this section we will see how we can use some tricks with this variable to automate our analysis.
 
-For now let's go through this simple example, which shows what a job array looks like (you can find this script in the course folder `job_analysis_scripts/parallel_arrays.sh`):
+For now let's go through this simple example, which shows what a job array looks like (you can find this script in the course folder `job_scripts/parallel_arrays.sh`):
 
 ```bash
 # ... some lines omitted ...
@@ -68,7 +68,7 @@ echo "Running on:"
 hostname
 ```
 
-Submitting this script with `bsub job_analysis_scripts/parallel_arrays.sh` will launch 3 jobs.  
+Submitting this script with `bsub job_scripts/parallel_arrays.sh` will launch 3 jobs.  
 The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You could also include the "_%J_" keyword to add the Job ID number to the file name.  
 You can then investigate the results using `head -n 4 job_logs/parallel_arrays*out`.  
 Looking at the output in those files should make it clearer that `$LSB_JOBINDEX` stores the array number of each job, and that each of them uses 2 CPUS (`-n2` option).
@@ -97,7 +97,7 @@ Here are some examples:
 Previously, we used the `pi_estimator.R` script to obtain a single estimate of the number Pi.
 Since this is done using a stochastic algorithm, we may want to run it several times to get a sense of the error associated with our estimate.
 
-1. Use nano to open the LSF submission script in `job_analysis_scripts/parallel_estimate_pi.sh`. Adjust the `#BSUB` options (where word "FIXME" appears), to run the job 10 times using a job array.
+1. Use nano to open the LSF submission script in `job_scripts/parallel_estimate_pi.sh`. Adjust the `#BSUB` options (where word "FIXME" appears), to run the job 10 times using a job array.
 2. Launch the job with `bsub`, monitor its progress and examine the output. <details><summary>Hint</summary> Note that the output of `pi_estimator.R` is now being sent to individual text files to the directory `results/pi/`. </details>
 3. Bonus: combine all the output files into a single file. Should you run this operation directly on the login node, or submit it as a new job to LSF?
 
@@ -111,7 +111,7 @@ Also, remember to edit LSF's working directory with your username, at the top of
 
 **A2.**
 
-We can launch our adjusted script with `bsub job_analysis_scripts/parallel_estimate_pi.sh`.
+We can launch our adjusted script with `bsub job_scripts/parallel_estimate_pi.sh`.
 When we check our jobs with `bjobs`, we will notice several jobs with JOBID in the format "ID[1]", "ID[2]", etc.
 These indicate the number of the array that is currently running as part of that job submission.
 
@@ -202,7 +202,7 @@ We have also created a CSV file with three columns in the `data` directory.
 One column contains the sample's name (which we will use for our output files) and the other two columns contain the path to the first and second pairs of the input files.
 With the information on this table, we should be able to automate our data processing using a LSF job array.
 
-1. Use _nano_ to open the LSF submission script in `job_analysis_scripts/parallel_drosophila_mapping.sh`. The first few lines of the code are used to fetch parameter values from the CSV file, using the special `$LSB_JOBINDEX` variable. Fix the `#BSUB -J` option to get these values from the CSV file. <details><summary>Hint</summary>The array should have as many numbers as there are lines in our CSV file. However, make sure the array number starts at 2 because the CSV file has a header with column names.</details>
+1. Use _nano_ to open the LSF submission script in `job_scripts/parallel_drosophila_mapping.sh`. The first few lines of the code are used to fetch parameter values from the CSV file, using the special `$LSB_JOBINDEX` variable. Fix the `#BSUB -J` option to get these values from the CSV file. <details><summary>Hint</summary>The array should have as many numbers as there are lines in our CSV file. However, make sure the array number starts at 2 because the CSV file has a header with column names.</details>
 2. Launch the job with `bsub` and monitor its progress (`bjobs`), whether it runs successfully (`bacct`), and examine the LSF output log files.
 3. Examine the output files in the `results/drosophila/mapping` folder. (Note: the output files are text-based, so you can examine them by using the command line program `less`, for example.)
 
@@ -218,7 +218,7 @@ We also need to adjust the `head -n` command a few lines down to pull the correc
 
 **A2.**
 
-We can submit the script with `bsub job_analysis_scripts/parallel_drosophila_mapping.sh `.
+We can submit the script with `bsub job_scripts/parallel_drosophila_mapping.sh `.
 While the job is running we can monitor its status with `bjobs`.
 We should see several jobs listed with IDs as `JOBID[ARRAYID]` format.
 
@@ -251,6 +251,6 @@ In a typical bioinformatics workflow these files would be used for further analy
 
 #### Further resources
 
-- [LSF Job Array Documentation](https://www.ibm.com/docs/en/spectrum-job_analysis_scripts/10.1.0?topic=administration-job-arrays)
+- [LSF Job Array Documentation](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=administration-job-arrays)
 - [Additional Array Documentation](https://www.hpc.dtu.dk/?page_id=1434)
 :::

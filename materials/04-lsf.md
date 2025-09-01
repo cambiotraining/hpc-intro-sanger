@@ -33,7 +33,7 @@ For example, a job requesting many resources may start with a low priority, but 
 ## Submitting a Job with LSF
 
 To submit a job to LSF, you need to include your code in a _shell script_.
-Let's start with a minimal example in `job_analysis_scripts/simple_job.sh`, which contains the following code:
+Let's start with a minimal example in `job_scripts/simple_job.sh`, which contains the following code:
 
 ```bash
 #!/bin/bash
@@ -46,7 +46,7 @@ hostname
 We can run this script from the login node using the `bash` interpreter (make sure you are in the correct directory first: `cd ~/hpc_workshop/`):
 
 ```bash
-bash job_analysis_scripts/simple_job.sh
+bash job_scripts/simple_job.sh
 ```
 
 ```
@@ -57,7 +57,7 @@ gen22-head1
 To submit the job to the scheduler we instead use the `bsub` command in a very similar way:
 
 ```bash
-bsub job_analysis_scripts/simple_job.sh
+bsub job_scripts/simple_job.sh
 ```
 
 However, this throws back an error:
@@ -73,7 +73,7 @@ Do you have any ideas of what this error could be?
 Our job, like all LSF jobs, has an output (echo printout and the hostname) and job statistics about what was done on the HPC.  Because the Sanger LSF is set up to disallow outputs to be sent to your email by default for security reasons, it is impossible for the job to run without specifying a "standard output" file.  We can fix this error using the `-o` argument:
 
 ```bash
-bsub -o simple_job.out job_analysis_scripts/simple_job.sh
+bsub -o simple_job.out job_scripts/simple_job.sh
 ```
 Instead the output is sent to a file, which we called `simple_job.out`.
 This file will be located in the same directory where you launched the job from.
@@ -91,7 +91,7 @@ The other absolutely necessary argument for submitting a job to the Farm is the 
 
 Let's try adding it to the bsub argument list:
 ```bash
-bsub -o simple_job.out -G farm-course job_analysis_scripts/simple_job.sh
+bsub -o simple_job.out -G farm-course job_scripts/simple_job.sh
 ```
 
 If it was submitted correctly, we should see this message:
@@ -242,7 +242,7 @@ If you forgot what the job id is, check the stdout file (created with the `-o` a
 
 ::: {.callout-note}
 The `bacct` command may not be available on every HPC, as it depends on how it was configured by the admins.  
-On our farm, `bacct` is reading information from `/usr/local/job_analysis_scripts/work/<cluster_name>/logdir/lsb.acct.*`.
+On our farm, `bacct` is reading information from `/usr/local/job_scripts/work/<cluster_name>/logdir/lsb.acct.*`.
 :::
 
 
@@ -329,7 +329,7 @@ To exit the R console, simply enter control+D.  You'll be asked if you want to s
 
 Now we're ready to run the `estimate_pi.sh` script.
 
-1. Edit the shell script in `job_analysis_scripts/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Submit the job to LSF and check its status in the queue.
+1. Edit the shell script in `job_scripts/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Submit the job to LSF and check its status in the queue.
 2. How long did the job take to run? <details><summary>Hint</summary>Use `bhist -l JOBID` or `bacct -l JOBID`.</details>
 3. The number of samples used to estimate Pi can be modified using the `--nsamples` option of our script, defined in millions. The more samples we use, the more precise our estimate should be.
     - Adjust your LSF submission script to use 200 million samples (`/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R --nsamples 200`), and save the job output in `job_logs/estimate_pi_200M.out` and `job_logs/estimate_pi_200M.err`.
@@ -360,7 +360,7 @@ For example:
 
 
 ```bash
-bsub job_analysis_scripts/estimate_pi.sh
+bsub job_scripts/estimate_pi.sh
 ```
 
 **A2.**
@@ -402,7 +402,7 @@ The modified script should look similar to this:
 And then send the job to the job scheduler:
 
 ```bash
-bsub job_analysis_scripts/estimate_pi.sh
+bsub job_scripts/estimate_pi.sh
 ```
 
 However, when we run this job, examining the output file (`cat job_logs/estimate_pi_200M.out`) will reveal and error indicating that our job was killed.  There are few clues for this, most obviously this note:
@@ -498,7 +498,7 @@ The R script used in the previous exercise supports parallelisation of some of i
 The number of CPUs used by the script can be modified using the `--ncpus` option.
 For example `pi_estimator.R --nsamples 200 --ncpus 2` would use two CPUs.
 
-1. Modify your submission script (`job_analysis_scripts/estimate_pi.sh`) to:
+1. Modify your submission script (`job_scripts/estimate_pi.sh`) to:
     <!-- 1. Should you still use the `normal` partition? -->
     1. Use the `$LSB_MAX_NUM_PROCESSORS` variable to set the number of CPUs used by `pi_estimator.R` (and ensure you have set `--nsamples 200` as well).
     1. Request 10G of RAM memory for the job.
@@ -532,10 +532,10 @@ echo "Processors used: $LSB_MAX_NUM_PROCESSORS"
 
 You can then run the script using this command:
 ```bash
-bsub job_analysis_scripts/estimate_pi.sh
+bsub job_scripts/estimate_pi.sh
 ```
 
-We can run the job multiple times while modifying the `#BSUB -n` option, saving the file and re-running `bsub job_analysis_scripts/estimate_pi.sh`.
+We can run the job multiple times while modifying the `#BSUB -n` option, saving the file and re-running `bsub job_scripts/estimate_pi.sh`.
 
 After running each job we can use `bhist JOBID` or `bjobs -l JOBID` or `bacct JOBID` commands to obtain information about how long it took to run.  
 
@@ -586,7 +586,7 @@ Note that, if the time you requested (with the `-W` option) runs out, your sessi
 
 #### Further resources
 
-- [IBM Spectrum LSF Reference Site](https://www.ibm.com/docs/en/spectrum-job_analysis_scripts/10.1.0?topic=reference)
-- [bsub Reference Page](https://www.ibm.com/docs/en/spectrum-job_analysis_scripts/10.1.0?topic=reference-bsub)
+- [IBM Spectrum LSF Reference Site](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=reference)
+- [bsub Reference Page](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=reference-bsub)
 - [LSF to PBS/SLURM/SGE/LoadLeveler schedulers](https://slurm.schedmd.com/rosetta.gif)
 :::
