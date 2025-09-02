@@ -8,4 +8,4 @@
 #BSUB -R "select[mem>1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 
-/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R
+Rscript analysis_scripts/pi_estimator.R

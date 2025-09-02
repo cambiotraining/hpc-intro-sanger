@@ -24,7 +24,7 @@ The following table summarises the most common commands for this tool:
 | Command | Description |
 | -: | :- |
 | `module avail ` | List all available packages. |
-| `module avail -a -i "pattern"` <br> or <br> `module avail 2>&1 | grep -i "pattern"` | Search the available package list that matches "pattern". Note the second option is given as some versions of `module` do not support case-insensitive search (`-i` option). |
+| `module avail -i --contains "pattern"` <br> or <br> `module avail 2>&1 | grep -i "pattern"` | Search the available package list that matches "pattern" in a case-insensitive way. |
 | `module load <program>` | Load the program and make it available for use. |
 | `module unload <program>` | Unload the program (removes it from your PATH). |
 
@@ -33,6 +33,7 @@ Alternatively, you can use a package manager as we show in the next section.
 
 The packages you have available will depend on the group you're in.  Your group affects your `$MODULEPATH` which in turn gives you access to various programme-specific packages.
 
+<!-- 
 For the rest of the course we'll be indexing and aligning a small drosophila genome, which requires some genomic tools.  The Cancer Ageing and Somatic Mutation programme (CASM) has the tool we need already loaded, so we need to temporarily add their module directory to our module paths.  To do so, simply run the following command from your `hpc_workshop` folder.  Note **this is just a temporary workaround**, once you are added to your programme's group, you'll automatically have access to relevant modules which you can check with `module avail`.
 
 ```bash
@@ -41,7 +42,8 @@ source configure_modules
 
 You can check your module path by entering `echo $MODULEPATH` to see if the Cancer Genome Project directory has been added to your module path.  Or, you can run `module avail` to see which module groups you now have access to.
 
-If you log off the farm during this course, you'll need to rerun this `export` one-liner again!
+If you log off the farm during this course, you'll need to rerun this `export` one-liner again! 
+-->
 
 
 ### Exercise
@@ -51,9 +53,9 @@ If you log off the farm during this course, you'll need to rerun this `export` o
 
 Let's load the software package **bowtie2** so we can index and align a drosophila genome.
 
-1. Check what modules are available on gen22.
-2. Load the bowtie2 software package using the `module` too.
-3. Test the `bowtie` command to make sure the module has loaded properly.
+1. Check what modules are available on `gen22`. Can you find `bowtie` version 2.4.2?
+2. Load the `bowtie2` version 2.4.2 using `module load`.
+3. Run `bowtie2 --help` to make sure that the module has loaded properly.
 4. Figure out where the bowtie2 software package is stored with the `which` command.
 
 
@@ -68,38 +70,33 @@ Use `module avail` to list all software packages available on gen22.
 We can first search to see which (if any) modules are available for this software: 
 
 ```bash
-module avail 2>&1 | grep -i "bowtie"
+module avail -i --contains bowtie
 ```
 
-We seem to have a couple of versions available:
+We seem to have a few versions available:
 
 ```
-bowtie/1.2.2(default)
-bowtie2/2.3.5.1(default)
+bowtie-1.3.1
+bowtie2-2.5.2/python-3.12.0
+HGI/softpack/groups/team354/bowtie2/2.4.2
+ISG/experimental/sp39/bowtie/2.5.2
 ```
 
-As we are interested in version 2, we can load the module with:
+As we are interested in version 2.4.2, we can load the module with:
 
 ```bash
-module load bowtie2
+module load HGI/softpack/groups/team354/bowtie2/2.4.2
 ```
-
-If there were even more versions available and you wanted a non-default one, you could load it more explicitly with the full name shown above: 
-
-```bash
-module load bowtie2/2.3.5.1
-```
-
 
 **A3**
 
-Simply typing in `bowtie2` or any other command from the bowtie package should print out a help page from the software.
+Running `bowtie2 --help` should print the help page from the software.
 If this doesn't come up or if an error appears, you likely didn't manage to load the module properly.
 This is a good sanity check when loading modules.
 
 **A4**
 
-Entering `which bowtie2` should show a path to `/software/CASM/modules/installs/bowtie2/bowtie2-2.3.5.1-linux-x86_64/bowtie2`.
+Entering `which bowtie2` should show a path to `/software/hgi/softpack/installs/groups/team354//bowtie2/2.4.2-scripts/bowtie2`.
 
 :::
 :::
@@ -139,20 +136,18 @@ We need to fix the script to specify the correct working directory with our user
 #BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/
 ```
 
-We also need to make sure we load the module in the compute node, by adding:
+We also need to make sure we load the module in the compute node, by adding the following line at the start of the script:
 
 ```bash
-module load bowtie2
+module load HGI/softpack/groups/team354/bowtie2/2.4.2
 ```
 
-At the start of the script.
-This is because we did not load the module in our script.
 Remember that even though we may have loaded the environment on the login node, the scripts are run on a different machine (one of the compute nodes), so we need to remember to **always load modules or conda environments in our LSF submission scripts**.
 
 We can then launch it with bsub:
 
 ```bash
-$ bsub job_scripts/drosophila_genome_indexing.sh
+bsub job_scripts/drosophila_genome_indexing.sh
 ```
 
 We can check the job status by using `bjobs`.
@@ -161,7 +156,7 @@ And we can obtain more information by using `bacct JOBID` or `bhist JOBID`.
 We should get several output files in the directory `results/drosophila/genome` with an extension ".bt2":
 
 ```bash
-$ ls results/drosophila/genome
+ls results/drosophila/genome
 ```
 
 ```

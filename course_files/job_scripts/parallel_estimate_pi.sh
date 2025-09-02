@@ -15,6 +15,6 @@ echo "Starting array: $LSB_JOBINDEX"
 mkdir -p results/pi
 
 # run pi_estimator script
-/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R > results/pi/replicate_${LSB_JOBINDEX}.txt
+Rscript analysis_scripts/pi_estimator.R > results/pi/replicate_${LSB_JOBINDEX}.txt
 
 echo "Finished array: $LSB_JOBINDEX"

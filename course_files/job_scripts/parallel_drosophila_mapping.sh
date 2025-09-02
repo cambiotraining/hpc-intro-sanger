@@ -12,7 +12,7 @@
 
 
 # load bowtie2
-module load bowtie2
+module load HGI/softpack/groups/team354/bowtie2/2.4.2
 
 # get the relevant line of the CSV sample information file
 # see http://bigdatums.net/2016/02/22/3-ways-to-get-the-nth-line-of-a-file-in-linux/

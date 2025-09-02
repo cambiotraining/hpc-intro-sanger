@@ -62,41 +62,45 @@ bsub job_scripts/simple_job.sh
 
 However, this throws back an error:
 
-```bash
+```
 Returning output by mail is not supported on this cluster.
 Please use the -o option to write output to disk.
 Request aborted by esub. Job not submitted.
 ```
 
-Do you have any ideas of what this error could be?
+Our job, like all LSF jobs, has an output (in this case, the outputs of the `echo` and `hostname` commands) and job statistics about what was done on the HPC.
+Because the Sanger LSF is set up to disallow outputs to be sent to your email by default for security reasons, it is impossible for the job to run without specifying a "standard output" file. 
 
-Our job, like all LSF jobs, has an output (echo printout and the hostname) and job statistics about what was done on the HPC.  Because the Sanger LSF is set up to disallow outputs to be sent to your email by default for security reasons, it is impossible for the job to run without specifying a "standard output" file.  We can fix this error using the `-o` argument:
+We can fix this error using the `-o` argument:
 
 ```bash
 bsub -o simple_job.out job_scripts/simple_job.sh
 ```
-Instead the output is sent to a file, which we called `simple_job.out`.
-This file will be located in the same directory where you launched the job from.
 
-However, when running again, we get another error that says:
+This ensures the output of our job is sent to a file, which we called `simple_job.out`.
+By default, this file will be located in the directory where you launched the job from.
 
-```bash
-Sorry no available user group specified for
-this job. Please resubmit your job with
--G groupname or set the \$LSB_DEFAULT_USERGROUP environment variable.
+However, we now get another error:
+
+```
+Sorry no available user group specified for this job. 
+Please resubmit your job with -G groupname or set the $LSB_DEFAULT_USERGROUP environment variable.
 Request aborted by esub. Job not submitted.
 ```
 
-The other absolutely necessary argument for submitting a job to the Farm is the -G groupname variable.  This specifies to which group at the Sanger you're billing the compute resources.  We'll be using a temporary testing group for this course called `farm-course`, but once you settle into a lab you'll use their own group name.
+The other absolutely necessary argument for submitting a job to the Farm is the -G groupname variable. 
+This specifies to which group at the Sanger you're billing the compute resources. 
+We'll be using a temporary testing group for this course called `farm-course`, but once you settle into a lab you'll use their own group name.
 
 Let's try adding it to the bsub argument list:
+
 ```bash
 bsub -o simple_job.out -G farm-course job_scripts/simple_job.sh
 ```
 
 If it was submitted correctly, we should see this message:
 
-```bash
+```
 Job <xxxxxx> is submitted to default queue <normal>.
 ```
 
@@ -112,7 +116,9 @@ If you don't, `bsub` will throw an error.
 
 ## Configuring Job Options
 
-The `-o` argument is just one of over 70 different options for submitting a job with `bsub`.  You can imagine the bsub command would get rather long and difficult to keep track of!  To make submitting a job simpler and more reproducible, you can include each of your bsub arguments as a line starting with `#BSUB` at the beginning of your script within the script, after the shebang.
+The `-o` argument is just one of over 70 different options for submitting a job with `bsub`. 
+You can imagine the bsub command would get rather long and difficult to keep track of! 
+To make submitting a job simpler and more reproducible, you can include each of your bsub arguments as a line starting with `#BSUB` at the beginning of your script within the script, after the shebang.
 
 Here is how we could modify our script:
 
@@ -126,7 +132,7 @@ echo "This job is running on:"
 hostname
 ```
 
-If we now re-run the script using `bsub simple_job.sh`, the output goes to a file within the log folder named `simple_job.out`.
+If we now re-run the script using `bsub simple_job.sh`, the output goes to a file within the logs folder named `simple_job.out`.
 
 There are many other options we can specify when using LSF, and we will encounter several more of them as we progress through the materials.
 Here are some of the most common ones (anything in `<>` is user input):
@@ -149,7 +155,7 @@ Here are some of the most common ones (anything in `<>` is user input):
 #### Default Resources
 
 If you don't specify any options when submitting your jobs, you will get the default configured by the HPC admins.
-For example, on farm22, the defaults you will get are:
+For example, on `farm22`, the defaults you will get are:
 
 - 10 minutes of running time (equivalent to `-W10`)
 - _normal_ partition (equivalent to `-q normal`)
@@ -165,19 +171,17 @@ LSF calls these "queues" and you can use the `-q` option to choose which queue y
 Usually, which queues are available on your HPC should be provided by the admins.
 
 It's worth keeping in mind that these partitions have separate queues, so you should always try to choose the partition that is most suited to your job.
-
 You can check the queues available using the command `bqueues -l`.
-
-For example, on farm22 we have to partitions with the following characteristics:
+Here are some of the partitions available on `farm22`:
 
 - General use partitions:
-  - `normal` partition (default) with a maximum 12 hours
-  - `long` partition with a maximum 48 hours
-  - `basement` partition with a maximum 30 days; only 300 basement jobs are allowed per user simultaneously.
+  - `normal` partition (default) with a maximum of 12 hours
+  - `long` partition with a maximum of 48 hours
+  - `basement` partition with a maximum of 30 days; only 300 basement jobs are allowed per user simultaneously.
 - Special case partitions:
-  - `hugemem`/`hugemem-restricted`/`teramem` queues for  large memory machines (512GB/1TB).
-  - `yesterday` partition for very urgent jobs that need to be done "yesterday"; only 7 jobs allowed per user simultaneously.
-  - `small` partition for many, very small jobs (batches 10 jobs together to prevent scheduler overload). 
+  - `hugemem`/`hugemem-restricted`/`teramem` queues for large memory machines (512GB/1TB).
+  - `yesterday` partition for very urgent jobs that need to be done "yesterday"; only 7 jobs are allowed per user simultaneously.
+  - `small` partition for many, very small jobs (batches 10 jobs together to prevent scheduler overload).
 
 
 ## Getting Job Information
@@ -203,7 +207,8 @@ bjobs -l <JOBID>
 
 This gives you information about the job's status while it's running: `PEND` means it's *pending* (waiting in the queue) and `RUN` means it's *running*.
 
-Once the job is complete, you can still use `bjobs -l <JOBID>` to get job statistics.  However, you may find it a bit easier to use `bhist` (below) as it includes time and memory usage in a bit easier-to-read way.
+Once the job is complete, you can still use `bjobs -l <JOBID>` to get job statistics. 
+Alternatively, you may find it easier to use `bhist`, as it includes time and memory usage in a more reader-friendly format:
 
 ```bash
 bhist -l JOBID
@@ -222,7 +227,7 @@ bacct JOBID
 
 will give you information about one specific job
 
-You can add other options to the bacct command to glean more or less information with:
+You can add other options to the `bacct` command to glean more or less information with:
 
 - `-l` for extra information about the job
 - `-b` for brief information about the job
@@ -234,29 +239,32 @@ You can also select groups of jobs based on certain characteristics, like:
 - `-e` to select all jobs that had end status of EXIT (failed)
 - `-x` to select jobs that raised an exception while running
 
-As a rule, running bacct without the -l option results in aggregate job statistics for the jobs included, while with the -l option results in a long list of separate, per-job statistics.
+As a rule, running `bacct` without the `-l` option results in aggregate job statistics for the jobs included, while with the `-l` option results in a long list of separate, per-job statistics.
 
 All the options available with `bacct` can be listed using `bacct -h`.
-If you forgot what the job id is, check the stdout file (created with the `-o` argument of bsub).
+If you forgot what the job id is, check the standard output file that was specified with the `-o` argument of `bsub`.
 
 
 ::: {.callout-note}
 The `bacct` command may not be available on every HPC, as it depends on how it was configured by the admins.  
-On our farm, `bacct` is reading information from `/usr/local/job_scripts/work/<cluster_name>/logdir/lsb.acct.*`.
+On the Farm HPC, `bacct` is reading information from `/usr/local/job_scripts/work/<cluster_name>/logdir/lsb.acct.*`.
 :::
 
 
 Finally, if you want to suspend a job, you can use:
+
 ```bash
 bstop <JOBID>
 ```
 
 Suspended jobs can be restarted using:
+
 ```bash
 bresume <JOBID>
 ```
 
 To irreversibly end a job, use:
+
 ```bash
 bkill <JOBID>
 ```
@@ -296,7 +304,7 @@ will not reliably work. Instead you should use the full path as shown above.
 ::: {.callout-exercise #ex-first-job}
 #### Submiting jobs with LSF
 
-In the "scripts" directory, you will find an R script called `pi_estimator.R`.
+In the "analysis_scripts" directory, you will find an R script called `pi_estimator.R`.
 This script tries to get an approximate estimate for the number Pi using a stochastic algorithm.
 
 <details><summary>How does the algorithm work?</summary>
@@ -309,31 +317,39 @@ If you are interested in the details, here is a short description of what the sc
 
 </details>
 
-If you were running this script interactively (i.e. directly from the console), you would directly run the script via command line interpreter: `/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R`.
-Instead, we use a shell script to submit this to the job scheduler.
+R scripts can be run from the terminal using the `Rscript` command line interpreter, for example `Rscript analysis_scripts/pi_estimator.R`.
+However, as we are working on a HPC, we use a shell script to submit this command to the job scheduler.
 
-In order to run this script, we need to install the required package, argparse, into the Farm's R console.  Pause here to work through the below instructions:
+But first, we need to install a required package - `argparse` - into the Farm's R environment.  
+Pause here to work through the below instructions.
 
-<div class="note">
+----
+
 **Installing required R packages**
 
-The pi_estimator.R script requires the R library `argparse`, which must first be installed into your R workspace.  Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully.  You should only have to run this once, as when using R on your local machine.
+The `pi_estimator.R` script requires the R library `argparse`, which must first be installed into your R workspace. 
+Because you're using R on this HPC for the first time, you'll need to install the package to run the script successfully. 
+You should only have to run this once:
 
-To do so, we will first open an R window by typing `R`.  To install the package, we'll type `install.packages('argparse')`.  This will prompt a few questions.  Type `yes` when asked to create a personal library, `yes` when asked to approve the default library location, and select a server for the download (`65` is fine).  Typical package installation readout will appear on the screen.
+* Open an R console by typing `R`
+* Run the command `install.packages('argparse', repos = 'https://cloud.r-project.org')`
+  * Type `yes` if asked to create a personal library
+  * Type `yes` if asked to approve the default library location
+* Once installation is complete, check to make sure it installed properly by loading the package: `library(argparse)`
+  * If there are no errors, the R library has been successfully installed!
+* To exit the R console run `q("no")` (quit without saving)
 
-Once this is complete, check to make sure it installed properly by trying to load the package `library(argparse)`.  If there are no errors, the R library loaded ok.  
+----
 
-To exit the R console, simply enter control+D.  You'll be asked if you want to save the workspace image - typing `n` is fine in this case.
-
-</div>
+**Submitting the R script as a LSF job**
 
 Now we're ready to run the `estimate_pi.sh` script.
 
 1. Edit the shell script in `job_scripts/estimate_pi.sh` by correcting the code where the word "FIXME" appears. Submit the job to LSF and check its status in the queue.
 2. How long did the job take to run? <details><summary>Hint</summary>Use `bhist -l JOBID` or `bacct -l JOBID`.</details>
 3. The number of samples used to estimate Pi can be modified using the `--nsamples` option of our script, defined in millions. The more samples we use, the more precise our estimate should be.
-    - Adjust your LSF submission script to use 200 million samples (`/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R --nsamples 200`), and save the job output in `job_logs/estimate_pi_200M.out` and `job_logs/estimate_pi_200M.err`.
-    - Monitor the job status with `bjobs` and `bhist -l JOBID`. Review the outfiles in your log folder. Do you find any issues?
+    - Adjust your LSF submission script to use 200 million samples (`Rscript analysis_scripts/pi_estimator.R --nsamples 200`), and save the job output in `job_logs/estimate_pi_200M.out` and `job_logs/estimate_pi_200M.err`.
+    - Monitor the job status with `bjobs` and `bhist -l JOBID`. Review the output files in your logs folder. Do you find any issues?
 
 ::: {.callout-answer}
 
@@ -355,9 +371,10 @@ For example:
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
-/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R
+Rscript analysis_scripts/pi_estimator.R
 ```
 
+With the corrected script, we can submit the job:
 
 ```bash
 bsub job_scripts/estimate_pi.sh
@@ -396,7 +413,7 @@ The modified script should look similar to this:
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 
 # run the script
-/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R --nsamples 200
+Rscript analysis_scripts/pi_estimator.R --nsamples 200
 ```
 
 And then send the job to the job scheduler:
@@ -435,7 +452,7 @@ To correct this problem, we would need to increase the memory requested to LSF, 
 ## LSF Environment Variables
 
 One useful feature of LSF jobs is the automatic creation of environment variables.
-Generally speaking, variables are a character that store a value within them, and can either be created by us, or sometimes they are automatically created by programs or available by default in our shell.
+Generally speaking, variables store a value within them, and can either be created by us, or sometimes they are automatically created by programs or available by default in our shell.
 
 
 ::: {.callout-note collapse=true}
@@ -471,11 +488,18 @@ ls $DATADIR
 DATAFILES=$(ls $DATADIR)
 ```
 
+See their values: 
+
+```bash
+echo $DATADIR
+echo $DATAFILES
+```
+
 :::
 
 When you submit a job with LSF, it creates several variables, all starting with the prefix `$LSB_`.
 One useful variable is `$LSB_MAX_NUM_PROCESSORS`, which stores how many CPUs we requested for our job.
-This means that we can use the variable to automatically set the number of CPUs for software that support multi-processing.
+This means that we can use the variable to automatically set the number of CPUs for software that support multi-threading.
 We will see an example in @ex-lsf-variables.
 
 Here is a table summarising some of the most useful environment variables that LSF creates:
@@ -523,7 +547,7 @@ We can modify our submission script in the following manner, for example for usi
 #BSUB -n 2                          # number of CPUs
 
 # launch the Pi estimator script using the number of CPUs that we are requesting from LSF
-/software/R-4.1.3/bin/Rscript analysis_scripts/pi_estimator.R --nsamples 200 --ncpus $LSB_MAX_NUM_PROCESSORS
+Rscript analysis_scripts/pi_estimator.R --nsamples 200 --ncpus $LSB_MAX_NUM_PROCESSORS
 
 # echo number of CPUS
 echo "Processors used: $LSB_MAX_NUM_PROCESSORS"
@@ -562,11 +586,11 @@ bsub -G farm-course -Is -n8 -R "select[mem>1000] rusage[mem=1000]" -M1000 -q nor
 ```
 
 You may get a message saying that LSF is waiting to allocate your request (you go in the queue, just like any other job!).
-Eventually, when you get in, you will notice that your terminal will indicate you are on a different node (different from the login node).
-You can check by running `hostname`.
+Eventually, when you get in, you will notice that your terminal will indicate you are on a different node: for example, instead of `farm22-head2` you may be in `node-5-10-4`. 
+You can check which compute node you're in with `hostname`.
 
 After you're in, you can run any commands you wish, without worrying about affecting other users' work.
-Once you are finished, you can use the command `exit` to terminate the session, and you will go back to the login node.
+Once you are finished, you can use the command `exit` (or <kbd>Ctrl</kbd> + <kbd>D</kbd>) to terminate the session, and you will go back to the login node.
 
 Note that, if the time you requested (with the `-W` option) runs out, your session will be immediately killed.
 
@@ -586,7 +610,7 @@ Note that, if the time you requested (with the `-W` option) runs out, your sessi
 
 #### Further resources
 
-- [IBM Spectrum LSF Reference Site](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=reference)
-- [bsub Reference Page](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=reference-bsub)
+- [IBM Spectrum LSF command reference](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-command)
+- [bsub Reference Page](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-bsub)
 - [LSF to PBS/SLURM/SGE/LoadLeveler schedulers](https://slurm.schedmd.com/rosetta.gif)
 :::

@@ -139,7 +139,7 @@ The trick we will demonstrate here is to parse a CSV file to read input paramete
 For example, in our `data/` folder we have the following file, which includes information about the samples we want to process: 
 
 ```bash
-$ cat data/drosophila_sample_info.csv
+cat data/drosophila_sample_info.csv
 ```
 
 ```
@@ -159,20 +159,20 @@ Let's say we wanted to obtain information for the 2nd sample, which in this case
 We can get the top N lines of a file using the `head` command (we pipe the output of the previous `cat` command):
 
 ```bash
-$ cat data/drosophila_sample_info.csv | head -n 3
+cat data/drosophila_sample_info.csv | head -n 3
 ```
 
 This gets us lines 1-3 of the file. 
 To get just the information about that 2nd sample, we can now _pipe_ the output of the `head` command to the command that gets us the bottom lines of a file `tail`:
 
 ```bash
-$ cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1
+cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1
 ```
 
 Finally, to separate the two values that are separated by a comma, we can use the `cut` command, which accepts a _delimiter_ (`-d` option) and a _field_ we want it to return (`-f` option):
 
 ```bash
-$ cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1 | cut -d "," -f 1
+cat data/drosophila_sample_info.csv | head -n 3 | tail -n 1 | cut -d "," -f 1
 ```
 
 In this example, we use comma as a delimiter field and obtained the first of the values after "cutting" that line. 
@@ -251,6 +251,6 @@ In a typical bioinformatics workflow these files would be used for further analy
 
 #### Further resources
 
-- [LSF Job Array Documentation](https://www.ibm.com/docs/en/spectrum-job_scripts/10.1.0?topic=administration-job-arrays)
+- [LSF Job Array Documentation](https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=administration-job-arrays)
 - [Additional Array Documentation](https://www.hpc.dtu.dk/?page_id=1434)
 :::
