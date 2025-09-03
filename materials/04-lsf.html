@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Sanger HPC</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../materials/05-software.html" rel="next">
+<link href="../materials/03-files.html" rel="prev">
+<link href="../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3c15f7b5c506402fe03f47a1cda15b7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Working on the Sanger HPC cluster using LSF</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://docs.google.com/presentation/d/14B7jHJUJ010xqhMwyTL1eh_DT9ih7Nf2sKmdL0dLnOM/edit?usp=sharing"> 
+<span class="menu-text">Slides</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/hpc-intro-sanger"> <i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs"> <i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://genomic.social/@BioInfoCambs"> <i class="bi bi-mastodon" role="img" aria-label="Bioinformatics Training Facility Mastodon">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <a class="flex-grow-1 no-decor" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+          <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LSF Scheduler</span></h1>
+        </a>     
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Working on a HPC</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">HPC Introduction</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/02-ssh.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Working on the Farm</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/03-files.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">File Transfer</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/04-lsf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LSF Scheduler</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/05-software.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Software Management</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/06-arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Job Parallelisation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../materials/appendices/lsf_cheatsheet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">LSF Quick Reference Guide</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#job-scheduler-overview" id="toc-job-scheduler-overview" class="nav-link active" data-scroll-target="#job-scheduler-overview"><span class="header-section-number">6.1</span> Job Scheduler Overview</a></li>
+  <li><a href="#submitting-a-job-with-lsf" id="toc-submitting-a-job-with-lsf" class="nav-link" data-scroll-target="#submitting-a-job-with-lsf"><span class="header-section-number">6.2</span> Submitting a Job with LSF</a></li>
+  <li><a href="#configuring-job-options" id="toc-configuring-job-options" class="nav-link" data-scroll-target="#configuring-job-options"><span class="header-section-number">6.3</span> Configuring Job Options</a>
+  <ul class="collapse">
+  <li><a href="#partitionsqueues" id="toc-partitionsqueues" class="nav-link" data-scroll-target="#partitionsqueues"><span class="header-section-number">6.3.1</span> Partitions/Queues</a></li>
+  </ul></li>
+  <li><a href="#getting-job-information" id="toc-getting-job-information" class="nav-link" data-scroll-target="#getting-job-information"><span class="header-section-number">6.4</span> Getting Job Information</a>
+  <ul class="collapse">
+  <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise"><span class="header-section-number">6.4.1</span> Exercise</a></li>
+  </ul></li>
+  <li><a href="#lsf-environment-variables" id="toc-lsf-environment-variables" class="nav-link" data-scroll-target="#lsf-environment-variables"><span class="header-section-number">6.5</span> LSF Environment Variables</a>
+  <ul class="collapse">
+  <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1"><span class="header-section-number">6.5.1</span> Exercise</a></li>
+  </ul></li>
+  <li><a href="#interactive-login" id="toc-interactive-login" class="nav-link" data-scroll-target="#interactive-login"><span class="header-section-number">6.6</span> Interactive Login</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.7</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LSF Scheduler</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lesson Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Submit a simple job using LSF and analyse its output.</li>
+<li>Edit a job submission script to request non-default resources.</li>
+<li>Use LSF environment variables to customise scripts.</li>
+<li>Use the commands <code>bjobs</code> and <code>bacct</code> to obtain information about the jobs.</li>
+<li>Troubleshoot errors occurring during job execution.</li>
+</ul>
+</div>
+</div>
+<section id="job-scheduler-overview" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="job-scheduler-overview"><span class="header-section-number">6.1</span> Job Scheduler Overview</h2>
+<p>As we briefly discussed in “<a href="../materials/01-intro.html">Introduction to HPC</a>”, HPC servers usually have a <em>job scheduling</em> software that manages all the jobs that the users submit to be run on the <em>compute nodes</em>. This allows efficient usage of the compute resources (CPUs and RAM), and the user does not have to worry about affecting other people’s jobs.</p>
+<p>The job scheduler uses an algorithm to prioritise the jobs, weighing aspects such as:</p>
+<ul>
+<li>how much time did you request to run your job?</li>
+<li>how many resources (CPUs and RAM) do you need?</li>
+<li>how many other jobs have you got running at the moment?</li>
+</ul>
+<p>Based on these, the algorithm will rank each of the jobs in the queue to decide on a “fair” way to prioritise them. Note that this priority dynamically changes all the time, as jobs are submitted or cancelled by the users, and depending on how long they have been in the queue. For example, a job requesting many resources may start with a low priority, but the longer it waits in the queue, the more its priority increases.</p>
+</section>
+<section id="submitting-a-job-with-lsf" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="submitting-a-job-with-lsf"><span class="header-section-number">6.2</span> Submitting a Job with LSF</h2>
+<p>To submit a job to LSF, you need to include your code in a <em>shell script</em>. Let’s start with a minimal example in <code>job_scripts/simple_job.sh</code>, which contains the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 60 <span class="co"># hold for 60 seconds</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This job is running on:"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can run this script from the login node using the <code>bash</code> interpreter (make sure you are in the correct directory first: <code>cd ~/hpc_workshop/</code>):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> job_scripts/simple_job.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>This job is running on:
+gen22-head1</code></pre>
+<p>To submit the job to the scheduler we instead use the <code>bsub</code> command in a very similar way:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> job_scripts/simple_job.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, this throws back an error:</p>
+<pre><code>Returning output by mail is not supported on this cluster.
+Please use the -o option to write output to disk.
+Request aborted by esub. Job not submitted.</code></pre>
+<p>Our job, like all LSF jobs, has an output (in this case, the outputs of the <code>echo</code> and <code>hostname</code> commands) and job statistics about what was done on the HPC. Because the Sanger LSF is set up to disallow outputs to be sent to your email by default for security reasons, it is impossible for the job to run without specifying a “standard output” file.</p>
+<p>We can fix this error using the <code>-o</code> argument:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> <span class="at">-o</span> simple_job.out job_scripts/simple_job.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This ensures the output of our job is sent to a file, which we called <code>simple_job.out</code>. By default, this file will be located in the directory where you launched the job from.</p>
+<p>However, we now get another error:</p>
+<pre><code>Sorry no available user group specified for this job. 
+Please resubmit your job with -G groupname or set the $LSB_DEFAULT_USERGROUP environment variable.
+Request aborted by esub. Job not submitted.</code></pre>
+<p>The other absolutely necessary argument for submitting a job to the Farm is the -G groupname variable. This specifies to which group at the Sanger you’re billing the compute resources. We’ll be using a temporary testing group for this course called <code>farm-course</code>, but once you settle into a lab you’ll use their own group name.</p>
+<p>Let’s try adding it to the bsub argument list:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> <span class="at">-o</span> simple_job.out <span class="at">-G</span> farm-course job_scripts/simple_job.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If it was submitted correctly, we should see this message:</p>
+<pre><code>Job &lt;xxxxxx&gt; is submitted to default queue &lt;normal&gt;.</code></pre>
+<p>Once the job is finished, we can investigate the output by looking inside the file, for example <code>cat simple_job.out</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The first line of the shell scripts <code>#!/bin/bash</code> is called a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)"><em>shebang</em></a> and indicates which program should interpret this script. In this case, <em>bash</em> is the interpreter of <em>shell</em> scripts (there’s other shell interpreters, but that’s beyond what we need to worry about here).</p>
+<p>Remember to <strong>always have this as the first line of your script</strong>. If you don’t, <code>bsub</code> will throw an error.</p>
+</div>
+</div>
+</section>
+<section id="configuring-job-options" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="configuring-job-options"><span class="header-section-number">6.3</span> Configuring Job Options</h2>
+<p>The <code>-o</code> argument is just one of over 70 different options for submitting a job with <code>bsub</code>. You can imagine the bsub command would get rather long and difficult to keep track of! To make submitting a job simpler and more reproducible, you can include each of your bsub arguments as a line starting with <code>#BSUB</code> at the beginning of your script within the script, after the shebang.</p>
+<p>Here is how we could modify our script:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o job_logs/simple_job.out</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -G farm-course</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sleep</span> 8 <span class="co"># hold for 8 seconds</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"This job is running on:"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hostname</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we now re-run the script using <code>bsub simple_job.sh</code>, the output goes to a file within the logs folder named <code>simple_job.out</code>.</p>
+<p>There are many other options we can specify when using LSF, and we will encounter several more of them as we progress through the materials. Here are some of the most common ones (anything in <code>&lt;&gt;</code> is user input):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 84%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Command</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><code>-cwd &lt;path&gt;</code></td>
+<td style="text-align: left;"><em>working directory</em> used for the job. This is the directory that LSF will use as a reference when running the job.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>-o &lt;path/filename&gt;</code></td>
+<td style="text-align: left;">file where the output that would normally be printed on the console is saved in. This is defined <em>relative</em> to the working directory set above.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>-e &lt;path/filename&gt;</code></td>
+<td style="text-align: left;">file where the error log is saved in. This is defined <em>relative</em> to the working directory set above. If you don’t specify an error file, the error log will write to the <code>-o</code> output file.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>-G &lt;name&gt;</code></td>
+<td style="text-align: left;">group name. This is required on the farm as it logs compute resources used for billing to your group. Ask your labmates for the name.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>-q &lt;name&gt;</code></td>
+<td style="text-align: left;"><em>partition</em> name. See details in the following section.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>- n &lt;ncores&gt;</code></td>
+<td style="text-align: left;">number of CPUs to be requested.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>-R "select[mem&gt;&lt;megabytes_required&gt;] rusage[mem=&lt;megabytes_required&gt;]"</code></td>
+<td style="text-align: left;">First part of two options to request custom RAM memory for the job.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>-M&lt;megabytes_required&gt;</code></td>
+<td style="text-align: left;">Second part of two options to request custom RAM memory for the job.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>-W&lt;time in the form of [hour:]minute&gt;</code></td>
+<td style="text-align: left;">the time you need for your job to run. This is not always easy to estimate in advance, so if you’re unsure you may want to request a good chunk of time. However, the more time you request for your job, the lower its priority in the queue.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>-J &lt;name&gt;</code></td>
+<td style="text-align: left;">a name for the job.</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Default Resources
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you don’t specify any options when submitting your jobs, you will get the default configured by the HPC admins. For example, on <code>farm22</code>, the defaults you will get are:</p>
+<ul>
+<li>10 minutes of running time (equivalent to <code>-W10</code>)</li>
+<li><em>normal</em> partition (equivalent to <code>-q normal</code>)</li>
+<li>1 CPU (equivalent to <code>-n 1</code>)</li>
+<li>100MB RAM (equivalent to <code>-M100 -R "select[mem&gt;100] rusage[mem=100]"</code>)</li>
+</ul>
+</div>
+</div>
+<section id="partitionsqueues" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="partitionsqueues"><span class="header-section-number">6.3.1</span> Partitions/Queues</h3>
+<p>Often, HPC servers have different types of compute node setups (e.g.&nbsp;partitions for fast jobs, or long jobs, or high-memory jobs, etc.). LSF calls these “queues” and you can use the <code>-q</code> option to choose which queue your job runs on. Usually, which queues are available on your HPC should be provided by the admins.</p>
+<p>It’s worth keeping in mind that these partitions have separate queues, so you should always try to choose the partition that is most suited to your job. You can check the queues available using the command <code>bqueues -l</code>. Here are some of the partitions available on <code>farm22</code>:</p>
+<ul>
+<li>General use partitions:
+<ul>
+<li><code>normal</code> partition (default) with a maximum of 12 hours</li>
+<li><code>long</code> partition with a maximum of 48 hours</li>
+<li><code>basement</code> partition with a maximum of 30 days; only 300 basement jobs are allowed per user simultaneously.</li>
+</ul></li>
+<li>Special case partitions:
+<ul>
+<li><code>hugemem</code>/<code>hugemem-restricted</code>/<code>teramem</code> queues for large memory machines (512GB/1TB).</li>
+<li><code>yesterday</code> partition for very urgent jobs that need to be done “yesterday”; only 7 jobs are allowed per user simultaneously.</li>
+<li><code>small</code> partition for many, very small jobs (batches 10 jobs together to prevent scheduler overload).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="getting-job-information" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="getting-job-information"><span class="header-section-number">6.4</span> Getting Job Information</h2>
+<p>After submitting a job, we may want to know:</p>
+<ul>
+<li>What is going on with my job? Is it running, has it finished?</li>
+<li>If it finished, did it finish successfully, or did it fail?</li>
+<li>How many resources (e.g.&nbsp;RAM) did it use?</li>
+<li>What if I want to cancel a job because I realised there was a mistake in my script?</li>
+</ul>
+<p>You can check the status of all your jobs in the queue by using:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bjobs</span> <span class="at">-w</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Or get detailed information on one job in particular with:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bjobs</span> <span class="at">-l</span> <span class="op">&lt;</span>JOBID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This gives you information about the job’s status while it’s running: <code>PEND</code> means it’s <em>pending</em> (waiting in the queue) and <code>RUN</code> means it’s <em>running</em>.</p>
+<p>Once the job is complete, you can still use <code>bjobs -l &lt;JOBID&gt;</code> to get job statistics. Alternatively, you may find it easier to use <code>bhist</code>, as it includes time and memory usage in a more reader-friendly format:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bhist</span> <span class="at">-l</span> JOBID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This shows you the status of the job, whether it completed or not, how long it took to run, and how much memory it used. Therefore, this command is very useful to determine suitable resources (e.g.&nbsp;RAM, time) next time you run a similar job.</p>
+<p>Alternatively, you can use the <code>bacct</code> command once a job has completed, which allows displaying this and other information in a more condensed way (and for multiple jobs if you want to).</p>
+<p>For example:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bacct</span> JOBID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>will give you information about one specific job</p>
+<p>You can add other options to the <code>bacct</code> command to glean more or less information with:</p>
+<ul>
+<li><code>-l</code> for extra information about the job</li>
+<li><code>-b</code> for brief information about the job</li>
+</ul>
+<p>You can also select groups of jobs based on certain characteristics, like:</p>
+<ul>
+<li><code>-q &lt;partition&gt;</code> to select all jobs you’ve run in a certain partition</li>
+<li><code>-d</code> to select all jobs that have completed successfully</li>
+<li><code>-e</code> to select all jobs that had end status of EXIT (failed)</li>
+<li><code>-x</code> to select jobs that raised an exception while running</li>
+</ul>
+<p>As a rule, running <code>bacct</code> without the <code>-l</code> option results in aggregate job statistics for the jobs included, while with the <code>-l</code> option results in a long list of separate, per-job statistics.</p>
+<p>All the options available with <code>bacct</code> can be listed using <code>bacct -h</code>. If you forgot what the job id is, check the standard output file that was specified with the <code>-o</code> argument of <code>bsub</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>bacct</code> command may not be available on every HPC, as it depends on how it was configured by the admins.<br>
+On the Farm HPC, <code>bacct</code> is reading information from <code>/usr/local/job_scripts/work/&lt;cluster_name&gt;/logdir/lsb.acct.*</code>.</p>
+</div>
+</div>
+<p>Finally, if you want to suspend a job, you can use:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bstop</span> <span class="op">&lt;</span>JOBID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Suspended jobs can be restarted using:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bresume</span> <span class="op">&lt;</span>JOBID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To irreversibly end a job, use:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bkill</span> <span class="op">&lt;</span>JOBID<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>All three commands <code>bstop</code>, <code>bresume</code>, and <code>bkill</code> can be applied to all of your own jobs by replacing the job ID with <code>0</code>.</p>
+<p>It’s impossible to edit other users’ jobs, so don’t worry about accidentally deleting everyone’s Farm jobs!</p>
+<section id="watch-out" class="level4 {callout-warning}">
+<h4 class="anchored" data-anchor-id="watch-out">WATCH OUT</h4>
+<p>When specifying the <code>-o</code> option including a directory name, if the output directory does not exist, <code>bjobs</code> will still run, but produce no output file.</p>
+<p>For example, let’s say that we would like to keep our job output files in a folder called “logs”. For the example above, we might set these #BSUB options:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop/</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o job_logs/simple_job.log</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But, unless we create the <code>job_logs/</code> directory <em>before running the job</em>, <code>bjobs</code> will not produce a file of standard output.</p>
+<p>Another thing to note is that you should not use the <code>~</code> home directory shortcut with the <code>-cwd</code> option. For example:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd ~/hpc_workshop/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>will not reliably work. Instead you should use the full path as shown above.</p>
+</section>
+<section id="exercise" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="exercise"><span class="header-section-number">6.4.1</span> Exercise</h3>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 1 - Submiting jobs with LSF
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div id="ex-first-job" class="callout-exercise">
+<p>In the “analysis_scripts” directory, you will find an R script called <code>pi_estimator.R</code>. This script tries to get an approximate estimate for the number Pi using a stochastic algorithm.</p>
+<details>
+<summary>
+How does the algorithm work?
+</summary>
+<p>If you are interested in the details, here is a short description of what the script does:</p>
+<blockquote class="blockquote">
+<p>The program generates a large number of random points on a 1×1 square centered on (½,½), and checks how many of these points fall inside the unit circle. On average, π/4 of the randomly-selected points should fall in the circle, so π can be estimated from 4f, where f is the observed fraction of points that fall in the circle. Because each sample is independent, this algorithm is easily implemented in parallel.</p>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://carpentries-incubator.github.io/hpc-intro/fig/pi.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption>Estimating Pi by randomly placing points on a quarter circle. (Source: <a href="https://carpentries-incubator.github.io/hpc-intro/16-parallel/index.html">HPC Carpentry</a>)</figcaption>
+</figure>
+</div>
+</details>
+<p>R scripts can be run from the terminal using the <code>Rscript</code> command line interpreter, for example <code>Rscript analysis_scripts/pi_estimator.R</code>. However, as we are working on a HPC, we use a shell script to submit this command to the job scheduler.</p>
+<p>But first, we need to install a required package - <code>argparse</code> - into the Farm’s R environment.<br>
+Pause here to work through the below instructions.</p>
+<hr>
+<p><strong>Installing required R packages</strong></p>
+<p>The <code>pi_estimator.R</code> script requires the R library <code>argparse</code>, which must first be installed into your R workspace. Because you’re using R on this HPC for the first time, you’ll need to install the package to run the script successfully. You should only have to run this once:</p>
+<ul>
+<li>Open an R console by typing <code>R</code></li>
+<li>Run the command <code>install.packages('argparse', repos = 'https://cloud.r-project.org')</code>
+<ul>
+<li>Type <code>yes</code> if asked to create a personal library</li>
+<li>Type <code>yes</code> if asked to approve the default library location</li>
+</ul></li>
+<li>Once installation is complete, check to make sure it installed properly by loading the package: <code>library(argparse)</code>
+<ul>
+<li>If there are no errors, the R library has been successfully installed!</li>
+</ul></li>
+<li>To exit the R console run <code>q("no")</code> (quit without saving)</li>
+</ul>
+<hr>
+<p><strong>Submitting the R script as a LSF job</strong></p>
+<p>Now we’re ready to run the <code>estimate_pi.sh</code> script.</p>
+<ol type="1">
+<li>Edit the shell script in <code>job_scripts/estimate_pi.sh</code> by correcting the code where the word “FIXME” appears. Submit the job to LSF and check its status in the queue.</li>
+<li>How long did the job take to run?
+<details>
+<summary>
+Hint
+</summary>
+Use <code>bhist -l JOBID</code> or <code>bacct -l JOBID</code>.
+</details></li>
+<li>The number of samples used to estimate Pi can be modified using the <code>--nsamples</code> option of our script, defined in millions. The more samples we use, the more precise our estimate should be.
+<ul>
+<li>Adjust your LSF submission script to use 200 million samples (<code>Rscript analysis_scripts/pi_estimator.R --nsamples 200</code>), and save the job output in <code>job_logs/estimate_pi_200M.out</code> and <code>job_logs/estimate_pi_200M.err</code>.</li>
+<li>Monitor the job status with <code>bjobs</code> and <code>bhist -l JOBID</code>. Review the output files in your logs folder. Do you find any issues?</li>
+</ul></li>
+</ol>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-answer">
+<p><strong>A1.</strong></p>
+<p>In the shell script we needed to correct the user-specific details in the <code>#BSUB</code> options. Also, we needed to specify the path to the script we wanted to run. This can be defined relative to the working directory that we’ve set with <code>-cwd</code>. For example:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal  # name of the queue to run job on</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIAL/USERID/hpc_workshop  # working directory</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o job_logs/estimate_pi.out  # standard output file</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e job_logs/estimate_pi.err  # standard error file</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n 1        # number of CPUs. Default: 1</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R "select[mem&gt;1000] rusage[mem=1000]" # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M1000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># run the script</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> analysis_scripts/pi_estimator.R</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>With the corrected script, we can submit the job:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> job_scripts/estimate_pi.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>A2.</strong></p>
+<p>As suggested in the hint, we can use the <code>bhist</code> or <code>bacct</code> commands for this:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bhist</span> <span class="at">-l</span> JOBID</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">bacct</span> <span class="at">-l</span> JOBID</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Replacing JOBID with the ID of the job we just ran.</p>
+<p>If you cannot remember what the job id was, you can check all your jobs using <code>bjobs</code> or view the outfile generated at the beginning of the run.</p>
+<p>Sometimes it may happen that the “Memory Usage” (or MEM) is reported as 0M or a lower value than you would expect. That’s very odd, since for sure our script must have used <em>some</em> memory to do the computation. The reason is that LSF doesn’t always have time to pick memory usage spikes, and so it reports a zero. This is usually not an issue with longer-running jobs.</p>
+<p><strong>A3.</strong></p>
+<p>The modified script should look similar to this:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal  # name of the partition to run job on</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -G farm-course # groupname for billing</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -cwd /nfs/users/nfs_USERINITIA/USERID/hpc_workshop  # working directory</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e job_logs/estimate_pi_200M.err  # standard error file</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n1        # number of CPUs. Default: 1</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R "select[mem&gt;1000] rusage[mem=1000] span[hosts=1]" # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M1000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co"># run the script</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> analysis_scripts/pi_estimator.R <span class="at">--nsamples</span> 200</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And then send the job to the job scheduler:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> job_scripts/estimate_pi.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, when we run this job, examining the output file (<code>cat job_logs/estimate_pi_200M.out</code>) will reveal and error indicating that our job was killed. There are few clues for this, most obviously this note:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">TERM_MEMLIMIT:</span> job killed after reaching LSF memory usage limit.</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Exited</span> with exit code 1.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Furthermore, if we use <code>bjobs</code> to get information about the job, it will show <code>EXIT</code> as the status instead of <code>DONE</code>.</p>
+<p>We can also check this by seeing what <code>bacct -l</code> reports as “Memory Utilized” and see that it used 100% of the memory we gave the job. There is also this table in the output of this command:</p>
+<pre><code>Share group charged &lt;/WTSI/other/farm-course/ht10&gt;
+     CPU_T     WAIT     TURNAROUND   STATUS     HOG_FACTOR    MEM    SWAP
+     10.71        1             13     exit         0.8240   2.1G      0M
+     CPU_PEAK     CPU_EFFICIENCY      MEM_EFFICIENCY
+      0.83                83.33%             220.00%</code></pre>
+<p>We can see that our job tried to use <em>at least</em> 2.1G (maybe it would have needed even more), but we only requested 1000M (~1G). So, that explains why it was killed!</p>
+<p>To correct this problem, we would need to increase the memory requested to LSF, adding to our script, for example, <code>#BSUB -R "select[mem&gt;30000] rusage [mem=30000] span[hosts=1]"</code> and <code>#BSUB -M 30000</code> to request 30Gb of RAM memory for the job.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="lsf-environment-variables" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="lsf-environment-variables"><span class="header-section-number">6.5</span> LSF Environment Variables</h2>
+<p>One useful feature of LSF jobs is the automatic creation of environment variables. Generally speaking, variables store a value within them, and can either be created by us, or sometimes they are automatically created by programs or available by default in our shell.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+More about shell variables (click to view)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>An example of a common shell environment variable is <code>$HOME</code>, which stores the path to the user’s <code>/home</code> directory. We can print the value of a variable with <code>echo $HOME</code>.</p>
+<p>The syntax to create a variable ourselves is:</p>
+<pre class="shell"><code>VARIABLE="value"</code></pre>
+<p>Notice that there should be <strong>no space between the variable name and its value</strong>.</p>
+<p>If you want to create a variable with the result of evaluating a command, then the syntax is:</p>
+<pre class="shell"><code>VARIABLE=$(command)</code></pre>
+<p>Try these examples:</p>
+<pre class="shell"><code># Make a variable with a path starting from the user's /home
+DATADIR="$HOME/hpc_workshop/data/"
+
+# list files in that directory
+ls $DATADIR
+
+# create a variable with the output of that command
+DATAFILES=$(ls $DATADIR)</code></pre>
+<p>See their values:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$DATADIR</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$DATAFILES</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>When you submit a job with LSF, it creates several variables, all starting with the prefix <code>$LSB_</code>. One useful variable is <code>$LSB_MAX_NUM_PROCESSORS</code>, which stores how many CPUs we requested for our job. This means that we can use the variable to automatically set the number of CPUs for software that support multi-threading. We will see an example in <span class="citation" data-cites="ex-lsf-variables"><a href="#ex-lsf-variables"><u>Exercise 2</u></a></span>.</p>
+<p>Here is a table summarising some of the most useful environment variables that LSF creates:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Variable</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><code>$LSB_MAX_NUM_PROCESSORS</code></td>
+<td style="text-align: left;">Number of CPUs requested with <code>-n</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>$LSB_JOBID</code></td>
+<td style="text-align: left;">The job ID</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>$LSB_JOBNAME</code></td>
+<td style="text-align: left;">The name of the job defined with <code>-J</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><code>$LSB_EXECCWD</code></td>
+<td style="text-align: left;">The working directory defied with <code>-cwd</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><code>$LSB_JOBINDEX</code></td>
+<td style="text-align: left;">The number of the sub-job when running parallel arrays (covered in the <a href="../materials/06-arrays.html">Job Arrays</a> section)</td>
+</tr>
+</tbody>
+</table>
+<section id="exercise-1" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">6.5.1</span> Exercise</h3>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 2 - Using LSF environment variables
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div id="ex-lsf-variables" class="callout-exercise">
+<p>The R script used in the previous exercise supports parallelisation of some of its internal computations. The number of CPUs used by the script can be modified using the <code>--ncpus</code> option. For example <code>pi_estimator.R --nsamples 200 --ncpus 2</code> would use two CPUs.</p>
+<ol type="1">
+<li>Modify your submission script (<code>job_scripts/estimate_pi.sh</code>) to: <!-- 1. Should you still use the `normal` partition? -->
+<ol type="1">
+<li>Use the <code>$LSB_MAX_NUM_PROCESSORS</code> variable to set the number of CPUs used by <code>pi_estimator.R</code> (and ensure you have set <code>--nsamples 200</code> as well).</li>
+<li>Request 10G of RAM memory for the job.</li>
+<li>Bonus (optional): use <code>echo</code> within the script to print a message indicating the job number (LSF’s job ID is stored in the variable <code>$LSB_JOBID</code>).</li>
+</ol></li>
+<li>Submit the job three times, each one using 1, 2 and then 8 CPUs. Make a note of each job’s ID.</li>
+<li>Check how much time each job took to run (using <code>bhist JOBID</code> or <code>bacct JOBID</code>). Did increasing the number of CPUs shorten the time it took to run?</li>
+</ol>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="callout-answer">
+<p><strong>A1.</strong></p>
+<p>We can modify our submission script in the following manner, for example for using 2 CPUs:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -q normal     # partiton name</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -D /nfs/users/user_USERINITIAL/USERID/hpc_workshop/  # working directory</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -o job_logs/estimate_pi_200M_2cpu.out      # output file</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -e job_logs/estimate_pi_200M_2cpu.err      # error file</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -R "select[mem&gt;10000] rusage[mem=10000]" # RAM memory part 1. Default: 100MB</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -M10000  # RAM memory part 2. Default: 100MB</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#BSUB -n 2                          # number of CPUs</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co"># launch the Pi estimator script using the number of CPUs that we are requesting from LSF</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> analysis_scripts/pi_estimator.R <span class="at">--nsamples</span> 200 <span class="at">--ncpus</span> <span class="va">$LSB_MAX_NUM_PROCESSORS</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># echo number of CPUS</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Processors used: </span><span class="va">$LSB_MAX_NUM_PROCESSORS</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can then run the script using this command:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> job_scripts/estimate_pi.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can run the job multiple times while modifying the <code>#BSUB -n</code> option, saving the file and re-running <code>bsub job_scripts/estimate_pi.sh</code>.</p>
+<p>After running each job we can use <code>bhist JOBID</code> or <code>bjobs -l JOBID</code> or <code>bacct JOBID</code> commands to obtain information about how long it took to run.</p>
+<p>In this case, it does seem that increasing the number of CPUs shortens the time the job takes to run. However, the increase is not linear at all. For example going from 1 to 2 CPUs seems to make the job run faster, however increasing to 8 CPUs makes little difference compared to 2 CPUs (this may depend on how many <code>--nsamples</code> you used). This is possibly because there are other computational costs to do with this kind of parallelisation (e.g.&nbsp;keeping track of what each parallel thread is doing).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="interactive-login" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="interactive-login"><span class="header-section-number">6.6</span> Interactive Login</h2>
+<p>Sometimes it may be useful to directly get a terminal on one of the compute nodes. This may be useful, for example, if you want to test some scripts or run some code that you think might be too demanding for the login node (e.g.&nbsp;to compress some files).</p>
+<p>It is possible to get interactive access to a terminal on one of the compute nodes using the <code>-Is</code> argument in <code>bsub</code>. This command takes options similar to the normal <code>bsub</code> program, so you can request resources in the same way you would when submitting scripts.</p>
+<p>For example, to access to 8 CPUs and 10GB of RAM for 10 minutes on one of the compute nodes we would do:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">bsub</span> <span class="at">-G</span> farm-course <span class="at">-Is</span> <span class="at">-n8</span> <span class="at">-R</span> <span class="st">"select[mem&gt;1000] rusage[mem=1000]"</span> <span class="at">-M1000</span> <span class="at">-q</span> normal <span class="at">-W10</span> bash</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You may get a message saying that LSF is waiting to allocate your request (you go in the queue, just like any other job!). Eventually, when you get in, you will notice that your terminal will indicate you are on a different node: for example, instead of <code>farm22-head2</code> you may be in <code>node-5-10-4</code>. You can check which compute node you’re in with <code>hostname</code>.</p>
+<p>After you’re in, you can run any commands you wish, without worrying about affecting other users’ work. Once you are finished, you can use the command <code>exit</code> (or <kbd>Ctrl</kbd> + <kbd>D</kbd>) to terminate the session, and you will go back to the login node.</p>
+<p>Note that, if the time you requested (with the <code>-W</code> option) runs out, your session will be immediately killed.</p>
+</section>
+<section id="summary" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="summary"><span class="header-section-number">6.7</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Include the commands you want to run on the HPC in a shell script.
+<ul>
+<li>Always remember to include <code>#!/bin/bash</code> as the first line of your script.</li>
+</ul></li>
+<li>Submit jobs to the scheduler using <code>bsub submission_script.sh</code>.</li>
+<li>Customise the jobs by including <code>#BSUB</code> options at the top of your script (see table in the materials above for a summary of options).
+<ul>
+<li>As a good practice, always define an output file with <code>#BSUB -o</code>. All the information about the job will be saved in that file, including any errors.</li>
+</ul></li>
+<li>Check the status of a submitted job by using <code>bjobs</code>. You can get detailed information about a job (such as the time it took to run or how many resources it used) using <code>bjobs -l JOBID</code> or <code>bacct -l JOBID</code> or <code>bhist JOBID</code>.</li>
+<li>To cancel a running job use <code>bkill JOBID</code>.</li>
+</ul>
+<section id="further-resources" class="level4">
+<h4 class="anchored" data-anchor-id="further-resources">Further resources</h4>
+<ul>
+<li><a href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-command">IBM Spectrum LSF command reference</a></li>
+<li><a href="https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=reference-bsub">bsub Reference Page</a></li>
+<li><a href="https://slurm.schedmd.com/rosetta.gif">LSF to PBS/SLURM/SGE/LoadLeveler schedulers</a></li>
+</ul>
+</section>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../materials/03-files.html" class="pagination-link" aria-label="File Transfer">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">File Transfer</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../materials/05-software.html" class="pagination-link" aria-label="Software Management">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Software Management</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
