@@ -170,6 +170,6 @@ To install the extension (see @fig-vscode-ssh):
 
 Please **download the workshop data** (zip file) and save it to your desktop (do not unzip the file). 
 
-<a href="https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1">
+<a href="https://www.dropbox.com/scl/fo/9x1ue3qjetisn2m4011dn/AI3c7fHrcow2u2pi9l09HME?rlkey=izz21i46uhhx8tl4u18k2e6gm&st=hpvmc858&dl=1">
   <button class="btn"><i class="fa fa-download"></i> Download</button>
 </a>

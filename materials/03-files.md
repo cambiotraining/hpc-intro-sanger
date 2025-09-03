@@ -97,7 +97,7 @@ To check what files `rsync` would transfer but not actually transfer them, add t
 ::: {.callout-exercise}
 #### Copying files to the cluster
 
-- <a href="https://www.dropbox.com/sh/8ftw8biizk8sio1/AAB393Amhgn4-Kt2b8R1OszRa?dl=1" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
+- <a href="https://www.dropbox.com/scl/fo/9x1ue3qjetisn2m4011dn/AI3c7fHrcow2u2pi9l09HME?rlkey=izz21i46uhhx8tl4u18k2e6gm&st=hpvmc858&dl=1" target="_blank" rel="noopener noreferrer">Download the data</a> for this course to your computer and place it on your Desktop. (do not unzip the file yet!)
 - Use _Filezilla_, `scp` or `rsync` (your choice) to move this file to the directory we created earlier: `~/hpc_workshop/`.
 - The file we just downloaded is a compressed file. From the HPC terminal, use `unzip` to decompress the file.
   - Note: macOS often unzips downloaded files by default. If that is the case you can skip this step.
@@ -122,7 +122,10 @@ scp -r ~/Desktop/hpc_workshop_files.zip username@gen22:hpc_workshop/
 rsync -avhu ~/Desktop/hpc_workshop_files.zip username@gen22:hpc_workshop/
 ```
 
-Once we finish transfering the files we can go ahead and decompress the data folder.
+In our case, the Zip file was downloaded to our Desktop, but you can adjust this depending on where the file was downloaded in your case. 
+For example, another common default is a folder named "Downloads".
+
+Once we finish transfering the files, we can go ahead and decompress the data folder.
 Note, this is now run **from the HPC terminal**:
 
 ```bash

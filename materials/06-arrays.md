@@ -69,15 +69,18 @@ hostname
 ```
 
 Submitting this script with `bsub job_scripts/parallel_arrays.sh` will launch 3 jobs.  
-The "_%I_" keyword is used in our output filename (`-o`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  You could also include the "_%J_" keyword to add the Job ID number to the file name.  
-You can then investigate the results using `head -n 4 job_logs/parallel_arrays*out`.  
+The `%I` keyword is used in our output filename (`-o` and `-e`) and will be replaced by the array number, so that we end up with three files: `parallel_arrays_1.out`, `parallel_arrays_2.out` and `parallel_arrays_3.out`.  
+You could optionally also include the `%J` keyword to add the Job ID number to the file name.
+
+You can investigate the results using `head -n 4 job_logs/parallel_arrays*out`.  
 Looking at the output in those files should make it clearer that `$LSB_JOBINDEX` stores the array number of each job, and that each of them uses 2 CPUS (`-n2` option).
 The compute node that they run on may be variable (depending on which node was available to run each job).
 
 
 ::: {.callout-note}
-You can define job array numbers in multiple ways, not just sequentially.
+#### Defining non-sequential job arrays
 
+You can define job array numbers in multiple ways, not just sequentially.  
 Here are some examples:
 
 | Option | Description |
@@ -97,9 +100,10 @@ Here are some examples:
 Previously, we used the `pi_estimator.R` script to obtain a single estimate of the number Pi.
 Since this is done using a stochastic algorithm, we may want to run it several times to get a sense of the error associated with our estimate.
 
-1. Use nano to open the LSF submission script in `job_scripts/parallel_estimate_pi.sh`. Adjust the `#BSUB` options (where word "FIXME" appears), to run the job 10 times using a job array.
-2. Launch the job with `bsub`, monitor its progress and examine the output. <details><summary>Hint</summary> Note that the output of `pi_estimator.R` is now being sent to individual text files to the directory `results/pi/`. </details>
-3. Bonus: combine all the output files into a single file. Should you run this operation directly on the login node, or submit it as a new job to LSF?
+1. Use nano to open the LSF submission script in `job_scripts/parallel_estimate_pi.sh`. 
+2. Adjust the `#BSUB` options (where word "FIXME" appears), to run the job 10 times using a job array.
+3. Launch the job with `bsub`, monitor its progress and examine the output. <details><summary>Hint</summary> Note that the output of `pi_estimator.R` is now being sent to individual text files to the directory `results/pi/`. </details>
+4. Bonus: combine all the output files into a single file. Should you run this operation directly on the login node, or submit it as a new job to LSF?
 
 ::: {.callout-answer}
 

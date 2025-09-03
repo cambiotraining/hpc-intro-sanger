@@ -9,7 +9,7 @@
 #BSUB -M1000  # RAM memory part 2. Default: 100MB
 #BSUB -W10 # time for the job HH:MM:SS. Default: 1 min
 
-# activate bowtie2 module
+# load bowtie2 module - version 2.4.2
 FIXME
 
 # make an output directory for the index
